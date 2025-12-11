@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\User\PaymentController;
 
 use App\Http\Controllers\Admin\ScheduleGeneratorController;
 use App\Http\Controllers\ProfileController;
@@ -71,6 +72,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Cancel a reservation
+    Route::post('/reservation/{id}/cancel', [\App\Http\Controllers\User\BookingController::class, 'cancel'])
+        ->name('reservation.cancel')
+        ->middleware('auth');
+
+    //Payment Gateway Stripe
+//    Route::middleware(['auth', 'verified'])->group(function() {
+//        Route::get('/payment/{reservation}', [PaymentController::class, 'showPaymentPage'])->name('payment.page');
+//        Route::post('/payment/{reservation}', [PaymentController::class, 'processPayment'])->name('payment.process');
+//    });
+    // Payment Routes
+    Route::middleware(['auth', 'verified'])->group(function() {
+        Route::get('/payment/{reservation}', [PaymentController::class, 'showPaymentPage'])->name('payment.page');
+        Route::post('/payment/{reservation}', [PaymentController::class, 'processPayment'])->name('payment.process');
+        Route::get('/payment/success/{reservation}', [PaymentController::class, 'paymentSuccess'])
+            ->name('payment.success');
+    });
+
 });
 
 // Admin Routes

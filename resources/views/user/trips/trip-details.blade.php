@@ -41,7 +41,7 @@
                                 <p><strong>Bus Number:</strong><br>{{ $trip->bus->bus_number }}</p>
                                 <p><strong>Bus Type:</strong><br>
                                     <span class="badge bg-{{ $trip->bus->bus_type === 'deluxe' ? 'primary' : 'secondary' }}">
-                                    {{ $trip->bus->formatted_bus_type }}
+                                {{ $trip->bus->formatted_bus_type }}
                                 </span>
                                 </p>
                             </div>
@@ -97,8 +97,9 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="card-footer">
-                        <div class="row">
+                        <div class="row g-2 align-items-end">
                             <div class="col-md-6">
                                 <a href="{{ route('trips.search') }}" class="btn btn-secondary w-100">
                                     <i class="fas fa-arrow-left"></i> Back to Search
@@ -107,9 +108,22 @@
                             <div class="col-md-6">
                                 @auth
                                     @if($trip->available_seats > 0)
-                                        <a href="{{ route('booking.seats', $trip) }}" class="btn btn-success w-100">
-                                            <i class="fas fa-ticket-alt"></i> Book This Trip
-                                        </a>
+                                        <!-- Booking Form -->
+                                        <form action="{{ route('booking.seats', $trip) }}" method="GET" class="row g-2 align-items-end" id="booking-form">
+                                            <div class="col">
+                                                <label for="adults" class="form-label mb-0">Adults</label>
+                                                <input type="number" id="adults" name="adults" class="form-control" value="1" min="1" placeholder="Adults">
+                                            </div>
+                                            <div class="col">
+                                                <label for="children" class="form-label mb-0">Children</label>
+                                                <input type="number" id="children" name="children" class="form-control" value="0" min="0" placeholder="Children">
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="submit" class="btn btn-success w-100">
+                                                    <i class="fas fa-ticket-alt"></i> Book
+                                                </button>
+                                            </div>
+                                        </form>
                                     @else
                                         <button class="btn btn-danger w-100" disabled>
                                             <i class="fas fa-times"></i> Fully Booked
@@ -180,8 +194,8 @@
                         <p><strong>Seats Left:</strong> {{ $trip->available_seats }}</p>
                         <p class="mb-0"><strong>Status:</strong>
                             <span class="badge bg-{{ $trip->is_sold_out ? 'danger' : 'success' }}">
-                            {{ $trip->is_sold_out ? 'Sold Out' : 'Available' }}
-                        </span>
+                        {{ $trip->is_sold_out ? 'Sold Out' : 'Available' }}
+                    </span>
                         </p>
                     </div>
                 </div>
@@ -221,4 +235,52 @@
             </div>
         </div>
     </div>
+
+    <!-- Not Enough Seats Modal -->
+    <div class="modal fade" id="notEnoughSeatsModal" tabindex="-1" aria-labelledby="notEnoughSeatsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-danger">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="notEnoughSeatsModalLabel">Not Enough Seats</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-body-text">
+                    Sorry! There are not enough seats available for this trip.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const availableSeats = {{ $trip->available_seats }};
+                const form = document.getElementById('booking-form');
+                const adultsInput = document.getElementById('adults');
+                const childrenInput = document.getElementById('children');
+                const modal = new bootstrap.Modal(document.getElementById('notEnoughSeatsModal'));
+                const modalBody = document.getElementById('modal-body-text');
+
+                form.addEventListener('submit', function(e) {
+                    const adults = parseInt(adultsInput.value) || 0;
+                    const children = parseInt(childrenInput.value) || 0;
+                    const totalSeats = adults + children;
+
+                    if (totalSeats > availableSeats) {
+                        e.preventDefault();
+                        modalBody.innerHTML = `
+                Sorry! There are not enough seats available for this trip.
+                <br><strong>Requested:</strong> ${totalSeats} seat(s)
+                <br><strong>Available:</strong> ${availableSeats} seat(s)
+            `;
+                        modal.show();
+                        return false;
+                    }
+                });
+            });
+        </script>
+    @endpush
 @endsection

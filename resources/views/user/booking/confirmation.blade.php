@@ -125,6 +125,34 @@
                         </div>
                     </div>
                 </div>
+                <!-- Booking Confirmation Modal -->
+                <div class="modal fade" id="cancellationWarningModal" tabindex="-1" aria-labelledby="cancellationWarningLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header bg-warning">
+                                <h5 class="modal-title" id="cancellationWarningLabel">
+                                    <i class="fas fa-exclamation-triangle"></i> Important Notice
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>You may cancel your reservation only within <strong>24 hours</strong> of booking.</p>
+                                <p>After that, your trip is non-refundable, and you will need to book another trip if you wish to change your plans.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">I Understand</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trigger the Modal on Page Load -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var cancellationModal = new bootstrap.Modal(document.getElementById('cancellationWarningModal'));
+                        cancellationModal.show();
+                    });
+                </script>
 
                 <!-- Important Notes -->
                 <div class="alert alert-warning mt-4">

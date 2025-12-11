@@ -31,15 +31,14 @@
                                 </h5>
                             </div>
                             <div class="col-md-4 text-end">
-                            <span class="badge bg-light text-dark">
-                                {{ ucfirst($reservation->status) }}
-                            </span>
+                                <span class="badge bg-light text-dark">{{ ucfirst($reservation->status) }}</span>
                                 @if($reservation->is_round_trip)
                                     <span class="badge bg-info">Round Trip</span>
                                 @endif
                             </div>
                         </div>
                     </div>
+
                     <div class="card-body">
                         <!-- Outbound Trip -->
                         <div class="row mb-3">
@@ -131,22 +130,59 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="card-footer bg-light">
                         <div class="row">
                             <div class="col-md-6">
                                 <small class="text-muted">
-                                    <i class="fas fa-info-circle"></i>
-                                    Arrive 30 minutes before departure
+                                    <i class="fas fa-info-circle"></i> Arrive 30 minutes before departure
                                 </small>
                             </div>
                             <div class="col-md-6 text-end">
-                                <button class="btn btn-sm btn-outline-secondary" onclick="window.print()">
-                                    <i class="fas fa-print"></i> Print
-                                </button>
+                                <!-- Print Button (only if not cancelled) -->
+                                @if($reservation->status !== 'cancelled')
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="window.print()">
+                                        <i class="fas fa-print"></i> Print
+                                    </button>
+                                @endif
+
+                                <!-- Cancel Reservation Button -->
+                                @if($reservation->status === 'confirmed' && $reservation->trip->departure_date > now()->toDateString())
+                                    <button type="button" class="btn btn-sm btn-outline-danger ms-2" data-bs-toggle="modal" data-bs-target="#cancelModal{{ $reservation->id }}">
+                                        <i class="fas fa-times"></i> Cancel
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Cancel Modal -->
+                @if($reservation->status === 'confirmed' && $reservation->trip->departure_date > now()->toDateString())
+                    <div class="modal fade" id="cancelModal{{ $reservation->id }}" tabindex="-1" aria-labelledby="cancelModalLabel{{ $reservation->id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-danger" id="cancelModalLabel{{ $reservation->id }}">
+                                        Cancel Reservation
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to cancel this reservation? <br>
+                                    <strong>Note:</strong> You will need to book a new trip if you cancel.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Keep Booking</button>
+                                    <form action="{{ route('reservation.cancel', $reservation->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger">Yes, Cancel</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             @endforeach
 
             <!-- Pagination -->
@@ -155,4 +191,31 @@
             </div>
         @endif
     </div>
+
+    <!-- Cancelled Confirmation Modal -->
+    @if(session('success'))
+        <div class="modal fade" id="cancelledModal" tabindex="-1" aria-labelledby="cancelledModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="cancelledModalLabel">Reservation Cancelled</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <h4>Your reservation has been cancelled.</h4>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trigger Modal Automatically -->
+        <script>
+            var cancelledModal = new bootstrap.Modal(document.getElementById('cancelledModal'));
+            cancelledModal.show();
+        </script>
+    @endif
+
 @endsection

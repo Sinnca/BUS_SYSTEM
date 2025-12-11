@@ -153,8 +153,18 @@ class BookingService
     public function cancelReservation(Reservation $reservation): bool
     {
         return DB::transaction(function () use ($reservation) {
-            // Check if trip hasn't departed
-            if ($reservation->trip->departure_date < now()->format('Y-m-d')) {
+
+            $departure = \Carbon\Carbon::parse($reservation->trip->departure_date . ' ' . $reservation->trip->departure_time);
+            $now = now();
+            $diffHours = $now->diffInHours($departure, false);
+
+            // Prevent cancellation if less than 24 hours before departure
+            if ($diffHours < 24) {
+                throw new \Exception('You can only cancel reservations at least 24 hours before departure.');
+            }
+
+            // Check if trip hasn't departed (optional, extra safety)
+            if ($departure->isPast()) {
                 throw new \Exception('Cannot cancel past trips.');
             }
 
@@ -178,6 +188,8 @@ class BookingService
             return true;
         });
     }
+
+
 
     /**
      * Get available seats for a trip
@@ -225,4 +237,5 @@ class BookingService
 
         return $reservedSeats === 0;
     }
+
 }
