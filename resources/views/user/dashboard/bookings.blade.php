@@ -23,8 +23,14 @@
         @else
             @foreach($reservations as $reservation)
                 <div class="card mb-3">
-                    <div class="card-header {{ $reservation->status === 'confirmed' ? 'bg-success' : 'bg-danger' }} text-white">
-                        <div class="row align-items-center">
+                    <div class="card-header
+                    @if($reservation->status === 'confirmed') bg-success
+                    @elseif($reservation->status === 'pending') bg-warning
+                    @else bg-danger
+                    @endif
+                    text-white">
+
+                    <div class="row align-items-center">
                             <div class="col-md-8">
                                 <h5 class="mb-0">
                                     <i class="fas fa-ticket-alt"></i> {{ $reservation->reservation_code }}
@@ -145,10 +151,15 @@
                                         <i class="fas fa-print"></i> Print
                                     </button>
                                 @endif
-
+                                <!-- Pay Now Button -->
+                                @if($reservation->status === 'pending')
+                                    <a href="{{ route('payment.page', $reservation->id) }}" class="btn btn-sm btn-outline-primary ms-2">
+                                        <i class="fas fa-credit-card"></i> Pay Now
+                                    </a>
+                                @endif
                                 <!-- Cancel Reservation Button -->
-                                @if($reservation->status === 'confirmed' && $reservation->trip->departure_date > now()->toDateString())
-                                    <button type="button" class="btn btn-sm btn-outline-danger ms-2" data-bs-toggle="modal" data-bs-target="#cancelModal{{ $reservation->id }}">
+                                @if(in_array($reservation->status, ['confirmed', 'pending']) && $reservation->trip->departure_date > now()->toDateString())
+                                <button type="button" class="btn btn-sm btn-outline-danger ms-2" data-bs-toggle="modal" data-bs-target="#cancelModal{{ $reservation->id }}">
                                         <i class="fas fa-times"></i> Cancel
                                     </button>
                                 @endif
@@ -158,7 +169,8 @@
                 </div>
 
                 <!-- Cancel Modal -->
-                @if($reservation->status === 'confirmed' && $reservation->trip->departure_date > now()->toDateString())
+                <!-- Cancel Modal -->
+                @if(in_array($reservation->status, ['confirmed', 'pending']) && $reservation->trip->departure_date > now()->toDateString())
                     <div class="modal fade" id="cancelModal{{ $reservation->id }}" tabindex="-1" aria-labelledby="cancelModalLabel{{ $reservation->id }}" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">

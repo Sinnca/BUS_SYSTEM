@@ -7,64 +7,55 @@ use Illuminate\Http\Request;
 use App\Models\Reservation;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
+use App\Services\BookingService;
 
 class PaymentController extends Controller
 {
     /**
      * Show the payment page for a specific reservation
-     *
-     * @param Reservation $reservation
-     * @return \Illuminate\View\View
      */
     public function showPaymentPage(Reservation $reservation)
     {
-        // Return the payment view located in resources/views/user/payment/payment.blade.php
-        // Pass the reservation data to the view using compact()
         return view('user.payment.payment', compact('reservation'));
     }
 
     /**
      * Process a payment for a reservation
-     *
-     * @param Request $request
-     * @param Reservation $reservation
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function processPayment(Request $request, $reservationId)
+    public function processPayment(Request $request, Reservation $reservation)
     {
+        // Set Stripe API key
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        // allow SSL disable for school projects
+        // Disable SSL verification for local development (REMOVE IN PRODUCTION)
         \Stripe\ApiRequestor::setHttpClient(
             new \Stripe\HttpClient\CurlClient([CURLOPT_SSL_VERIFYPEER => false])
         );
 
-        // read JSON body
-        $data = $request->json()->all();
+        // Get payment method ID from request
+        $paymentMethodId = $request->input('payment_method_id');
 
-        if (!isset($data['payment_method_id'])) {
+        if (!$paymentMethodId) {
             return response()->json([
                 'success' => false,
                 'message' => 'Payment Method ID is missing.'
             ]);
         }
 
-        $paymentMethodId = $data['payment_method_id'];
-
-        // get amount
-        $reservation = Reservation::findOrFail($reservationId);
-        $amount = $reservation->total_price * 100; // cents
+        // Calculate amount in cents
+        $amount = $reservation->total_price * 100;
 
         try {
-            // STEP 1 — Create PaymentIntent
+            // Create PaymentIntent
             $intent = \Stripe\PaymentIntent::create([
                 'amount' => $amount,
-                'currency' => 'php',
+                'currency' => 'PHP', // ✅ FIXED: Changed from 'php' to 'PHP'
                 'payment_method' => $paymentMethodId,
                 'confirm' => true,
+                'return_url' => route('payment.success', $reservation->id),
             ]);
 
-            // STEP 2 — If 3D secure required
+            // Handle 3D Secure authentication required
             if ($intent->status === 'requires_action') {
                 return response()->json([
                     'requires_action' => true,
@@ -72,19 +63,31 @@ class PaymentController extends Controller
                 ]);
             }
 
-            // STEP 3 — Success
+            // Payment succeeded
             if ($intent->status === 'succeeded') {
+                // Update reservation status to 'confirmed' since 'paid' doesn't exist
+                $reservation->status = 'confirmed';
+                $reservation->save();
+
                 return response()->json([
                     'success' => true,
                 ]);
             }
 
+            // Unexpected status
             return response()->json([
                 'success' => false,
-                'message' => 'Unexpected status: ' . $intent->status
+                'message' => 'Unexpected payment status: ' . $intent->status
             ]);
 
+        } catch (\Stripe\Exception\CardException $e) {
+            // Card was declined
+            return response()->json([
+                'success' => false,
+                'message' => $e->getError()->message
+            ]);
         } catch (\Exception $e) {
+            // Other errors
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -93,20 +96,19 @@ class PaymentController extends Controller
     }
 
 
+
     /**
-     * Show the payment success page and mark reservation as paid
-     *
-     * @param Reservation $reservation
-     * @return \Illuminate\View\View
+     * Show the payment success page
      */
     public function paymentSuccess(Reservation $reservation)
     {
-        // Ensure reservation is marked as paid
-        $reservation->status = 'paid';
-        $reservation->save();
+        // Only allow confirmed reservations to see success page
+        if ($reservation->status !== 'confirmed') {
+            return redirect()->route('payment.page', $reservation->id)
+                ->with('error', 'Payment was not completed.');
+        }
 
-        // Redirect to a success view located at resources/views/user/payment/payment-success.blade.php
-        // Pass the reservation data to the view
         return view('user.payment.payment-success', compact('reservation'));
     }
 }
+

@@ -17,7 +17,8 @@ return new class extends Migration
             $table->integer('adults');
             $table->integer('children')->default(0);
             $table->decimal('total_price', 8, 2);
-            $table->enum('status', ['confirmed', 'cancelled'])->default('confirmed');
+//            $table->enum('status', ['confirmed', 'cancelled'])->default('confirmed');
+            $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('pending');
             $table->json('passenger_names'); // ["John Doe", "Jane Doe"]
             $table->timestamps();
         });

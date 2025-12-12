@@ -76,7 +76,7 @@ class BookingController extends Controller
 
             // Redirect to payment page instead of confirmation
             return redirect()->route('payment.page', $reservation->id)
-                ->with('success', 'Reservation created! Please complete payment.');
+                ->with('success', 'Reservation pending, Please complete payment.');
 
         } catch (\Exception $e) {
             return back()->withInput()

@@ -64,7 +64,8 @@ class BookingService
                 'adults' => $search['adults'] ?? $data['adults'] ?? 1,
                 'children' => $search['children'] ?? $data['children'] ?? 0,
                 'total_price' => $totalPrice,
-                'status' => 'confirmed',
+//                'status' => 'confirmed',
+                'status' => 'pending',
                 'passenger_names' => $data['passenger_names'],
             ]);
 
@@ -86,6 +87,7 @@ class BookingService
             return $reservation->fresh(['trip', 'returnTrip', 'reservedSeats']);
         });
     }
+
 
     /**
      * Check if any seats are already reserved

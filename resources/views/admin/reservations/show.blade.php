@@ -18,14 +18,14 @@
     </div>
 
     <div class="card">
-        <div class="card-header bg-{{ $reservation->status === 'confirmed' ? 'success' : 'danger' }} text-white">
+        <div class="card-header bg-{{ $reservation->status === 'confirmed' ? 'success' : ($reservation->status === 'pending' ? 'warning' : 'danger') }} text-white">
             <div class="d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">
                     <i class="fas fa-ticket-alt"></i> {{ $reservation->reservation_code }}
                 </h4>
                 <span class="badge bg-light text-dark fs-6">
-                {{ ucfirst($reservation->status) }}
-            </span>
+                    {{ ucfirst($reservation->status) }}
+                </span>
             </div>
         </div>
         <div class="card-body">
@@ -41,9 +41,9 @@
                 <div class="col-md-6">
                     <p><strong>Booking Date:</strong> {{ $reservation->created_at->format('M d, Y H:i A') }}</p>
                     <p><strong>Status:</strong>
-                        <span class="badge bg-{{ $reservation->status === 'confirmed' ? 'success' : 'danger' }}">
-                        {{ ucfirst($reservation->status) }}
-                    </span>
+                        <span class="badge bg-{{ $reservation->status === 'confirmed' ? 'success' : ($reservation->status === 'pending' ? 'warning' : 'danger') }}">
+                            {{ ucfirst($reservation->status) }}
+                        </span>
                     </p>
                 </div>
             </div>
@@ -62,8 +62,8 @@
                     <p><strong>Bus:</strong> {{ $reservation->trip->bus->bus_number }}</p>
                     <p><strong>Type:</strong>
                         <span class="badge bg-{{ $reservation->trip->bus->bus_type === 'deluxe' ? 'primary' : 'secondary' }}">
-                        {{ $reservation->trip->bus->formatted_bus_type }}
-                    </span>
+                            {{ $reservation->trip->bus->formatted_bus_type }}
+                        </span>
                     </p>
                     <p><strong>Price per seat:</strong> {{ $reservation->trip->formatted_price }}</p>
                 </div>
@@ -84,8 +84,8 @@
                         <p><strong>Bus:</strong> {{ $reservation->returnTrip->bus->bus_number }}</p>
                         <p><strong>Type:</strong>
                             <span class="badge bg-{{ $reservation->returnTrip->bus->bus_type === 'deluxe' ? 'primary' : 'secondary' }}">
-                            {{ $reservation->returnTrip->bus->formatted_bus_type }}
-                        </span>
+                                {{ $reservation->returnTrip->bus->formatted_bus_type }}
+                            </span>
                         </p>
                     </div>
                 </div>
@@ -101,8 +101,8 @@
                     <div class="mb-3">
                         @foreach($reservation->reservedSeats->where('trip_id', $reservation->trip_id) as $seat)
                             <span class="badge bg-primary me-1 mb-1" style="font-size: 1rem; padding: 0.5rem 0.8rem;">
-                            <i class="fas fa-chair"></i> Seat {{ $seat->seat_number }}
-                        </span>
+                                <i class="fas fa-chair"></i> Seat {{ $seat->seat_number }}
+                            </span>
                         @endforeach
                     </div>
 
@@ -111,8 +111,8 @@
                         <div class="mb-3">
                             @foreach($reservation->reservedSeats->where('trip_id', $reservation->return_trip_id) as $seat)
                                 <span class="badge bg-info me-1 mb-1" style="font-size: 1rem; padding: 0.5rem 0.8rem;">
-                                <i class="fas fa-chair"></i> Seat {{ $seat->seat_number }}
-                            </span>
+                                    <i class="fas fa-chair"></i> Seat {{ $seat->seat_number }}
+                                </span>
                             @endforeach
                         </div>
                     @endif
@@ -142,43 +142,47 @@
                 </div>
             </div>
 
-            <!-- Payment Information -->
-            <h5 class="border-bottom pb-2 mb-3">
-                <i class="fas fa-money-bill-wave text-primary"></i> Payment Information
-            </h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card bg-light">
-                        <div class="card-body">
-                            <p class="mb-2">
-                                <strong>Outbound Trip:</strong><br>
-                                {{ $reservation->trip->formatted_price }} × {{ $reservation->total_passengers }} passengers
-                            </p>
-                            @if($reservation->return_trip_id)
+            <!-- Payment Information (only if not cancelled) -->
+            @if($reservation->status !== 'cancelled')
+                <h5 class="border-bottom pb-2 mb-3">
+                    <i class="fas fa-money-bill-wave text-primary"></i> Payment Information
+                </h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card bg-light">
+                            <div class="card-body">
                                 <p class="mb-2">
-                                    <strong>Return Trip:</strong><br>
-                                    {{ $reservation->returnTrip->formatted_price }} × {{ $reservation->total_passengers }} passengers
+                                    <strong>Outbound Trip:</strong><br>
+                                    {{ $reservation->trip->formatted_price }} × {{ $reservation->total_passengers }} passengers
                                 </p>
-                            @endif
-                            <hr>
-                            <h4 class="text-success mb-0">
-                                <strong>Total Amount: {{ $reservation->formatted_total_price }}</strong>
-                            </h4>
+                                @if($reservation->return_trip_id)
+                                    <p class="mb-2">
+                                        <strong>Return Trip:</strong><br>
+                                        {{ $reservation->returnTrip->formatted_price }} × {{ $reservation->total_passengers }} passengers
+                                    </p>
+                                @endif
+                                <hr>
+                                <h4 class="text-success mb-0">
+                                    <strong>Total Amount: {{ $reservation->formatted_total_price }}</strong>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <p><strong>Payment Status:</strong>
+                                    <span class="badge bg-{{ $reservation->status === 'confirmed' ? 'success' : 'warning' }}">
+                                        {{ ucfirst($reservation->status) }}
+                                    </span>
+                                </p>
+                                <p><strong>Booking Date:</strong> {{ $reservation->created_at->format('M d, Y') }}</p>
+                                <p><strong>Booking Time:</strong> {{ $reservation->created_at->format('H:i A') }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="card bg-light">
-                        <div class="card-body">
-                            <p><strong>Payment Status:</strong>
-                                <span class="badge bg-success">Confirmed</span>
-                            </p>
-                            <p><strong>Booking Date:</strong> {{ $reservation->created_at->format('M d, Y') }}</p>
-                            <p><strong>Booking Time:</strong> {{ $reservation->created_at->format('H:i A') }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endif
 
             <!-- Trip Status -->
             <div class="alert alert-info mt-4" role="alert">
@@ -187,7 +191,7 @@
                 <ul class="mb-0 mt-2">
                     <li>Passenger must arrive at least 30 minutes before departure</li>
                     <li>Valid ID required for verification</li>
-                    <li>This reservation is {{ $reservation->status === 'confirmed' ? 'confirmed and active' : 'cancelled' }}</li>
+                    <li>This reservation is {{ $reservation->status === 'confirmed' ? 'confirmed and active' : ($reservation->status === 'pending' ? 'pending' : 'cancelled') }}</li>
                 </ul>
             </div>
         </div>
