@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ReservationConfirmed;
 use Illuminate\Http\Request;
 use App\Models\Reservation;
+use Mail;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use App\Services\BookingService;
@@ -107,6 +109,8 @@ class PaymentController extends Controller
             return redirect()->route('payment.page', $reservation->id)
                 ->with('error', 'Payment was not completed.');
         }
+        Mail::to($reservation->user->email)
+            ->send(new ReservationConfirmed($reservation));
 
         return view('user.payment.payment-success', compact('reservation'));
     }

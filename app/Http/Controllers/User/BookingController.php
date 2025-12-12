@@ -4,11 +4,13 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservationRequest;
+use App\Mail\ReservationCancelled;
 use App\Models\Reservation;
 use App\Models\Trip;
 use App\Models\ReservedSeat;
 use App\Services\BookingService;
 use Illuminate\Http\Request;
+use Mail;
 
 class BookingController extends Controller
 {
@@ -128,7 +130,9 @@ class BookingController extends Controller
         $reservation->status = 'cancelled';
         $reservation->save();
 
-        // TODO: Send cancellation email via Mailtrap (next step)
+        // Send cancellation email
+        Mail::to($reservation->user->email)
+            ->send(new ReservationCancelled($reservation));
 
         return back()->with('success', 'Your reservation has been cancelled.');
     }
