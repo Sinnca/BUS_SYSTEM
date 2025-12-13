@@ -4,6 +4,7 @@
 
 @section('content')
     <div class="container">
+
         <div class="row mb-4">
             <div class="col-md-6">
                 <h1>My Bookings</h1>
@@ -12,6 +13,23 @@
                 <a href="{{ route('home') }}" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Book New Trip
                 </a>
+            </div>
+        </div>
+
+        <!-- Filter by Status -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <form method="GET" action="{{ route('bookings.index') }}">
+                    <div class="input-group">
+                        <select name="status" class="form-select" onchange="this.form.submit()">
+                            <option value="">-- Filter by Status --</option>
+                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                            <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                        </select>
+                        <button class="btn btn-outline-secondary" type="submit">Filter</button>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -30,7 +48,7 @@
                     @endif
                     text-white">
 
-                    <div class="row align-items-center">
+                        <div class="row align-items-center">
                             <div class="col-md-8">
                                 <h5 class="mb-0">
                                     <i class="fas fa-ticket-alt"></i> {{ $reservation->reservation_code }}
@@ -95,7 +113,6 @@
                         @endif
 
                         <hr>
-
                         <!-- Booking Details -->
                         <div class="row">
                             <div class="col-md-3">
@@ -145,21 +162,20 @@
                                 </small>
                             </div>
                             <div class="col-md-6 text-end">
-                                <!-- Print Button (only if not cancelled) -->
                                 @if($reservation->status !== 'cancelled')
                                     <button class="btn btn-sm btn-outline-secondary" onclick="window.print()">
                                         <i class="fas fa-print"></i> Print
                                     </button>
                                 @endif
-                                <!-- Pay Now Button -->
+
                                 @if($reservation->status === 'pending')
                                     <a href="{{ route('payment.page', $reservation->id) }}" class="btn btn-sm btn-outline-primary ms-2">
                                         <i class="fas fa-credit-card"></i> Pay Now
                                     </a>
                                 @endif
-                                <!-- Cancel Reservation Button -->
+
                                 @if(in_array($reservation->status, ['confirmed', 'pending']) && $reservation->trip->departure_date > now()->toDateString())
-                                <button type="button" class="btn btn-sm btn-outline-danger ms-2" data-bs-toggle="modal" data-bs-target="#cancelModal{{ $reservation->id }}">
+                                    <button type="button" class="btn btn-sm btn-outline-danger ms-2" data-bs-toggle="modal" data-bs-target="#cancelModal{{ $reservation->id }}">
                                         <i class="fas fa-times"></i> Cancel
                                     </button>
                                 @endif
@@ -168,7 +184,6 @@
                     </div>
                 </div>
 
-                <!-- Cancel Modal -->
                 <!-- Cancel Modal -->
                 @if(in_array($reservation->status, ['confirmed', 'pending']) && $reservation->trip->departure_date > now()->toDateString())
                     <div class="modal fade" id="cancelModal{{ $reservation->id }}" tabindex="-1" aria-labelledby="cancelModalLabel{{ $reservation->id }}" aria-hidden="true">
@@ -197,37 +212,9 @@
                 @endif
             @endforeach
 
-            <!-- Pagination -->
             <div class="d-flex justify-content-center">
                 {{ $reservations->links() }}
             </div>
         @endif
     </div>
-
-    <!-- Cancelled Confirmation Modal -->
-    @if(session('success'))
-        <div class="modal fade" id="cancelledModal" tabindex="-1" aria-labelledby="cancelledModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header bg-danger text-white">
-                        <h5 class="modal-title" id="cancelledModalLabel">Reservation Cancelled</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <h4>Your reservation has been cancelled.</h4>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Trigger Modal Automatically -->
-        <script>
-            var cancelledModal = new bootstrap.Modal(document.getElementById('cancelledModal'));
-            cancelledModal.show();
-        </script>
-    @endif
-
 @endsection

@@ -9,15 +9,28 @@ use Illuminate\Http\Request;
 
 class TripController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $trips = Trip::with('bus')
-            ->latest('departure_date')
-            ->latest('departure_time')
-            ->paginate(15);
+        $query = Trip::with('bus');
+
+        // Apply filters if provided
+        if ($request->filled('origin')) {
+            $query->where('origin', 'like', '%' . $request->origin . '%');
+        }
+
+        if ($request->filled('destination')) {
+            $query->where('destination', 'like', '%' . $request->destination . '%');
+        }
+
+        // Order by date and time
+        $trips = $query->orderBy('departure_date', 'desc')
+            ->orderBy('departure_time', 'desc')
+            ->paginate(15)
+            ->withQueryString(); // keeps the filter in pagination links
 
         return view('admin.trips.index', compact('trips'));
     }
+
 
     public function create()
     {

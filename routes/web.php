@@ -62,7 +62,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // User Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/my-bookings', [DashboardController::class, 'bookings'])->name('my.bookings');
-
+    Route::prefix('user')->middleware('auth')->group(function () {
+        Route::get('bookings', [BookingController::class, 'index'])->name('bookings.index');
+    });
     // Booking Routes
     Route::get('/booking/seats/{trip}', [BookingController::class, 'showSeats'])->name('booking.seats');
     Route::post('/booking/confirm', [BookingController::class, 'store'])->name('booking.store');

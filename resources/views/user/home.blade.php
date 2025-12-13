@@ -1,298 +1,718 @@
-{{--@extends('layouts.app')--}}
-
-{{--@section('title', 'Find Your Bus Trip')--}}
-
-{{--@section('content')--}}
-{{--    <div class="container">--}}
-{{--        <!-- Hero Section -->--}}
-{{--        <div class="row mb-5">--}}
-{{--            <div class="col-12 text-center">--}}
-{{--                <h1 class="display-4 mb-3">Book Your Bus Trip</h1>--}}
-{{--                <p class="lead text-muted">Safe, comfortable, and affordable bus travel across the Philippines</p>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-
-{{--        <!-- Search Form -->--}}
-{{--        <div class="row justify-content-center">--}}
-{{--            <div class="col-lg-8">--}}
-{{--                <div class="card shadow-lg">--}}
-{{--                    <div class="card-body p-4">--}}
-{{--                        <form action="{{ route('trips.search') }}" method="GET">--}}
-{{--                            <!-- Trip Type -->--}}
-{{--                            <div class="form-check form-check-inline mb-3">--}}
-{{--                                <input class="form-check-input" type="checkbox" name="is_round_trip"--}}
-{{--                                       id="is_round_trip" value="1">--}}
-{{--                                <label class="form-check-label" for="is_round_trip">--}}
-{{--                                    <strong>Round Trip</strong>--}}
-{{--                                </label>--}}
-{{--                            </div>--}}
-
-{{--                            <!-- Origin & Destination -->--}}
-{{--                            <div class="row mb-3">--}}
-{{--                                <div class="col-md-6">--}}
-{{--                                    <label for="origin" class="form-label">From *</label>--}}
-{{--                                    <input type="text" class="form-control" id="origin" name="origin"--}}
-{{--                                           list="origin-list" placeholder="e.g., Manila" required>--}}
-{{--                                    <datalist id="origin-list">--}}
-{{--                                        <option value="Manila">--}}
-{{--                                        <option value="Cebu">--}}
-{{--                                        <option value="Davao">--}}
-{{--                                        <option value="Baguio">--}}
-{{--                                        <option value="Iloilo">--}}
-{{--                                    </datalist>--}}
-{{--                                </div>--}}
-{{--                                <div class="col-md-6">--}}
-{{--                                    <label for="destination" class="form-label">To *</label>--}}
-{{--                                    <input type="text" class="form-control" id="destination" name="destination"--}}
-{{--                                           list="destination-list" placeholder="e.g., Cebu" required>--}}
-{{--                                    <datalist id="destination-list">--}}
-{{--                                        <option value="Manila">--}}
-{{--                                        <option value="Cebu">--}}
-{{--                                        <option value="Davao">--}}
-{{--                                        <option value="Baguio">--}}
-{{--                                        <option value="Iloilo">--}}
-{{--                                    </datalist>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
-{{--                            <!-- Dates -->--}}
-{{--                            <div class="row mb-3">--}}
-{{--                                <div class="col-md-6">--}}
-{{--                                    <label for="departure_date" class="form-label">Departure Date *</label>--}}
-{{--                                    <input type="date" class="form-control" id="departure_date"--}}
-{{--                                           name="departure_date" min="{{ date('Y-m-d') }}" required>--}}
-{{--                                </div>--}}
-{{--                                <div class="col-md-6" id="return-date-group" style="display: none;">--}}
-{{--                                    <label for="return_date" class="form-label">Return Date</label>--}}
-{{--                                    <input type="date" class="form-control" id="return_date" name="return_date">--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
-{{--                            <!-- Passengers -->--}}
-{{--                            <div class="row mb-3">--}}
-{{--                                <div class="col-md-4">--}}
-{{--                                    <label for="adults" class="form-label">Adults *</label>--}}
-{{--                                    <select class="form-select" id="adults" name="adults" required>--}}
-{{--                                        @for($i = 1; $i <= 10; $i++)--}}
-{{--                                            <option value="{{ $i }}" {{ $i === 1 ? 'selected' : '' }}>{{ $i }}</option>--}}
-{{--                                        @endfor--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-{{--                                <div class="col-md-4">--}}
-{{--                                    <label for="children" class="form-label">Children</label>--}}
-{{--                                    <select class="form-select" id="children" name="children">--}}
-{{--                                        @for($i = 0; $i <= 10; $i++)--}}
-{{--                                            <option value="{{ $i }}">{{ $i }}</option>--}}
-{{--                                        @endfor--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-{{--                                <div class="col-md-4">--}}
-{{--                                    <label for="bus_type" class="form-label">Bus Type</label>--}}
-{{--                                    <select class="form-select" id="bus_type" name="bus_type">--}}
-{{--                                        <option value="any">Any</option>--}}
-{{--                                        <option value="deluxe">Deluxe (20 seats)</option>--}}
-{{--                                        <option value="regular">Regular (40 seats)</option>--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
-{{--                            <!-- Submit Button -->--}}
-{{--                            <div class="d-grid">--}}
-{{--                                <button type="submit" class="btn btn-primary btn-lg">--}}
-{{--                                    <i class="fas fa-search"></i> Search Trips--}}
-{{--                                </button>--}}
-{{--                            </div>--}}
-{{--                        </form>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-
-{{--        <!-- Popular Routes -->--}}
-{{--        <div class="row mt-5">--}}
-{{--            <div class="col-12">--}}
-{{--                <h3 class="text-center mb-4">Popular Routes</h3>--}}
-{{--            </div>--}}
-{{--            @foreach($popular_routes as $route)--}}
-{{--                <div class="col-md-3 mb-3">--}}
-{{--                    <div class="card h-100">--}}
-{{--                        <div class="card-body text-center">--}}
-{{--                            <i class="fas fa-route fa-3x text-primary mb-3"></i>--}}
-{{--                            <h5>{{ $route['origin'] }} → {{ $route['destination'] }}</h5>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            @endforeach--}}
-{{--        </div>--}}
-{{--    </div>--}}
-
-{{--    @push('scripts')--}}
-{{--        <script>--}}
-{{--            document.getElementById('is_round_trip').addEventListener('change', function() {--}}
-{{--                const returnDateGroup = document.getElementById('return-date-group');--}}
-{{--                const returnDateInput = document.getElementById('return_date');--}}
-
-{{--                if (this.checked) {--}}
-{{--                    returnDateGroup.style.display = 'block';--}}
-{{--                    returnDateInput.required = true;--}}
-{{--                } else {--}}
-{{--                    returnDateGroup.style.display = 'none';--}}
-{{--                    returnDateInput.required = false;--}}
-{{--                }--}}
-{{--            });--}}
-
-{{--            // Set minimum return date based on departure date--}}
-{{--            document.getElementById('departure_date').addEventListener('change', function() {--}}
-{{--                const returnDate = document.getElementById('return_date');--}}
-{{--                const nextDay = new Date(this.value);--}}
-{{--                nextDay.setDate(nextDay.getDate() + 1);--}}
-{{--                returnDate.min = nextDay.toISOString().split('T')[0];--}}
-{{--            });--}}
-{{--        </script>--}}
-{{--    @endpush--}}
-{{--@endsection--}}
 @extends('layouts.app')
 
 @section('title', 'Find Your Bus Trip')
 
 @section('content')
-    <div class="container">
-        <!-- Hero Section -->
-        <div class="row mb-5">
-            <div class="col-12 text-center">
-                <h1 class="display-4 mb-3">Book Your Bus Trip</h1>
-                <p class="lead text-muted">Safe, comfortable, and affordable bus travel across the Philippines</p>
-            </div>
-        </div>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        <!-- Search Form -->
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card shadow-lg">
-                    <div class="card-body p-4">
-                        <form action="{{ route('trips.search') }}" method="GET" id="searchForm">
-                            <!-- Trip Type Toggle -->
-                            <div class="mb-4">
-                                <div class="btn-group w-100" role="group">
-                                    <input type="radio" class="btn-check" name="trip_type" id="oneWay" value="one_way" checked>
-                                    <label class="btn btn-outline-primary" for="oneWay">
-                                        <i class="fas fa-arrow-right me-2"></i>One Way
-                                    </label>
+        /* Hero Banner - Dark Theme */
+        .hero-banner {
+            position: relative;
+            height: 650px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            margin: 0 -15px;
+            overflow: hidden;
+        }
 
-                                    <input type="radio" class="btn-check" name="trip_type" id="roundTrip" value="round_trip">
-                                    <label class="btn btn-outline-primary" for="roundTrip">
-                                        <i class="fas fa-exchange-alt me-2"></i>Round Trip
-                                    </label>
-                                </div>
-                                <input type="hidden" name="is_round_trip" id="is_round_trip" value="0">
-                            </div>
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            filter: blur(2px);
+        }
 
-                            <!-- Origin & Destination -->
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="origin" class="form-label">From *</label>
-                                    <input type="text" class="form-control" id="origin" name="origin"
-                                           list="origin-list" placeholder="e.g., Manila" required>
-                                    <datalist id="origin-list">
-                                        <option value="Manila">
-                                        <option value="Cebu">
-                                        <option value="Davao">
-                                        <option value="Baguio">
-                                        <option value="Iloilo">
-                                        <option value="Bacolod">
-                                        <option value="Cagayan de Oro">
-                                    </datalist>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="destination" class="form-label">To *</label>
-                                    <input type="text" class="form-control" id="destination" name="destination"
-                                           list="destination-list" placeholder="e.g., Cebu" required>
-                                    <datalist id="destination-list">
-                                        <option value="Manila">
-                                        <option value="Cebu">
-                                        <option value="Davao">
-                                        <option value="Baguio">
-                                        <option value="Iloilo">
-                                        <option value="Bacolod">
-                                        <option value="Cagayan de Oro">
-                                    </datalist>
-                                </div>
-                            </div>
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 50%, rgba(99, 102, 241, 0.2) 100%);
+        }
 
-                            <!-- Dates -->
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="departure_date" class="form-label">Departure Date *</label>
-                                    <input type="date" class="form-control" id="departure_date"
-                                           name="departure_date" min="{{ date('Y-m-d') }}" required>
-                                </div>
-                                <div class="col-md-6" id="return-date-group" style="display: none;">
-                                    <label for="return_date" class="form-label">Return Date *</label>
-                                    <input type="date" class="form-control" id="return_date" name="return_date">
-                                </div>
-                            </div>
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding-top: 100px;
+            color: white;
+            text-align: center;
+        }
 
-                            <!-- Passengers -->
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label for="adults" class="form-label">Adults *</label>
-                                    <select class="form-select" id="adults" name="adults" required>
-                                        @for($i = 1; $i <= 10; $i++)
-                                            <option value="{{ $i }}" {{ $i === 1 ? 'selected' : '' }}>{{ $i }}</option>
-                                        @endfor
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="children" class="form-label">Children</label>
-                                    <select class="form-select" id="children" name="children">
-                                        @for($i = 0; $i <= 10; $i++)
-                                            <option value="{{ $i }}">{{ $i }}</option>
-                                        @endfor
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="bus_type" class="form-label">Bus Type</label>
-                                    <select class="form-select" id="bus_type" name="bus_type">
-                                        <option value="any">Any</option>
-                                        <option value="deluxe">Deluxe (20 seats)</option>
-                                        <option value="regular">Regular (40 seats)</option>
-                                    </select>
-                                </div>
-                            </div>
+        .hero-badge {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
 
-                            <!-- Submit Button -->
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg">
-                                    <i class="fas fa-search me-2"></i> Search Trips
-                                </button>
-                            </div>
-                        </form>
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            letter-spacing: -1px;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.35rem;
+            opacity: 0.9;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .hero-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            background: rgba(139, 92, 246, 0.1);
+            padding: 12px 24px;
+            border-radius: 50px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .hero-feature i {
+            font-size: 1.3rem;
+            color: #a855f7;
+        }
+
+        /* Booking Section */
+        .booking-section {
+            position: relative;
+            margin-top: -120px;
+            z-index: 10;
+            padding-bottom: 80px;
+        }
+
+        .booking-card {
+            background: #1e293b;
+            border-radius: 28px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            overflow: hidden;
+        }
+
+        .booking-header {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            padding: 35px 45px;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .booking-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+        }
+
+        .booking-body {
+            padding: 45px;
+            background: #1e293b;
+        }
+
+        .trip-type-selector {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 16px;
+            padding: 8px;
+            display: inline-flex;
+            margin-bottom: 40px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .trip-type-btn {
+            border: none;
+            background: transparent;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .trip-type-btn.active {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .trip-type-btn:hover:not(.active) {
+            color: white;
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .trip-type-btn i {
+            margin-right: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+        }
+
+        .form-label-modern {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .form-label-modern i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+
+        .form-control-modern, .form-select-modern {
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            border-radius: 14px;
+            padding: 16px 20px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+            background: #0f172a;
+            color: white;
+        }
+
+        .form-control-modern:focus, .form-select-modern:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
+            outline: none;
+            background: #0f172a;
+            color: white;
+        }
+
+        .form-control-modern:hover, .form-select-modern:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+        }
+
+        .form-control-modern::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-select-modern option {
+            background: #0f172a;
+            color: white;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-icon-left {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(139, 92, 246, 0.6);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .input-with-icon .form-control-modern {
+            padding-left: 48px;
+        }
+
+        .search-btn-hero {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            border: none;
+            border-radius: 14px;
+            padding: 18px 40px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: white;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .search-btn-hero:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 45px rgba(99, 102, 241, 0.6);
+        }
+
+        .search-btn-hero i {
+            margin-right: 10px;
+        }
+
+        /* Popular Routes Section - Dark Theme */
+        .routes-section {
+            padding: 100px 0;
+            background: #0f172a;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.2);
+            color: #c084fc;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .section-subtitle {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .route-card {
+            border: none;
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            background: #1e293b;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            height: 100%;
+            border: 1px solid rgba(139, 92, 246, 0.1);
+        }
+
+        .route-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(99, 102, 241, 0.3);
+            border-color: rgba(139, 92, 246, 0.4);
+        }
+
+        .route-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .route-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.9) 100%);
+        }
+
+        .route-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(139, 92, 246, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: white;
+            z-index: 1;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5);
+        }
+
+        .route-content {
+            padding: 28px;
+            background: #1e293b;
+        }
+
+        .route-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .route-arrow {
+            color: #a855f7;
+            font-size: 1.2rem;
+        }
+
+        .route-info {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .route-info-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .route-info-item i {
+            color: #a855f7;
+        }
+
+        /* Trust Section - Dark Theme */
+        .trust-section {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            padding: 70px 0;
+            color: white;
+            margin-top: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trust-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.03)"/></svg>');
+            background-size: 50px 50px;
+        }
+
+        .trust-stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .trust-stat {
+            flex: 1;
+        }
+
+        .trust-number {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .trust-label {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-features {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .booking-header, .booking-body {
+                padding: 25px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .trust-stats {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .hero-feature {
+                font-size: 0.9rem;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="container">
+                <div class="hero-badge">
+                    <i class="fas fa-shield-alt"></i> Trusted by 1M+ Travelers
+                </div>
+                <h1 class="hero-title">Travel Philippines<br>in Comfort & Style</h1>
+                <p class="hero-subtitle">Book your bus journey with ease. Experience premium comfort, reliable schedules, and unbeatable prices across the archipelago.</p>
+                <div class="hero-features">
+                    <div class="hero-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Instant Booking</span>
+                    </div>
+                    <div class="hero-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Best Price Guarantee</span>
+                    </div>
+                    <div class="hero-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>24/7 Support</span>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Popular Routes -->
-        <div class="row mt-5">
-            <div class="col-12">
-                <h3 class="text-center mb-4">Popular Routes</h3>
-            </div>
-            @foreach($popular_routes as $route)
-                <div class="col-md-3 mb-3">
-                    <div class="card h-100 text-center">
-                        <div class="card-body">
-                            <i class="fas fa-route fa-3x text-primary mb-3"></i>
-                            <h5>{{ $route['origin'] }} → {{ $route['destination'] }}</h5>
+    <!-- Booking Section -->
+    <div class="booking-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-11 col-xl-10">
+                    <div class="booking-card">
+                        <div class="booking-header">
+                            <h2 class="booking-title">
+                                <i class="fas fa-ticket-alt" style="color: #a855f7; margin-right: 12px;"></i>
+                                Find Your Perfect Trip
+                            </h2>
+                        </div>
+                        <div class="booking-body">
+                            <form action="{{ route('trips.search') }}" method="GET" id="searchForm">
+                                <!-- Trip Type Selector -->
+                                <div class="trip-type-selector">
+                                    <button type="button" class="trip-type-btn active" id="oneWayBtn">
+                                        <i class="fas fa-arrow-right"></i>One Way
+                                    </button>
+                                    <button type="button" class="trip-type-btn" id="roundTripBtn">
+                                        <i class="fas fa-exchange-alt"></i>Round Trip
+                                    </button>
+                                </div>
+                                <input type="radio" name="trip_type" id="oneWay" value="one_way" checked style="display: none;">
+                                <input type="radio" name="trip_type" id="roundTrip" value="round_trip" style="display: none;">
+                                <input type="hidden" name="is_round_trip" id="is_round_trip" value="0">
+
+                                <!-- Location Fields -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label-modern">
+                                                <i class="fas fa-map-marker-alt" style="color: #ef4444;"></i>
+                                                Departure City
+                                            </label>
+                                            <div class="input-with-icon">
+                                                <i class="fas fa-search input-icon-left"></i>
+                                                <input type="text" class="form-control-modern" id="origin" name="origin"
+                                                       list="origin-list" placeholder="Where are you leaving from?" required>
+                                            </div>
+                                            <datalist id="origin-list">
+                                                <option value="Manila">
+                                                <option value="Cebu">
+                                                <option value="Davao">
+                                                <option value="Baguio">
+                                                <option value="Iloilo">
+                                                <option value="Bacolod">
+                                                <option value="Cagayan de Oro">
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label-modern">
+                                                <i class="fas fa-map-marker-alt" style="color: #10b981;"></i>
+                                                Destination City
+                                            </label>
+                                            <div class="input-with-icon">
+                                                <i class="fas fa-search input-icon-left"></i>
+                                                <input type="text" class="form-control-modern" id="destination" name="destination"
+                                                       list="destination-list" placeholder="Where are you going?" required>
+                                            </div>
+                                            <datalist id="destination-list">
+                                                <option value="Manila">
+                                                <option value="Cebu">
+                                                <option value="Davao">
+                                                <option value="Baguio">
+                                                <option value="Iloilo">
+                                                <option value="Bacolod">
+                                                <option value="Cagayan de Oro">
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Date Fields -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label-modern">
+                                                <i class="fas fa-calendar-day" style="color: #6366f1;"></i>
+                                                Departure Date
+                                            </label>
+                                            <input type="date" class="form-control-modern" id="departure_date"
+                                                   name="departure_date" min="{{ date('Y-m-d') }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" id="return-date-group" style="display: none;">
+                                        <div class="form-group">
+                                            <label class="form-label-modern">
+                                                <i class="fas fa-calendar-day" style="color: #8b5cf6;"></i>
+                                                Return Date
+                                            </label>
+                                            <input type="date" class="form-control-modern" id="return_date" name="return_date">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Passenger & Bus Type -->
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label-modern">
+                                                <i class="fas fa-user" style="color: #3b82f6;"></i>
+                                                Adults
+                                            </label>
+                                            <select class="form-select-modern" id="adults" name="adults" required>
+                                                @for($i = 1; $i <= 10; $i++)
+                                                    <option value="{{ $i }}" {{ $i === 1 ? 'selected' : '' }}>{{ $i }} Adult{{ $i > 1 ? 's' : '' }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label-modern">
+                                                <i class="fas fa-child" style="color: #f59e0b;"></i>
+                                                Children
+                                            </label>
+                                            <select class="form-select-modern" id="children" name="children">
+                                                @for($i = 0; $i <= 10; $i++)
+                                                    <option value="{{ $i }}">{{ $i }} {{ $i === 1 ? 'Child' : 'Children' }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label-modern">
+                                                <i class="fas fa-bus-alt" style="color: #06b6d4;"></i>
+                                                Bus Type
+                                            </label>
+                                            <select class="form-select-modern" id="bus_type" name="bus_type">
+                                                <option value="any">Any Type</option>
+                                                <option value="deluxe">Deluxe (20 seats)</option>
+                                                <option value="regular">Regular (40 seats)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <button type="submit" class="search-btn-hero">
+                                    <i class="fas fa-search"></i> Search Available Trips
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
-            @endforeach
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Routes -->
+    <div class="routes-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">
+                    <i class="fas fa-fire"></i> POPULAR ROUTES
+                </span>
+                <h2 class="section-title">Explore Top Destinations</h2>
+                <p class="section-subtitle">Discover our most traveled routes with the best prices and schedules</p>
+            </div>
+
+            <div class="row">
+                @php
+                    $routeImages = [
+                        'Manila → Baguio' => 'https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=800&q=80',
+                        'Manila → Cebu' => 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
+                        'Cebu → Davao' => 'https://images.unsplash.com/photo-1527004013197-933c4bb611b3?w=800&q=80',
+                        'Baguio → Manila' => 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&q=80',
+                    ];
+                @endphp
+
+                @foreach($popular_routes as $index => $route)
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="route-card">
+                            <div class="route-image" style="background-image: url('{{ $routeImages[$route['origin'] . ' → ' . $route['destination']] ?? 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80' }}');">
+                                <span class="route-badge">Popular</span>
+                            </div>
+                            <div class="route-content">
+                                <h3 class="route-title">
+                                    {{ $route['origin'] }}
+                                    <span class="route-arrow">→</span>
+                                    {{ $route['destination'] }}
+                                </h3>
+                                <div class="route-info">
+                                    <div class="route-info-item">
+                                        <i class="fas fa-clock"></i>
+                                        <span>{{ rand(4, 12) }}h</span>
+                                    </div>
+                                    <div class="route-info-item">
+                                        <i class="fas fa-tag"></i>
+                                        <span>From ₱{{ rand(500, 1500) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
 
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                const oneWayBtn = document.getElementById('oneWayBtn');
+                const roundTripBtn = document.getElementById('roundTripBtn');
                 const oneWay = document.getElementById('oneWay');
                 const roundTrip = document.getElementById('roundTrip');
                 const returnDateGroup = document.getElementById('return-date-group');
@@ -301,20 +721,28 @@
                 const departureDate = document.getElementById('departure_date');
 
                 // Handle trip type toggle
-                function toggleReturnDate() {
-                    if (roundTrip.checked) {
+                function toggleReturnDate(isRound) {
+                    if (isRound) {
+                        oneWayBtn.classList.remove('active');
+                        roundTripBtn.classList.add('active');
+                        oneWay.checked = false;
+                        roundTrip.checked = true;
                         returnDateGroup.style.display = 'block';
                         returnDateInput.required = true;
                         isRoundTripInput.value = '1';
                     } else {
+                        roundTripBtn.classList.remove('active');
+                        oneWayBtn.classList.add('active');
+                        roundTrip.checked = false;
+                        oneWay.checked = true;
                         returnDateGroup.style.display = 'none';
                         returnDateInput.required = false;
                         isRoundTripInput.value = '0';
                     }
                 }
 
-                oneWay.addEventListener('change', toggleReturnDate);
-                roundTrip.addEventListener('change', toggleReturnDate);
+                oneWayBtn.addEventListener('click', () => toggleReturnDate(false));
+                roundTripBtn.addEventListener('click', () => toggleReturnDate(true));
 
                 // Set minimum return date based on departure date
                 departureDate.addEventListener('change', function() {
@@ -329,7 +757,7 @@
                 });
 
                 // Initialize
-                toggleReturnDate();
+                toggleReturnDate(false);
             });
         </script>
     @endpush

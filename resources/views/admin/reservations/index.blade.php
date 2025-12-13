@@ -13,6 +13,7 @@
                     <select name="status" class="form-select" onchange="this.form.submit()">
                         <option value="all">All Status</option>
                         <option value="confirmed" {{ request('status') === 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                        <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pending</option>
                         <option value="cancelled" {{ request('status') === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                     </select>
                 </div>
@@ -63,9 +64,17 @@
                             </td>
                             <td>{{ $reservation->formatted_total_price }}</td>
                             <td>
-                                <span class="badge bg-{{ $reservation->status === 'confirmed' ? 'success' : 'danger' }}">
-                                    {{ ucfirst($reservation->status) }}
-                                </span>
+                            <td>
+                            <span class="badge
+                                @if($reservation->status === 'confirmed') bg-success
+                                @elseif($reservation->status === 'pending') bg-warning
+                                @elseif($reservation->status === 'cancelled') bg-danger
+                                @endif
+                            ">
+                                {{ ucfirst($reservation->status) }}
+                            </span>
+                            </td>
+
                             </td>
                             <td>
                                 <a href="{{ route('admin.reservations.show', $reservation) }}"

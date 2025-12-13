@@ -193,4 +193,27 @@ class BookingController extends Controller
             $trip->save();
         }
     }
+
+    /**
+     * List all reservations for the logged-in user
+     * Supports optional filtering by status
+     */
+    public function index(Request $request)
+    {
+        // Start a query for the current user's reservations
+        $query = Reservation::where('user_id', auth()->id())
+            ->with(['trip.bus', 'returnTrip.bus', 'reservedSeats']);
+
+        // Apply status filter if provided
+        if ($request->has('status') && in_array($request->status, ['pending', 'confirmed', 'cancelled'])) {
+            $query->where('status', $request->status);
+        }
+
+        // Order by latest booking first
+        $reservations = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        // Return view with paginated results
+        return view('user.dashboard.bookings', compact('reservations'));
+    }
+
 }

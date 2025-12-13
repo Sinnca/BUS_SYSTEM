@@ -14,6 +14,30 @@
         </div>
     </div>
 
+    {{-- Filter Form --}}
+    <div class="card mb-3">
+        <div class="card-body">
+            <form action="{{ route('admin.trips.index') }}" method="GET" class="row g-2 align-items-center">
+                <div class="col-md-4">
+                    <input type="text" name="origin" class="form-control" placeholder="Origin" value="{{ request('origin') }}">
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="destination" class="form-control" placeholder="Destination" value="{{ request('destination') }}">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <a href="{{ route('admin.trips.index') }}" class="btn btn-secondary w-100">
+                        <i class="fas fa-times"></i> Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
