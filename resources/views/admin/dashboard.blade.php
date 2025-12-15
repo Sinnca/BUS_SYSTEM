@@ -5,197 +5,397 @@
 @section('content')
 
 <style>
-    body {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+    .dashboard-container {
+        font-family: 'Inter', sans-serif;
+        animation: fadeIn 0.6s ease-out;
     }
 
-    .page-header-light {
-        background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-        padding: 2rem;
-        border-radius: 16px;
-        margin-bottom: 2rem;
-        border: 1px solid rgba(139, 92, 246, 0.15);
-        box-shadow: 0 4px 20px rgba(99, 102, 241, 0.08);
+    /* Page Header */
+    .dashboard-header {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+        border-radius: 24px;
+        padding: 35px 40px;
+        margin-bottom: 30px;
+        border: 2px solid rgba(99, 102, 241, 0.1);
+        position: relative;
+        overflow: hidden;
+        animation: fadeInDown 0.6s ease-out;
     }
 
-    .page-header-light h1 {
-        color: #6366f1;
-        font-weight: 900;
-        margin-bottom: 0.5rem;
+    .dashboard-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+        animation: rotate 20s linear infinite;
     }
 
-    .page-header-light p {
-        color: #64748b;
-        margin: 0;
+    .dashboard-header-content {
+        position: relative;
+        z-index: 1;
     }
 
-    .stat-card {
-        background: white !important;
-        border: 1px solid rgba(99, 102, 241, 0.1) !important;
-        border-radius: 16px !important;
-        box-shadow: 0 4px 20px rgba(99, 102, 241, 0.08) !important;
-        transition: all 0.3s ease !important;
-    }
-
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(99, 102, 241, 0.15) !important;
-    }
-
-    .stat-card .card-body {
-        padding: 1.5rem;
-    }
-
-    .stat-card small {
-        color: #64748b;
-        font-weight: 600;
-        text-transform: uppercase;
+    .dashboard-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        padding: 6px 16px;
+        border-radius: 50px;
         font-size: 0.75rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         letter-spacing: 0.5px;
-    }
-
-    .stat-card h2 {
-        color: #6366f1;
-        font-weight: 900;
-        font-size: 2rem;
-    }
-
-    .stat-card .text-success {
-        color: #10b981 !important;
-        font-weight: 600;
-    }
-
-    .stat-card .text-muted {
-        color: #64748b !important;
-    }
-
-    .icon-shape {
-        width: 56px;
-        height: 56px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 12px !important;
-        font-size: 1.5rem;
-    }
-
-    .bg-primary {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
-    }
-
-    .bg-success {
-        background: linear-gradient(135deg, #10b981 0%, #34d399 100%) !important;
-    }
-
-    .bg-info {
-        background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%) !important;
-    }
-
-    .bg-warning {
-        background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
-    }
-
-    .card {
-        background: white !important;
-        border: 1px solid rgba(99, 102, 241, 0.1) !important;
-        border-radius: 16px !important;
-        box-shadow: 0 4px 20px rgba(99, 102, 241, 0.08) !important;
-    }
-
-    .card-header {
-        background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%) !important;
-        border-bottom: 1px solid rgba(139, 92, 246, 0.15) !important;
-        padding: 1.25rem 1.5rem !important;
-        border-radius: 16px 16px 0 0 !important;
-    }
-
-    .card-header h5 {
-        color: #6366f1 !important;
-        font-weight: 700 !important;
-        margin: 0 !important;
-    }
-
-    .table {
-        margin: 0 !important;
-    }
-
-    .table thead {
-        background: linear-gradient(135deg, #faf5ff 0%, #f8f9fa 100%);
-    }
-
-    .table thead th {
-        color: #6366f1 !important;
-        font-weight: 700 !important;
         text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: 0.5px;
-        padding: 1rem 1.5rem !important;
-        border: none !important;
     }
 
-    .table tbody td {
-        color: #64748b !important;
-        padding: 1rem 1.5rem !important;
-        border-bottom: 1px solid rgba(99, 102, 241, 0.08) !important;
+    .dashboard-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 8px;
+        letter-spacing: -1px;
     }
 
-    .table tbody tr:hover {
-        background: rgba(99, 102, 241, 0.03) !important;
-    }
-
-    .table tbody tr:last-child td {
-        border-bottom: none !important;
-    }
-
-    .table .fw-semibold {
-        color: #6366f1 !important;
-        font-weight: 700 !important;
-    }
-
-    .table .text-muted {
-        color: #94a3b8 !important;
-    }
-
-    .badge {
-        padding: 0.5rem 1rem !important;
-        font-weight: 600 !important;
-        font-size: 0.75rem !important;
-        letter-spacing: 0.3px;
-    }
-
-    .bg-success {
-        background: linear-gradient(135deg, #10b981 0%, #34d399 100%) !important;
-    }
-
-    .bg-danger {
-        background: linear-gradient(135deg, #ef4444 0%, #f87171 100%) !important;
-    }
-
-    .text-center.text-muted {
-        color: #64748b !important;
+    .dashboard-subtitle {
+        color: #64748b;
+        font-size: 1rem;
         font-weight: 500;
     }
 
+    /* Stats Cards */
+    .stat-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(99, 102, 241, 0.1);
+        border: 2px solid rgba(99, 102, 241, 0.1);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        position: relative;
+        animation: fadeInUp 0.6s ease-out both;
+    }
+
+    .stat-card:nth-child(1) { animation-delay: 0.1s; }
+    .stat-card:nth-child(2) { animation-delay: 0.2s; }
+    .stat-card:nth-child(3) { animation-delay: 0.3s; }
+    .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 45px rgba(99, 102, 241, 0.2);
+        border-color: rgba(99, 102, 241, 0.2);
+    }
+
+    .stat-card-body {
+        padding: 25px;
+    }
+
+    .stat-label {
+        color: #64748b;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .stat-value {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 8px;
+        line-height: 1;
+    }
+
+    .stat-subtitle {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .stat-subtitle.success {
+        color: #10b981;
+    }
+
+    .stat-subtitle.muted {
+        color: #64748b;
+    }
+
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        color: white;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-icon.primary {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    }
+
+    .stat-icon.success {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .stat-icon.info {
+        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+    }
+
+    .stat-icon.warning {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+
+    /* Recent Reservations Card */
+    .reservations-card {
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 10px 40px rgba(99, 102, 241, 0.08);
+        border: 2px solid rgba(99, 102, 241, 0.1);
+        overflow: hidden;
+        animation: fadeInUp 0.6s ease-out 0.5s both;
+        position: relative;
+    }
+
+    .reservations-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+    }
+
+    .reservations-header {
+        padding: 25px 30px;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.02) 0%, rgba(139, 92, 246, 0.02) 100%);
+        border-bottom: 2px solid rgba(99, 102, 241, 0.1);
+    }
+
+    .reservations-header h5 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 800;
+        font-size: 1.3rem;
+        color: #1e293b;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .reservations-table {
+        width: 100%;
+        margin: 0;
+    }
+
+    .reservations-table thead {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+    }
+
+    .reservations-table thead th {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 18px 25px;
+        border: none;
+        white-space: nowrap;
+    }
+
+    .reservations-table tbody tr {
+        border-bottom: 1px solid #f1f5f9;
+        transition: all 0.3s ease;
+    }
+
+    .reservations-table tbody tr:hover {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.02) 0%, rgba(139, 92, 246, 0.02) 100%);
+    }
+
+    .reservations-table tbody td {
+        padding: 20px 25px;
+        vertical-align: middle;
+        font-size: 0.95rem;
+        color: #334155;
+        font-weight: 500;
+    }
+
+    .reservation-code {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 800;
+        font-size: 1rem;
+        color: #6366f1;
+    }
+
+    .trip-route {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+    }
+
+    .route-arrow {
+        color: #8b5cf6;
+        font-size: 0.85rem;
+    }
+
+    .amount-display {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        color: #1e293b;
+    }
+
+    .status-badge {
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .status-badge.confirmed {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    .status-badge.cancelled {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+    }
+
+    .empty-state {
+        padding: 80px 40px;
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 25px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: #8b5cf6;
+    }
+
+    .empty-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 8px;
+    }
+
+    .empty-text {
+        color: #64748b;
+        font-size: 0.95rem;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    /* Responsive */
     @media (max-width: 768px) {
-        .stat-card h2 {
-            font-size: 1.5rem;
+        .dashboard-title {
+            font-size: 2rem;
         }
 
-        .icon-shape {
-            width: 48px;
-            height: 48px;
-            font-size: 1.25rem;
+        .stat-value {
+            font-size: 2rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            font-size: 1.3rem;
+        }
+
+        .reservations-table {
+            font-size: 0.85rem;
         }
     }
 </style>
 
+<div class="dashboard-container">
     <!-- Page Header -->
-    <div class="page-header-light">
-        <div>
-            <h1 class="h3 fw-bold mb-1">Dashboard</h1>
-            <p class="text-muted mb-0">
-                Overview of system performance and activity
-            </p>
+    <div class="dashboard-header">
+        <div class="dashboard-header-content">
+            <span class="dashboard-badge">
+                <i class="fas fa-chart-line"></i> System Overview
+            </span>
+            <h1 class="dashboard-title">Dashboard</h1>
+            <p class="dashboard-subtitle">Monitor your system performance and activity</p>
         </div>
     </div>
 
@@ -204,19 +404,18 @@
 
         <!-- Total Buses -->
         <div class="col-xl-3 col-md-6">
-            <div class="card stat-card h-100">
-                <div class="card-body">
+            <div class="stat-card h-100">
+                <div class="stat-card-body">
                     <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <small class="text-muted">Total Buses</small>
-                            <h2 class="fw-bold mt-2 mb-0">
-                                {{ $stats['total_buses'] }}
-                            </h2>
-                            <span class="text-success small">
+                        <div class="flex-grow-1">
+                            <div class="stat-label">Total Buses</div>
+                            <div class="stat-value">{{ $stats['total_buses'] }}</div>
+                            <p class="stat-subtitle success">
+                                <i class="fas fa-check-circle"></i>
                                 {{ $stats['active_buses'] }} active
-                            </span>
+                            </p>
                         </div>
-                        <div class="icon-shape bg-primary text-white rounded-3 p-3">
+                        <div class="stat-icon primary">
                             <i class="fas fa-bus"></i>
                         </div>
                     </div>
@@ -226,19 +425,17 @@
 
         <!-- Upcoming Trips -->
         <div class="col-xl-3 col-md-6">
-            <div class="card stat-card h-100">
-                <div class="card-body">
+            <div class="stat-card h-100">
+                <div class="stat-card-body">
                     <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <small class="text-muted">Upcoming Trips</small>
-                            <h2 class="fw-bold mt-2 mb-0">
-                                {{ $stats['upcoming_trips'] }}
-                            </h2>
-                            <span class="text-muted small">
+                        <div class="flex-grow-1">
+                            <div class="stat-label">Upcoming Trips</div>
+                            <div class="stat-value">{{ $stats['upcoming_trips'] }}</div>
+                            <p class="stat-subtitle muted">
                                 of {{ $stats['total_trips'] }} total
-                            </span>
+                            </p>
                         </div>
-                        <div class="icon-shape bg-success text-white rounded-3 p-3">
+                        <div class="stat-icon success">
                             <i class="fas fa-route"></i>
                         </div>
                     </div>
@@ -248,19 +445,18 @@
 
         <!-- Reservations -->
         <div class="col-xl-3 col-md-6">
-            <div class="card stat-card h-100">
-                <div class="card-body">
+            <div class="stat-card h-100">
+                <div class="stat-card-body">
                     <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <small class="text-muted">Reservations</small>
-                            <h2 class="fw-bold mt-2 mb-0">
-                                {{ $stats['total_reservations'] }}
-                            </h2>
-                            <span class="text-success small">
+                        <div class="flex-grow-1">
+                            <div class="stat-label">Reservations</div>
+                            <div class="stat-value">{{ $stats['total_reservations'] }}</div>
+                            <p class="stat-subtitle success">
+                                <i class="fas fa-check-circle"></i>
                                 {{ $stats['confirmed_reservations'] }} confirmed
-                            </span>
+                            </p>
                         </div>
-                        <div class="icon-shape bg-info text-white rounded-3 p-3">
+                        <div class="stat-icon info">
                             <i class="fas fa-ticket-alt"></i>
                         </div>
                     </div>
@@ -270,19 +466,17 @@
 
         <!-- Revenue -->
         <div class="col-xl-3 col-md-6">
-            <div class="card stat-card h-100">
-                <div class="card-body">
+            <div class="stat-card h-100">
+                <div class="stat-card-body">
                     <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <small class="text-muted">Total Revenue</small>
-                            <h2 class="fw-bold mt-2 mb-0">
-                                ₱{{ number_format($stats['revenue'], 2) }}
-                            </h2>
-                            <span class="text-muted small">
+                        <div class="flex-grow-1">
+                            <div class="stat-label">Total Revenue</div>
+                            <div class="stat-value">₱{{ number_format($stats['revenue'], 0) }}</div>
+                            <p class="stat-subtitle muted">
                                 {{ $stats['total_users'] }} users
-                            </span>
+                            </p>
                         </div>
-                        <div class="icon-shape bg-warning text-white rounded-3 p-3">
+                        <div class="stat-icon warning">
                             <i class="fas fa-coins"></i>
                         </div>
                     </div>
@@ -293,60 +487,83 @@
     </div>
 
     <!-- Recent Reservations -->
-    <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0 fw-semibold">Recent Reservations</h5>
+    <div class="reservations-card">
+        <div class="reservations-header">
+            <h5>
+                <i class="fas fa-clock"></i>
+                Recent Reservations
+            </h5>
         </div>
 
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th>Code</th>
-                            <th>User</th>
-                            <th>Trip</th>
-                            <th>Date</th>
-                            <th>Passengers</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @forelse($recent_reservations as $reservation)
-                        <tr>
-                            <td class="fw-semibold">
+        <div class="table-responsive">
+            <table class="reservations-table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>User</th>
+                        <th>Trip</th>
+                        <th>Date</th>
+                        <th>Passengers</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @forelse($recent_reservations as $reservation)
+                    <tr>
+                        <td>
+                            <span class="reservation-code">
                                 {{ $reservation->reservation_code }}
-                            </td>
-                            <td>{{ $reservation->user->name }}</td>
-                            <td>
-                                {{ $reservation->trip->origin }}
-                                <i class="fas fa-arrow-right mx-1 text-muted"></i>
-                                {{ $reservation->trip->destination }}
-                            </td>
-                            <td>{{ $reservation->trip->formatted_date }}</td>
-                            <td>{{ $reservation->total_passengers }}</td>
-                            <td class="fw-semibold">
+                            </span>
+                        </td>
+                        <td>{{ $reservation->user->name }}</td>
+                        <td>
+                            <div class="trip-route">
+                                <span>{{ $reservation->trip->origin }}</span>
+                                <i class="fas fa-arrow-right route-arrow"></i>
+                                <span>{{ $reservation->trip->destination }}</span>
+                            </div>
+                        </td>
+                        <td>{{ $reservation->trip->formatted_date }}</td>
+                        <td>
+                            <span style="font-weight: 600;">
+                                <i class="fas fa-users" style="color: #8b5cf6; margin-right: 4px;"></i>
+                                {{ $reservation->total_passengers }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="amount-display">
                                 {{ $reservation->formatted_total_price }}
-                            </td>
-                            <td>
-                                <span class="badge rounded-pill
-                                    bg-{{ $reservation->status === 'confirmed' ? 'success' : 'danger' }}">
-                                    {{ ucfirst($reservation->status) }}
-                                </span>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="7" class="text-center text-muted py-4">
-                                No reservations yet
-                            </td>
-                        </tr>
-                    @endforelse
-                    </tbody>
-                </table>
-            </div>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge {{ $reservation->status === 'confirmed' ? 'confirmed' : 'cancelled' }}">
+                                @if($reservation->status === 'confirmed')
+                                    <i class="fas fa-check-circle"></i>
+                                @else
+                                    <i class="fas fa-times-circle"></i>
+                                @endif
+                                {{ ucfirst($reservation->status) }}
+                            </span>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <div class="empty-icon">
+                                    <i class="fas fa-ticket-alt"></i>
+                                </div>
+                                <h3 class="empty-title">No Reservations Yet</h3>
+                                <p class="empty-text">Reservations will appear here once customers start booking</p>
+                            </div>
+                        </td>
+                    </tr>
+                @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
 
 @endsection

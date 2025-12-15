@@ -26,11 +26,11 @@
             content: '';
             position: absolute;
             top: -50%;
-            right: -20%;
-            width: 150%;
+            left: -50%;
+            width: 200%;
             height: 200%;
             background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
-            animation: pulse 4s ease-in-out infinite;
+            animation: rotate 20s linear infinite;
         }
 
         .header-content {
@@ -438,6 +438,10 @@
                 transform: translateY(0);
             }
         }
+           @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
 
         @keyframes pulse {
             0%, 100% {

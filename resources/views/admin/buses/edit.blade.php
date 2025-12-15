@@ -23,13 +23,13 @@
 
         .form-header-wrapper::before {
             content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
             background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 70%);
-            animation: pulse 4s ease-in-out infinite;
+            animation: rotate 20s linear infinite;
         }
 
         .form-header-content {
@@ -353,6 +353,10 @@
                 opacity: 0.5;
             }
         }
+         @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
 
         @media (max-width: 768px) {
             .form-main-title {
