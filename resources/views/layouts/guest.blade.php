@@ -35,44 +35,63 @@
 <body class="font-sans antialiased text-white">
 
     <!-- Background -->
-    <div class="min-h-screen flex items-center justify-center
-                bg-gradient-to-br from-[#0b1020] via-[#121933] to-[#1a2145]
-                px-4">
+    <div class="min-h-screen flex items-center justify-center"
+         style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(250, 245, 255, 0.6) 50%, rgba(99, 102, 241, 0.2) 100%), url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=1600&q=80'); background-size: cover; background-position: center;">
 
-        <div class="w-full max-w-md">
+<div class="w-full max-w-md">
 
-            <!-- Logo / Branding -->
-            <div class="flex justify-center mb-8">
-                <a href="/" class="flex items-center gap-3">
-                <!-- Bus icon container -->
-                <div class="w-12 h-12 text-indigo-500 drop-shadow-lg flex justify-center items-center">
-                    <i class="fas fa-bus text-3xl"></i> <!-- Added text size for better visibility -->
-                </div>
-                <!-- Brand name -->
-                <span class="text-2xl font-bold tracking-wide">MoveON</span>
-            </a>
+    <!-- Logo / Branding -->
+    <div class="flex justify-center mb-2">
+        <a href="/" class="flex items-center gap-3 group">
+            <!-- Bus icon container -->
+            <div class="w-12 h-12 flex items-center justify-center text-[#1a2139]">
+                <i class="fas fa-bus text-3xl group-hover:scale-110 transition-transform duration-200"></i>
+            </div>
+            <!-- Brand name -->
+            <span class="text-3xl font-bold text-[#1a2139] tracking-tight group-hover:opacity-80 transition-opacity duration-200">
+                MoveON
+            </span>
+        </a>
+    </div>
+
+    <!-- Main Card Container -->
+    <div class="relative">
+        <!-- Outer glow effect -->
+        <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 
+                    rounded-[28px] opacity-20 blur-xl"></div>
+        
+        <!-- Glass Card -->
+        <div class="relative bg-[#1a2139] backdrop-blur-xl
+                    border-2 border-indigo-400/20 rounded-[26px]
+                    shadow-2xl shadow-black/40
+                    px-10 py-12">
+
+            <!-- Top accent line -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-1 
+                        bg-gradient-to-r from-transparent via-indigo-400 to-transparent 
+                        rounded-full"></div>
+
+            <!-- Decorative corner accents -->
+            <div class="absolute top-4 right-4 w-20 h-20 bg-indigo-500/10 rounded-full blur-2xl"></div>
+            <div class="absolute bottom-4 left-4 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl"></div>
+
+            <!-- Slot Content -->
+            <div class="relative z-10">
+                {{ $slot }}
             </div>
 
-            <!-- Glass Card -->
-            <div class="relative bg-white/5 backdrop-blur-xl
-                        border border-white/10 rounded-3xl
-                        shadow-2xl shadow-indigo-500/20
-                        px-8 py-10">
+            <!-- Bottom subtle gradient -->
+            <div class="absolute bottom-0 left-0 right-0 h-32 
+                        bg-gradient-to-t from-indigo-500/5 to-transparent 
+                        rounded-b-[26px] pointer-events-none"></div>
 
-                <!-- Decorative Glow -->
-                <div class="absolute inset-0 rounded-3xl
-                            bg-gradient-to-br from-indigo-500/10 to-purple-500/10
-                            pointer-events-none">
-                </div>
-
-                <!-- Slot Content -->
-                <div class="relative">
-                    {{ $slot }}
-                </div>
-
-            </div>
         </div>
     </div>
+
+    <!-- Footer Links (Optional) -->
+    
+
+</div>
 
     <!-- Bootstrap JS Bundle -->
     <script

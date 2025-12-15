@@ -111,6 +111,16 @@
             </x-primary-button>
         </div>
 
+        <div class="mt-8 text-center">
+        <p class="text-sm text-indigo-300/60">
+            Don't have an account? 
+            <a href="{{ route('register') }}" 
+               class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-200">
+                Sign up
+            </a>
+        </p>
+    </div>
+
     </form>
 
 </x-guest-layout>
