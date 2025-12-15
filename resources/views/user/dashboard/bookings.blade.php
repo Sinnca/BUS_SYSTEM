@@ -7,9 +7,9 @@
 
         <div class="row mb-4">
             <div class="col-md-6">
-                <h1>My Bookings</h1>
+                <h2 class="mb-4 fw-bold mt-3 text-dark">My Bookings</h2>
             </div>
-            <div class="col-md-6 text-end">
+            <div class="col-md-6 text-end" style="margin-top: 15px;">
                 <a href="{{ route('home') }}" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Book New Trip
                 </a>
