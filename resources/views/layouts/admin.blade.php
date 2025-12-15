@@ -21,11 +21,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        /* ================= STICKY FOOTER LAYOUT ================= */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #ffffff, #f8f9fa, #faf5ff);
             color: #64748b;
-            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-wrapper {
+            flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-container {
+            flex: 1 0 auto;
+        }
+
+        footer {
+            flex-shrink: 0;
         }
 
         /* ================= NAVBAR ================= */
@@ -191,6 +212,7 @@
             color: #6366f1;
             border-top: 1px solid rgba(99, 102, 241, 0.15);
             box-shadow: 0 -4px 20px rgba(99, 102, 241, 0.08);
+            margin-top: auto;
         }
 
         footer small {
@@ -294,98 +316,102 @@
 
 <body>
 
-{{-- ================= NAVBAR ================= --}}
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container-fluid px-4">
-        <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
-            <i class="fas fa-bus text-primary me-1"></i> MoveON Admin
-        </a>
+<div class="main-wrapper">
+    {{-- ================= NAVBAR ================= --}}
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
+                <i class="fas fa-bus text-primary me-1"></i> MoveON Admin
+            </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse" id="adminNav">
-            <ul class="navbar-nav me-auto gap-2">
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
-                       href="{{ route('admin.dashboard') }}">
-                        <i class="fas fa-chart-line me-1"></i> Dashboard
-                    </a>
-                </li>
+            <div class="collapse navbar-collapse" id="adminNav">
+                <ul class="navbar-nav me-auto gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+                           href="{{ route('admin.dashboard') }}">
+                            <i class="fas fa-chart-line me-1"></i> Dashboard
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.buses.*') ? 'active' : '' }}"
-                       href="{{ route('admin.buses.index') }}">
-                        <i class="fas fa-bus me-1"></i> Buses
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.buses.*') ? 'active' : '' }}"
+                           href="{{ route('admin.buses.index') }}">
+                            <i class="fas fa-bus me-1"></i> Buses
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.trips.*') ? 'active' : '' }}"
-                       href="{{ route('admin.trips.index') }}">
-                        <i class="fas fa-route me-1"></i> Trips
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.trips.*') ? 'active' : '' }}"
+                           href="{{ route('admin.trips.index') }}">
+                            <i class="fas fa-route me-1"></i> Trips
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}"
-                       href="{{ route('admin.reservations.index') }}">
-                        <i class="fas fa-ticket me-1"></i> Reservations
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}"
+                           href="{{ route('admin.reservations.index') }}">
+                            <i class="fas fa-ticket me-1"></i> Reservations
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.schedules.*') ? 'active' : '' }}"
-                       href="{{ route('admin.schedules.generator') }}">
-                        <i class="fas fa-wand-magic-sparkles me-1"></i> Auto Schedule
-                    </a>
-                </li>
-            </ul>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.schedules.*') ? 'active' : '' }}"
+                           href="{{ route('admin.schedules.generator') }}">
+                            <i class="fas fa-wand-magic-sparkles me-1"></i> Auto Schedule
+                        </a>
+                    </li>
+                </ul>
 
-            <div class="d-flex align-items-center gap-3">
-                <span class="text-light small">
-                    <i class="fas fa-user-shield me-1"></i> {{ auth()->user()->name }}
-                </span>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="text-light small">
+                        <i class="fas fa-user-shield me-1"></i> {{ auth()->user()->name }}
+                    </span>
 
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button class="btn btn-outline-light btn-sm rounded-pill px-3">
-                        Logout
-                    </button>
-                </form>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button class="btn btn-outline-light btn-sm rounded-pill px-3">
+                            Logout
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
+    </nav>
+
+    {{-- ================= CONTENT ================= --}}
+    <div class="content-container">
+        <div class="container-fluid px-4 py-4">
+
+            @if(session('success'))
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle me-1"></i> {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    <i class="fas fa-triangle-exclamation me-1"></i> {{ session('error') }}
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <strong>Validation Error</strong>
+                    <ul class="mt-2 mb-0">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @yield('content')
+        </div>
     </div>
-</nav>
-
-{{-- ================= CONTENT ================= --}}
-<div class="container-fluid px-4 py-4">
-
-    @if(session('success'))
-        <div class="alert alert-success">
-            <i class="fas fa-check-circle me-1"></i> {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-danger">
-            <i class="fas fa-triangle-exclamation me-1"></i> {{ session('error') }}
-        </div>
-    @endif
-
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <strong>Validation Error</strong>
-            <ul class="mt-2 mb-0">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    @yield('content')
 </div>
 
 {{-- ================= FOOTER ================= --}}
