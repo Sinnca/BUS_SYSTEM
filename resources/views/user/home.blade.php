@@ -626,15 +626,15 @@
             </h1>
             <p class="hero-subtitle" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); -webkit-background-clip: text; color: transparent;">Book your bus journey with ease. Experience premium comfort, reliable schedules, and unbeatable prices across the archipelago.</p>
             <div class="hero-features">
-                <div class="hero-feature" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); -webkit-background-clip: text; color: transparent;">
+                <div class="hero-feature" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
                     <i class="fas fa-check-circle"></i>
                     <span>Instant Booking</span>
                 </div>
-                <div class="hero-feature" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); -webkit-background-clip: text; color: transparent;">
+                <div class="hero-feature" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
                     <i class="fas fa-check-circle"></i>
                     <span>Best Price Guarantee</span>
                 </div>
-                <div class="hero-feature" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); -webkit-background-clip: text; color: transparent;">
+                <div class="hero-feature" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
                     <i class="fas fa-check-circle"></i>
                     <span>24/7 Support</span>
                 </div>
