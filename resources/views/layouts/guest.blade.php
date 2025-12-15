@@ -25,6 +25,8 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
         rel="stylesheet"
     >
+    <!-- Add this link to include Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <!-- Laravel Vite (KEEP THIS) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -42,12 +44,13 @@
             <!-- Logo / Branding -->
             <div class="flex justify-center mb-8">
                 <a href="/" class="flex items-center gap-3">
-                    <x-application-logo
-                        class="w-12 h-12 text-indigo-500 drop-shadow-lg" />
-                    <span class="text-2xl font-bold tracking-wide">
-                        {{ config('MoveON') }}
-                    </span>
-                </a>
+                <!-- Bus icon container -->
+                <div class="w-12 h-12 text-indigo-500 drop-shadow-lg flex justify-center items-center">
+                    <i class="fas fa-bus text-3xl"></i> <!-- Added text size for better visibility -->
+                </div>
+                <!-- Brand name -->
+                <span class="text-2xl font-bold tracking-wide">MoveON</span>
+            </a>
             </div>
 
             <!-- Glass Card -->

@@ -505,7 +505,7 @@
     </div>
 
     <!-- Booking Section -->
-    <div class="booking-section">
+    <div class="booking-section" style="margin-top: 20px;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-11 col-xl-10">
