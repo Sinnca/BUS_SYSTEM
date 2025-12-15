@@ -13,7 +13,7 @@
         /* Hero Banner - Light Theme - SHORTENED */
         .hero-banner {
             position: relative;
-            height: 500px;
+            height: 33rem;
             background: linear-gradient(135deg, #ffffff 0%, #faf5ff 50%, #f3e8ff 100%);
             margin: 0 -15px;
             overflow: hidden;
@@ -29,8 +29,7 @@
             background-image: url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=1600&q=80');
             background-size: cover;
             background-position: center;
-            opacity: 0.08;
-            filter: blur(1px);
+            opacity: 1;
         }
 
         .hero-overlay {
@@ -39,7 +38,9 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 245, 255, 0.9) 50%, rgba(99, 102, 241, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(250, 245, 255, 0.6) 50%, rgba(99, 102, 241, 0.2) 100%), url('your-image-url.jpg');
+
+
         }
 
         .hero-content {
@@ -613,32 +614,35 @@
     </style>
 
     <!-- Hero Banner -->
-    <div class="hero-banner" >
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <div class="container">
-                <div class="hero-badge">
-                    <i class="fas fa-shield-alt"></i> Trusted by 1M+ Travelers
+<div class="hero-banner" style="margin-bottom: 20px;">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <div class="container">
+            <div class="hero-badge" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); -webkit-background-clip: text; color: transparent;">
+                <i class="fas fa-shield-alt"></i> Trusted by 1M+ Travelers
+            </div>
+            <h1 class="hero-title" style="font-size: 3rem; margin-bottom: 20px; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); -webkit-background-clip: text; color: transparent;">
+                Travel Philippines<br>in Comfort & Style
+            </h1>
+            <p class="hero-subtitle" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); -webkit-background-clip: text; color: transparent;">Book your bus journey with ease. Experience premium comfort, reliable schedules, and unbeatable prices across the archipelago.</p>
+            <div class="hero-features">
+                <div class="hero-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Instant Booking</span>
                 </div>
-                <h1 class="hero-title">Travel Philippines<br>in Comfort & Style</h1>
-                <p class="hero-subtitle">Book your bus journey with ease. Experience premium comfort, reliable schedules, and unbeatable prices across the archipelago.</p>
-                <div class="hero-features" >
-                    <div class="hero-feature">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Instant Booking</span>
-                    </div>
-                    <div class="hero-feature">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Best Price Guarantee</span>
-                    </div>
-                    <div class="hero-feature">
-                        <i class="fas fa-check-circle"></i>
-                        <span>24/7 Support</span>
-                    </div>
+                <div class="hero-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Best Price Guarantee</span>
+                </div>
+                <div class="hero-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>24/7 Support</span>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
 
     <!-- Booking Section -->
     <div class="booking-section" style="margin-top: 40px;">
