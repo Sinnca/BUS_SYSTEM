@@ -3,15 +3,422 @@
 @section('title', 'Automatic Schedule Generator')
 
 @section('content')
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <h1><i class="fas fa-magic"></i> Automatic Schedule Generator</h1>
-            <p class="text-muted">Generate multiple trips automatically for selected buses and date range</p>
-        </div>
-        <div class="col-md-6 text-end">
-            <a href="{{ route('admin.trips.index') }}" class="btn btn-secondary">
-                <i class="fas fa-list"></i> View All Trips
-            </a>
+    <style>
+        /* Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes rotateGradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+         @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6, .btn, strong, .form-label, .card-header {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        }
+
+        body, p, span, small, .text-muted, input, select, textarea, .form-control {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        }
+
+        /* Page Header with Rotating Gradient */
+        .page-header-animated {
+           background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border-radius: 24px;
+            padding: 35px 40px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(99, 102, 241, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .page-header-animated::before {
+            content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+        animation: rotate 20s linear infinite;
+        }
+
+        .page-header-animated h1 {
+            color:  rgba(99, 102, 241, 0.3);
+            font-weight: 900;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header-animated p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.1rem;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header-animated i {
+            font-size: 2.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border: 2px solid rgba(99, 102, 241, 0.12);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.1);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            border-bottom: 2px solid rgba(99, 102, 241, 0.15);
+            padding: 1.5rem;
+            border-radius: 20px 20px 0 0;
+            color: #6366f1;
+        }
+
+        .card-header h5 {
+            margin: 0;
+            font-weight: 700;
+            color: #6366f1;
+        }
+
+        .card-body {
+            padding: 2rem;
+            color: #64748b;
+        }
+
+        /* Alert Styles */
+        .alert {
+            border: none;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.1);
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .alert-info h5 {
+            color: #1e3a8a;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .alert-secondary {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            color: #475569;
+            border-left: 4px solid #64748b;
+        }
+
+        .alert-secondary strong {
+            color: #1e293b;
+        }
+
+        /* Success Results Card */
+        .border-success {
+            border: 2px solid #10b981 !important;
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.2);
+        }
+
+        .bg-success {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%) !important;
+        }
+
+        /* Form Controls */
+        .form-label {
+            font-weight: 700;
+            color: #6366f1;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            color: #64748b;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            outline: none;
+            transform: translateY(-2px);
+        }
+
+        .form-control:hover, .form-select:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        .form-check-input {
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .form-check-input:checked {
+            background-color: #6366f1;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .form-check-label {
+            color: #64748b;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+
+        /* Input Groups */
+        .input-group-text {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            border: 2px solid rgba(99, 102, 241, 0.2);
+            color: #6366f1;
+            font-weight: 700;
+            border-radius: 12px 0 0 12px;
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-primary, .btn-outline-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover, .btn-outline-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.4);
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(100, 116, 139, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(100, 116, 139, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.4);
+            animation: pulse 0.6s ease-in-out;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);
+            color: white;
+        }
+
+        .btn-outline-info:hover, .btn-info:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Badges */
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .bg-secondary {
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%) !important;
+        }
+
+        .bg-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+        }
+
+        /* Background Cards */
+        .bg-light {
+            background: linear-gradient(135deg, #faf5ff 0%, #f8f9fa 100%) !important;
+            border: 2px solid rgba(99, 102, 241, 0.1);
+            border-radius: 16px;
+        }
+
+        .bg-warning.bg-opacity-10 {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
+            border: 2px solid rgba(245, 158, 11, 0.2);
+        }
+
+        /* Table */
+        .table {
+            color: #64748b;
+        }
+
+        .table thead {
+            background: linear-gradient(135deg, #faf5ff 0%, #f8f9fa 100%);
+        }
+
+        .table thead th {
+            color: #6366f1;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(99, 102, 241, 0.15);
+            padding: 1rem;
+        }
+
+        .table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(99, 102, 241, 0.04);
+            transform: scale(1.01);
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background: rgba(99, 102, 241, 0.02);
+        }
+
+        /* Text Colors */
+        .text-muted {
+            color: #94a3b8 !important;
+        }
+
+        .text-success {
+            color: #10b981 !important;
+        }
+
+        .text-danger {
+            color: #ef4444 !important;
+        }
+
+        /* Staggered Animation */
+        .card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        /* Small Buttons */
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        /* Large Buttons */
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+        }
+    </style>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="page-header-animated">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1><i class="fas fa-wand-magic-sparkles"></i> Automatic Schedule Generator</h1>
+                        <p>Generate multiple trips automatically for selected buses and date range</p>
+                    </div>
+                    <div>
+                        <a href="{{ route('admin.trips.index') }}" class="btn btn-secondary">
+                            <i class="fas fa-list"></i> View All Trips
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -32,7 +439,7 @@
     @if(session('results'))
         <div class="card mb-4 border-success">
             <div class="card-header bg-success text-white">
-                <h5 class="mb-0"><i class="fas fa-check-circle"></i> Generation Results</h5>
+                <h5 class="mb-0" style="color: white !important;"><i class="fas fa-check-circle"></i> Generation Results</h5>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -256,7 +663,7 @@
                         <i class="fas fa-times"></i> Cancel
                     </a>
                     <button type="submit" class="btn btn-success btn-lg" id="generate-btn">
-                        <i class="fas fa-magic"></i> Generate Trips Automatically
+                        <i class="fas fa-wand-magic-sparkles"></i> Generate Trips Automatically
                     </button>
                 </div>
             </form>
