@@ -32,7 +32,7 @@
                 <div class="row">
                     @foreach($originTrips as $trip)
                         <div class="col-md-4 mb-4">
-                            <div class="card p-3">
+                            <div class="card p-3 text-white">
                                 <h6 class="fw-bold">{{ $trip->origin }} → {{ $trip->destination }}</h6>
                                 <p class="mb-1"><i class="fas fa-clock"></i> {{ $trip->formatted_time }}</p>
                                 <p class="mb-1"><i class="fas fa-bus"></i> Bus: {{ $trip->bus->bus_number }} ({{ $trip->bus->bus_type }})</p>

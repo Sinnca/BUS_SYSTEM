@@ -17,14 +17,14 @@
                         <div class="row mb-4">
                             <div class="col-md-5 text-center">
                                 <h2 class="text-primary">{{ $trip->origin }}</h2>
-                                <p class="text-muted">Departure</p>
+                                <p class="text-white">Departure</p>
                             </div>
                             <div class="col-md-2 text-center">
                                 <i class="fas fa-arrow-right fa-3x text-secondary"></i>
                             </div>
                             <div class="col-md-5 text-center">
                                 <h2 class="text-primary">{{ $trip->destination }}</h2>
-                                <p class="text-muted">Arrival</p>
+                                <p class="text-white">Arrival</p>
                             </div>
                         </div>
 
@@ -33,11 +33,11 @@
                         <!-- Trip Information -->
                         <h5 class="mb-3">Trip Information</h5>
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-6 text-white">
                                 <p><strong>Date:</strong><br>{{ $trip->formatted_date }}</p>
                                 <p><strong>Departure Time:</strong><br>{{ $trip->formatted_time }}</p>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 text-white">
                                 <p><strong>Bus Number:</strong><br>{{ $trip->bus->bus_number }}</p>
                                 <p><strong>Bus Type:</strong><br>
                                     <span class="badge bg-{{ $trip->bus->bus_type === 'deluxe' ? 'primary' : 'secondary' }}">
@@ -50,7 +50,7 @@
                         <hr>
 
                         <!-- Availability -->
-                        <h5 class="mb-3">Seat Availability</h5>
+                        <h5 class="mb-3 text-white">Seat Availability</h5>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="card bg-light">
@@ -74,7 +74,7 @@
 
                         <!-- Occupancy Bar -->
                         <div class="mb-3">
-                            <label class="form-label">Occupancy Rate</label>
+                            <label class="form-label text-white">Occupancy Rate</label>
                             <div class="progress" style="height: 25px;">
                                 <div class="progress-bar bg-{{ $trip->occupancy_rate < 50 ? 'success' : ($trip->occupancy_rate < 80 ? 'warning' : 'danger') }}"
                                      role="progressbar"
@@ -92,7 +92,7 @@
                         <!-- Pricing -->
                         <h5 class="mb-3">Pricing</h5>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12 text-white">
                                 <p><strong>Price per Seat:</strong> <span class="text-success h4">{{ $trip->formatted_price }}</span></p>
                             </div>
                         </div>
@@ -140,7 +140,7 @@
                 </div>
 
                 <!-- Additional Information -->
-                <div class="card mt-3">
+                <div class="card mt-3 text-white">
                     <div class="card-header">
                         <h5 class="mb-0"><i class="fas fa-info-circle"></i> Important Information</h5>
                     </div>
@@ -163,7 +163,7 @@
                     <div class="card-header bg-info text-white">
                         <h5 class="mb-0">Bus Features</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body text-white">
                         @if($trip->bus->bus_type === 'deluxe')
                             <ul class="list-unstyled">
                                 <li><i class="fas fa-check text-success"></i> Air Conditioning</li>
@@ -188,7 +188,7 @@
                     <div class="card-header bg-secondary text-white">
                         <h5 class="mb-0">Quick Stats</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body text-white">
                         <p><strong>Trip ID:</strong> #{{ $trip->id }}</p>
                         <p><strong>Bus Capacity:</strong> {{ $trip->bus->capacity }} passengers</p>
                         <p><strong>Seats Left:</strong> {{ $trip->available_seats }}</p>
@@ -226,7 +226,7 @@
                                 <p class="text-muted mt-2">... and {{ $rows - 3 }} more rows</p>
                             @endif
                         </div>
-                        <small class="text-muted d-block mt-2">
+                        <small class="text-white d-block mt-2">
                             <i class="fas fa-square" style="color: #28a745;"></i> Available
                             <i class="fas fa-square ms-2" style="color: #6c757d;"></i> Reserved
                         </small>
