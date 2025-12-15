@@ -1,6 +1,6 @@
 {{-- ============================================================ --}}
 {{-- FILE: resources/views/layouts/admin.blade.php --}}
-{{-- MODERN DARK ADMIN DASHBOARD (MoveON Style) --}}
+{{-- MODERN LIGHT ADMIN DASHBOARD (MoveON Style) --}}
 {{-- ============================================================ --}}
 <!DOCTYPE html>
 <html lang="en">
@@ -23,20 +23,22 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0b1220, #0e1a2f);
-            color: #e5e7eb;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa, #faf5ff);
+            color: #64748b;
             min-height: 100vh;
         }
 
         /* ================= NAVBAR ================= */
         .navbar {
             background: linear-gradient(90deg, #0f172a, #1e293b);
-            box-shadow: 0 8px 30px rgba(0,0,0,.35);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.2);
+            border-bottom: 2px solid rgba(99, 102, 241, 0.3);
         }
 
         .navbar-brand {
             font-weight: 700;
             letter-spacing: .5px;
+            text-shadow: 0 2px 10px rgba(99, 102, 241, 0.5);
         }
 
         .nav-link {
@@ -44,11 +46,13 @@
             padding: 8px 16px;
             border-radius: 12px;
             transition: all .3s ease;
+            position: relative;
         }
 
         .nav-link:hover {
             background: rgba(99,102,241,.15);
             color: #fff !important;
+            transform: translateY(-2px);
         }
 
         .nav-link.active {
@@ -57,55 +61,103 @@
             box-shadow: 0 6px 20px rgba(99,102,241,.45);
         }
 
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 3px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            border-radius: 3px;
+        }
+
         /* ================= CARDS ================= */
         .card {
-            background: rgba(255,255,255,0.04);
+            background: #ffffff;
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(99, 102, 241, 0.12);
             border-radius: 18px;
-            box-shadow: 0 20px 40px rgba(0,0,0,.35);
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.1);
             margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 15px 50px rgba(99, 102, 241, 0.15);
         }
 
         .card-header {
-            background: transparent;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.15);
             font-weight: 600;
             padding: 18px 22px;
-            color: #fff;
+            color: #6366f1;
+            border-radius: 18px 18px 0 0;
         }
 
         .card-body {
             padding: 22px;
+            color: #64748b;
         }
 
         /* ================= STAT CARDS ================= */
         .stat-card {
             transition: transform .3s ease, box-shadow .3s ease;
+            background: linear-gradient(135deg, #ffffff, #faf5ff);
         }
 
         .stat-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 25px 50px rgba(99,102,241,.35);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.25);
         }
 
         .stat-card h2 {
             font-size: 2.6rem;
             font-weight: 700;
+            color: #6366f1;
+        }
+
+        .stat-card small {
+            color: #64748b;
+            font-weight: 600;
         }
 
         /* ================= TABLE ================= */
         .table {
-            color: #e5e7eb;
+            color: #64748b;
+        }
+
+        .table thead {
+            background: linear-gradient(135deg, #faf5ff, #f8f9fa);
         }
 
         .table thead th {
-            color: #c7d2fe;
-            border-bottom: 1px solid rgba(255,255,255,.1);
+            color: #6366f1;
+            border-bottom: 2px solid rgba(99, 102, 241, 0.15);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
         }
 
         .table td {
-            border-color: rgba(255,255,255,.05);
+            border-color: rgba(99, 102, 241, 0.08);
+        }
+
+        .table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(99, 102, 241, 0.04);
+            transform: scale(1.01);
+        }
+
+        .table .fw-semibold {
+            color: #6366f1;
         }
 
         /* ================= ALERTS ================= */
@@ -113,21 +165,127 @@
             border-radius: 14px;
             border: none;
             backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.1);
         }
 
         .alert-success {
-            background: rgba(34,197,94,.15);
-            color: #bbf7d0;
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+            border-left: 4px solid #10b981;
         }
 
         .alert-danger {
-            background: rgba(239,68,68,.15);
-            color: #fecaca;
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+
+        .alert i {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
         }
 
         /* ================= FOOTER ================= */
         footer {
-            color: #94a3b8;
+            background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+            color: #6366f1;
+            border-top: 1px solid rgba(99, 102, 241, 0.15);
+            box-shadow: 0 -4px 20px rgba(99, 102, 241, 0.08);
+        }
+
+        footer small {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* ================= BUTTONS ================= */
+        .btn-outline-light {
+            border-color: rgba(255, 255, 255, 0.7);
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-light:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        /* ================= CONTENT WRAPPER ================= */
+        .content-wrapper {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        /* ================= HEADINGS ================= */
+        h1, h2, h3, h4, h5, h6 {
+            color: #6366f1;
+        }
+
+        /* ================= BADGES ================= */
+        .badge {
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .bg-success {
+            background: linear-gradient(135deg, #10b981, #34d399) !important;
+        }
+
+        .bg-danger {
+            background: linear-gradient(135deg, #ef4444, #f87171) !important;
+        }
+
+        .bg-warning {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24) !important;
+        }
+
+        .bg-info {
+            background: linear-gradient(135deg, #06b6d4, #22d3ee) !important;
+        }
+
+        .bg-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+        }
+
+        /* ================= ICON SHAPES ================= */
+        .icon-shape {
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        /* ================= TEXT COLORS ================= */
+        .text-primary {
+            color: #6366f1 !important;
+        }
+
+        .text-muted {
+            color: #64748b !important;
+        }
+
+        .text-light {
+            color: #f8f9fa !important;
+        }
+
+        /* ================= ANIMATIONS ================= */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert {
+            animation: fadeIn 0.5s ease;
         }
     </style>
 
