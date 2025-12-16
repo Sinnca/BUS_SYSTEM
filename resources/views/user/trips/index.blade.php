@@ -5,25 +5,41 @@
 @push('styles')
 <style>
     /* Modern Trip Cards Section */
+    /* UPDATED Hero Section - Matching Dashboard Header Design */
     .trips-hero {
         background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-        padding: 3rem 0;
-        margin-bottom: 3rem;
-        border-radius: 0 0 32px 32px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 20px;
+        padding: 2.5rem;
+        margin-bottom: 2.5rem;
+        margin-top: 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .trips-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #6366f1, #8b5cf6, #a855f7);
     }
 
     .trips-hero h2 {
         color: #ffffff;
         font-size: 2.5rem;
         font-weight: 800;
-        letter-spacing: -0.5px;
         margin-bottom: 0.5rem;
+        letter-spacing: -0.5px;
     }
 
     .trips-hero p {
         color: rgba(255, 255, 255, 0.7);
         font-size: 1.1rem;
+        margin: 0;
     }
 
     .date-section {
@@ -50,7 +66,6 @@
 
     .origin-header {
         background: linear-gradient(135deg, rgba(99, 102, 241, 0.8) 0%, rgba(139, 92, 246, 0.7) 100%);
-
         border: 1px solid rgba(139, 92, 246, 0.3);
         border-left: 4px solid #a855f7;
         color: #ffffff;
@@ -316,6 +331,11 @@
 
     /* Responsive Design */
     @media (max-width: 768px) {
+        .trips-hero {
+            padding: 1.8rem;
+            margin-top: 1.5rem;
+        }
+
         .trips-hero h2 {
             font-size: 2rem;
         }
@@ -346,9 +366,9 @@
 @endpush
 
 @section('content')
-    <!-- Hero Section -->
-    <div class="trips-hero">
-        <div class="container">
+    <!-- Hero Section - UPDATED TO MATCH DASHBOARD HEADER -->
+    <div class="container">
+        <div class="trips-hero">
             <h2>
                 <i class="fas fa-route"></i> Available Trips
             </h2>
@@ -442,40 +462,38 @@
             @endforeach
 
             <!-- Pagination -->
-            <!-- Pagination -->
-@if($trips->hasPages())
-    <nav aria-label="Trips Pagination">
-        <ul class="pagination justify-content-center flex-wrap">
-            {{-- Previous Page Link --}}
-            @if ($trips->onFirstPage())
-                <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
-            @else
-                <li class="page-item">
-                    <a class="page-link" href="{{ $trips->previousPageUrl() }}" rel="prev">&laquo;</a>
-                </li>
+            @if($trips->hasPages())
+                <nav aria-label="Trips Pagination">
+                    <ul class="pagination justify-content-center flex-wrap">
+                        {{-- Previous Page Link --}}
+                        @if ($trips->onFirstPage())
+                            <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $trips->previousPageUrl() }}" rel="prev">&laquo;</a>
+                            </li>
+                        @endif
+
+                        {{-- Pagination Elements --}}
+                        @foreach ($trips->links()->elements[0] as $page => $url)
+                            @if ($page == $trips->currentPage())
+                                <li class="page-item active"><span class="page-link">{{ $page }}</span></li>
+                            @else
+                                <li class="page-item"><a class="page-link" href="{{ $url }}">{{ $page }}</a></li>
+                            @endif
+                        @endforeach
+
+                        {{-- Next Page Link --}}
+                        @if ($trips->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $trips->nextPageUrl() }}" rel="next">&raquo;</a>
+                            </li>
+                        @else
+                            <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                        @endif
+                    </ul>
+                </nav>
             @endif
-
-            {{-- Pagination Elements --}}
-            @foreach ($trips->links()->elements[0] as $page => $url)
-                @if ($page == $trips->currentPage())
-                    <li class="page-item active"><span class="page-link">{{ $page }}</span></li>
-                @else
-                    <li class="page-item"><a class="page-link" href="{{ $url }}">{{ $page }}</a></li>
-                @endif
-            @endforeach
-
-            {{-- Next Page Link --}}
-            @if ($trips->hasMorePages())
-                <li class="page-item">
-                    <a class="page-link" href="{{ $trips->nextPageUrl() }}" rel="next">&raquo;</a>
-                </li>
-            @else
-                <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
-            @endif
-        </ul>
-    </nav>
-@endif
-
         @endif
     </div>
 @endsection
