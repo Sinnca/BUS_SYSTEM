@@ -30,7 +30,26 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 245, 255, 0.9) 50%, rgba(99, 102, 241, 0.1) 100%);
             overflow-x: hidden;
+            
         }
+        body::before {
+        content: '';
+        position: absolute;
+        top: 40%;
+       right: 0%;
+        width: 125%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(104, 49, 233, 0.15) );
+        animation: rotate 20s linear infinite;
+        overflow: hidden;
+        z-index: -1;
+        }
+
+        
+   @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
 
         /* Premium Dark Navbar */
         .navbar-premium {
