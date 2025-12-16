@@ -499,6 +499,13 @@
             font-size: 0.95rem;
         }
     }
+    #return-trips-section .col-md-6 {
+        display: flex;
+    }
+    #return-trips-section .trip-card {
+        flex: 1;
+    }
+
 </style>
 @endpush
 
@@ -580,7 +587,7 @@
                                     <div class="trip-info-item">
                                         <i class="fas fa-chair"></i>
                                         <span>
-                                            Available: 
+                                            Available:
                                             <strong class="text-{{ $trip->available_seats > 10 ? 'success' : 'warning' }}">
                                                 <span class="seats-indicator">
                                                     <i class="fas fa-{{ $trip->available_seats > 10 ? 'check-circle' : 'exclamation-triangle' }}"></i>
@@ -635,7 +642,7 @@
                         No return trips available for selected date. Please select outbound trip only or change dates.
                     </div>
                 @else
-                    <div class="row" id="return-trips-section" style="display: none;">
+                    <div class="row" id="return-trips-section" >
                         @foreach($returnTrips as $trip)
                             <div class="col-md-6 mb-4">
                                 <div class="card trip-card">
@@ -669,7 +676,7 @@
                                             <div class="trip-info-item">
                                                 <i class="fas fa-chair"></i>
                                                 <span>
-                                                    Available: 
+                                                    Available:
                                                     <strong>
                                                         <span class="seats-indicator" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
                                                             {{ $trip->available_seats }} / {{ $trip->bus->capacity }}
@@ -752,7 +759,11 @@
                 this.innerHTML = '<i class="fas fa-check"></i> Selected';
 
                 // Show return trips section
-                document.getElementById('return-trips-section').style.display = 'block';
+                // document.getElementById('return-trips-section').style.display = 'block';
+                // Show return trips section
+                document.getElementById('return-trips-section').classList.remove('d-none');
+
+
 
                 // Scroll to return trips
                 document.getElementById('return-trips-section').scrollIntoView({ behavior: 'smooth' });

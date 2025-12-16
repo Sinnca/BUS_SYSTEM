@@ -9,13 +9,52 @@ use Illuminate\Http\Request;
 
 class TripController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $trips = Trip::with('bus')
-            ->available()
+        $query = Trip::with('bus')->available();
+
+        // Apply origin filter
+        if ($request->filled('origin')) {
+            $query->where('origin', 'like', '%' . $request->origin . '%');
+        }
+
+        // Apply destination filter
+        if ($request->filled('destination')) {
+            $query->where('destination', 'like', '%' . $request->destination . '%');
+        }
+
+        // Apply departure date filter
+        if ($request->filled('departure_date')) {
+            $query->where('departure_date', $request->departure_date);
+        }
+
+        // Apply trip status filter
+        if ($request->filled('trip_status')) {
+            if ($request->trip_status === 'upcoming') {
+                $query->whereRaw(
+                    "STR_TO_DATE(CONCAT(departure_date, ' ', departure_time), '%Y-%m-%d %H:%i:%s') >= ?",
+                    [now()]
+                );
+            } elseif ($request->trip_status === 'past') {
+                $query->whereRaw(
+                    "STR_TO_DATE(CONCAT(departure_date, ' ', departure_time), '%Y-%m-%d %H:%i:%s') < ?",
+                    [now()]
+                );
+            }
+        }
+
+
+//        $trips = Trip::with('bus')
+//            ->available()
+//            ->orderBy('departure_date')
+//            ->orderBy('departure_time')
+//            ->paginate(12) // good for display
+//            ->withQueryString(); // keeps the filter in pagination links
+        $trips = $query
             ->orderBy('departure_date')
             ->orderBy('departure_time')
-            ->paginate(12); // good for display
+            ->paginate(12)
+            ->withQueryString(); // keeps filters in pagination
 
         return view('user.trips.index', compact('trips'));
     }
@@ -28,7 +67,13 @@ class TripController extends Controller
         $query = Trip::with('bus')
             ->where('origin', $request->origin)
             ->where('destination', $request->destination)
-            ->where('departure_date', $request->departure_date)
+//            ->where('departure_date', $request->departure_date)
+            ->whereRaw(
+                "STR_TO_DATE(CONCAT(departure_date, ' ', departure_time), '%Y-%m-%d %H:%i:%s') >= ?",
+                [
+                    now()->setDateFrom($request->departure_date)
+                ]
+            )
             ->where('available_seats', '>=', $totalPassengers)
             ->available();
 

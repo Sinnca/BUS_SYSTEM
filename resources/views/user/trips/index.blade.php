@@ -446,10 +446,37 @@
             font-size: 1.6rem;
         }
     }
+    .filter-card-user {
+        background: white;
+        border-radius: 16px;
+        padding: 20px 25px;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.1);
+        margin-bottom: 25px;
+    }
+
+    .filter-input {
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-size: 0.95rem;
+    }
+
+    .btn-filter {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        font-weight: 600;
+    }
+
+    .btn-reset {
+        background: #64748b;
+        color: white;
+        font-weight: 600;
+    }
 </style>
 @endpush
 
 @section('content')
+
     <!-- Hero Section - UPDATED TO MATCH DASHBOARD HEADER -->
     <div class="container">
         <div class="trips-hero">
@@ -459,6 +486,39 @@
             <p>Book your journey across the Philippines with comfort and convenience</p>
         </div>
     </div>
+    <div class="container mb-4">
+        <div class="filter-card-user">
+            <form action="{{ route('trips.index') }}" method="GET" class="row g-3 align-items-center">
+                <div class="col-md-2">
+                    <input type="text" name="origin" class="form-control filter-input" placeholder="🚩 Origin" value="{{ request('origin') }}">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" name="destination" class="form-control filter-input" placeholder="📍 Destination" value="{{ request('destination') }}">
+                </div>
+                <div class="col-md-2">
+                    <input type="date" name="departure_date" class="form-control filter-input" value="{{ request('departure_date') }}">
+                </div>
+                <div class="col-md-2">
+                    <select name="trip_status" class="form-select filter-input">
+                        <option value="">All Trips</option>
+                        <option value="upcoming" {{ request('trip_status') == 'upcoming' ? 'selected' : '' }}>Upcoming</option>
+                        <option value="past" {{ request('trip_status') == 'past' ? 'selected' : '' }}>Past</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-filter w-100">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <a href="{{ route('trips.index') }}" class="btn btn-reset w-100">
+                        <i class="fas fa-times"></i> Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <div class="container">
         @if($trips->count() == 0)
@@ -492,7 +552,7 @@
                             <i class="fas fa-map-marker-alt"></i>
                             From {{ $origin }}
                         </h5>
-                        
+
                         <div class="row">
                             @foreach($originTrips as $trip)
                                 <div class="col-lg-4 col-md-6 mb-4">
@@ -517,7 +577,7 @@
                                             <div class="trip-info-item">
                                                 <i class="fas fa-chair"></i>
                                                 <span>
-                                                    Seats Available: 
+                                                    Seats Available:
                                                     <span class="seats-badge {{ $trip->available_seats <= 5 ? 'low-seats' : '' }}">
                                                         <i class="fas fa-{{ $trip->available_seats <= 5 ? 'exclamation-triangle' : 'check-circle' }}"></i>
                                                         {{ $trip->available_seats }}

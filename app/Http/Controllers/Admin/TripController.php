@@ -9,11 +9,52 @@ use Illuminate\Http\Request;
 
 class TripController extends Controller
 {
+//    public function index(Request $request)
+//    {
+//        $query = Trip::with('bus');
+//        // Only show trips that have not departed yet
+//        $query->whereRaw(
+//            "STR_TO_DATE(CONCAT(departure_date, ' ', departure_time), '%Y-%m-%d %H:%i:%s') > ?",
+//            [now()]
+//        );
+//
+//        // Apply filters if provided
+//        if ($request->filled('origin')) {
+//            $query->where('origin', 'like', '%' . $request->origin . '%');
+//        }
+//
+//        if ($request->filled('destination')) {
+//            $query->where('destination', 'like', '%' . $request->destination . '%');
+//        }
+//
+//        // Order by date and time
+//        $trips = $query->orderBy('departure_date', 'desc')
+//            ->orderBy('departure_time', 'desc')
+//            ->paginate(15)
+//            ->withQueryString(); // keeps the filter in pagination links
+//
+//        return view('admin.trips.index', compact('trips'));
+//    }
     public function index(Request $request)
     {
         $query = Trip::with('bus');
 
-        // Apply filters if provided
+        // Optional upcoming/past filter
+        if ($request->filled('trip_status')) {
+            if ($request->trip_status === 'upcoming') {
+                $query->whereRaw(
+                    "STR_TO_DATE(CONCAT(departure_date, ' ', departure_time), '%Y-%m-%d %H:%i:%s') > ?",
+                    [now()]
+                );
+            } elseif ($request->trip_status === 'past') {
+                $query->whereRaw(
+                    "STR_TO_DATE(CONCAT(departure_date, ' ', departure_time), '%Y-%m-%d %H:%i:%s') <= ?",
+                    [now()]
+                );
+            }
+        }
+
+        // Existing filters
         if ($request->filled('origin')) {
             $query->where('origin', 'like', '%' . $request->origin . '%');
         }
@@ -22,11 +63,10 @@ class TripController extends Controller
             $query->where('destination', 'like', '%' . $request->destination . '%');
         }
 
-        // Order by date and time
         $trips = $query->orderBy('departure_date', 'desc')
             ->orderBy('departure_time', 'desc')
             ->paginate(15)
-            ->withQueryString(); // keeps the filter in pagination links
+            ->withQueryString();
 
         return view('admin.trips.index', compact('trips'));
     }

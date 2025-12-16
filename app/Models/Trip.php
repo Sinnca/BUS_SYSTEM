@@ -57,8 +57,14 @@ class Trip extends Model
 
     public function scopeSearchRoute($query, $origin, $destination)
     {
-        return $query->where('origin', $origin)
-            ->where('destination', $destination);
+//        return $query->where('origin', $origin)
+//            ->where('destination', $destination);
+        return $query
+            ->where('status', 'active') // if you have status
+            ->whereRaw(
+                "STR_TO_DATE(CONCAT(departure_date, ' ', departure_time), '%Y-%m-%d %H:%i:%s') > ?",
+                [now()]
+            );
     }
 
     public function scopeOnDate($query, $date)
@@ -92,5 +98,12 @@ class Trip extends Model
         if (!$this->bus) return 0;
         $occupied = $this->bus->capacity - $this->available_seats;
         return round(($occupied / $this->bus->capacity) * 100, 2);
+    }
+    public function scopeUpcoming($query)
+    {
+        return $query->whereRaw(
+            "STR_TO_DATE(CONCAT(departure_date, ' ', departure_time), '%Y-%m-%d %H:%i:%s') > ?",
+            [now()]
+        );
     }
 }

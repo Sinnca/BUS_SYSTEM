@@ -700,11 +700,17 @@
             justify-content: center;
         }
     }
+    .status-badge.failed {
+        background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+        border-color: rgba(239, 68, 68, 0.5);
+    }
+
 </style>
 @endpush
 
 @section('content')
     <div class="container bookings-container">
+
         <!-- Page Header -->
         <div class="bookings-header">
             <h2>My Bookings</h2>
@@ -713,7 +719,7 @@
             </a>
         </div>
 
-        <!-- Filter by Status -->
+        <!-- Filter -->
         <div class="filter-section">
             <form method="GET" action="{{ route('my.bookings') }}">
                 <div class="row align-items-end">
@@ -734,31 +740,59 @@
                 </div>
             </form>
         </div>
-
+        <!-- Show active filter -->
+        @if(request('status'))
+            <div class="alert alert-info">
+                <i class="fas fa-filter"></i> Showing: <strong>{{ ucfirst(request('status')) }}</strong> bookings
+            </div>
+        @endif
         @if($reservations->isEmpty())
             <div class="empty-state">
-                <div class="empty-state-icon">
-                    <i class="fas fa-ticket-alt"></i>
-                </div>
-                <div class="empty-state-text">
-                    You don't have any bookings yet.
-                </div>
+                <div class="empty-state-icon"><i class="fas fa-ticket-alt"></i></div>
+                <div class="empty-state-text">You don't have any bookings yet.</div>
                 <a href="{{ route('home') }}" class="empty-state-link">Book your first trip!</a>
             </div>
         @else
             @foreach($reservations as $reservation)
+                @php
+                    // ✅ FIX: Parse trip datetime correctly
+                    $departureDate = $reservation->trip->departure_date->format('Y-m-d');
+                    $departureTime = \Carbon\Carbon::parse($reservation->trip->departure_time)->format('H:i:s');
+                    $tripDateTime = \Carbon\Carbon::parse($departureDate . ' ' . $departureTime);
+
+                    $isPastTrip = $tripDateTime->isPast();
+                    $hoursSinceBooking = $reservation->created_at->diffInHours(now());
+                @endphp
+
                 <div class="booking-card">
+                    <!-- HEADER -->
                     <div class="booking-card-header {{ $reservation->status }}">
                         <div class="row align-items-center">
-                            <div class="col-md-8 mb-2 mb-md-0">
+                            <div class="col-md-8">
                                 <h5 class="booking-code">
-                                    <i class="fas fa-ticket-alt"></i> 
+                                    <i class="fas fa-ticket-alt"></i>
                                     {{ $reservation->reservation_code }}
                                 </h5>
                             </div>
+
                             <div class="col-md-4 text-md-end">
                                 <div class="booking-status-badges">
-                                    <span class="status-badge">{{ ucfirst($reservation->status) }}</span>
+                                    @if($isPastTrip)
+                                        @if($reservation->status === 'confirmed')
+                                            <span class="status-badge completed">Completed</span>
+                                        @elseif($reservation->status === 'pending')
+                                            <span class="status-badge failed">Failed</span>
+                                        @else
+                                            <span class="status-badge {{ $reservation->status }}">
+                                                {{ ucfirst($reservation->status) }}
+                                            </span>
+                                        @endif
+                                    @else
+                                        <span class="status-badge {{ $reservation->status }}">
+                                            {{ ucfirst($reservation->status) }}
+                                        </span>
+                                    @endif
+
                                     @if($reservation->is_round_trip)
                                         <span class="status-badge round-trip">Round Trip</span>
                                     @endif
@@ -767,12 +801,14 @@
                         </div>
                     </div>
 
+                    <!-- BODY -->
                     <div class="booking-card-body">
-                        <!-- Outbound Trip -->
+                        <!-- OUTBOUND -->
                         <div class="trip-section">
                             <div class="trip-section-header">
                                 <i class="fas fa-arrow-right"></i> Outbound Trip
                             </div>
+
                             <div class="trip-info-grid">
                                 <div class="trip-info-item">
                                     <div class="trip-info-label">Route</div>
@@ -780,6 +816,7 @@
                                         {{ $reservation->trip->origin }} → {{ $reservation->trip->destination }}
                                     </div>
                                 </div>
+
                                 <div class="trip-info-item">
                                     <div class="trip-info-label">Date & Time</div>
                                     <div class="trip-info-value">
@@ -787,23 +824,25 @@
                                         {{ $reservation->trip->formatted_time }}
                                     </div>
                                 </div>
+
                                 <div class="trip-info-item">
                                     <div class="trip-info-label">Bus</div>
                                     <div class="trip-info-value">
                                         {{ $reservation->trip->bus->bus_number }}
-                                        <span class="bus-type-badge">{{ $reservation->trip->bus->formatted_bus_type }}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Return Trip -->
-                        @if($reservation->return_trip_id)
+                        @if($reservation->is_round_trip && $reservation->returnTrip)
                             <hr class="trip-section-divider">
+
+                            <!-- RETURN TRIP -->
                             <div class="trip-section">
                                 <div class="trip-section-header">
                                     <i class="fas fa-arrow-left"></i> Return Trip
                                 </div>
+
                                 <div class="trip-info-grid">
                                     <div class="trip-info-item">
                                         <div class="trip-info-label">Route</div>
@@ -811,6 +850,7 @@
                                             {{ $reservation->returnTrip->origin }} → {{ $reservation->returnTrip->destination }}
                                         </div>
                                     </div>
+
                                     <div class="trip-info-item">
                                         <div class="trip-info-label">Date & Time</div>
                                         <div class="trip-info-value">
@@ -818,6 +858,7 @@
                                             {{ $reservation->returnTrip->formatted_time }}
                                         </div>
                                     </div>
+
                                     <div class="trip-info-item">
                                         <div class="trip-info-label">Bus</div>
                                         <div class="trip-info-value">
@@ -830,7 +871,7 @@
 
                         <hr class="trip-section-divider">
 
-                        <!-- Booking Details -->
+                        <!-- DETAILS -->
                         <div class="booking-details-grid">
                             <div class="trip-info-item">
                                 <div class="trip-info-label">Seats</div>
@@ -840,6 +881,7 @@
                                     @endforeach
                                 </div>
                             </div>
+
                             <div class="trip-info-item">
                                 <div class="trip-info-label">Passengers</div>
                                 <div class="trip-info-value">
@@ -849,12 +891,14 @@
                                     @endif
                                 </div>
                             </div>
+
                             <div class="trip-info-item">
                                 <div class="trip-info-label">Booked On</div>
                                 <div class="trip-info-value">
                                     {{ $reservation->created_at->format('M d, Y') }}
                                 </div>
                             </div>
+
                             <div class="trip-info-item">
                                 <div class="total-price">
                                     <div class="total-price-label">Total</div>
@@ -862,70 +906,82 @@
                                 </div>
                             </div>
                         </div>
-
-                        <hr class="trip-section-divider">
-
-                        <!-- Passenger Names -->
-                        <div class="passengers-section">
-                            <div class="passengers-label">Passenger Names</div>
-                            <ul class="passenger-list">
-                                @foreach($reservation->passenger_names as $name)
-                                    <li class="passenger-item">
-                                        <i class="fas fa-user"></i> {{ $name }}
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
                     </div>
 
+                    <!-- FOOTER -->
                     <div class="booking-card-footer">
                         <div class="footer-info">
                             <i class="fas fa-info-circle"></i>
                             <span>Arrive 30 minutes before departure</span>
                         </div>
+
                         <div class="footer-actions">
-                            @if($reservation->status !== 'cancelled')
+                            {{-- COMPLETED --}}
+                            @if($isPastTrip)
                                 <button class="btn-print" onclick="window.print()">
                                     <i class="fas fa-print"></i> Print
                                 </button>
-                            @endif
 
-                            @if($reservation->status === 'pending')
+                                {{-- CANCELLED --}}
+                            @elseif($reservation->status === 'cancelled')
+                                {{-- no actions --}}
+
+                                {{-- PENDING --}}
+                            @elseif($reservation->status === 'pending')
                                 <a href="{{ route('payment.page', $reservation->id) }}" class="btn-pay">
                                     <i class="fas fa-credit-card"></i> Pay Now
                                 </a>
-                            @endif
 
-                            @if(in_array($reservation->status, ['confirmed', 'pending']) && $reservation->trip->departure_date > now()->toDateString())
-                                <button type="button" class="btn-cancel" data-bs-toggle="modal" data-bs-target="#cancelModal{{ $reservation->id }}">
+                                <button class="btn-cancel" data-bs-toggle="modal"
+                                        data-bs-target="#cancelModal{{ $reservation->id }}">
                                     <i class="fas fa-times"></i> Cancel
                                 </button>
+
+                                {{-- CONFIRMED --}}
+                            @elseif($reservation->status === 'confirmed')
+                                <button class="btn-print" onclick="window.print()">
+                                    <i class="fas fa-print"></i> Print
+                                </button>
+
+                                @if($hoursSinceBooking <= 10)
+                                    <button class="btn-cancel" data-bs-toggle="modal"
+                                            data-bs-target="#cancelModal{{ $reservation->id }}">
+                                        <i class="fas fa-times"></i> Cancel
+                                    </button>
+                                @endif
                             @endif
                         </div>
                     </div>
                 </div>
 
-                <!-- Cancel Modal -->
-                @if(in_array($reservation->status, ['confirmed', 'pending']) && $reservation->trip->departure_date > now()->toDateString())
-                    <div class="modal fade" id="cancelModal{{ $reservation->id }}" tabindex="-1" aria-labelledby="cancelModalLabel{{ $reservation->id }}" aria-hidden="true">
+                <!-- CANCEL MODAL -->
+                @if(
+                    !$isPastTrip &&
+                    (
+                        $reservation->status === 'pending' ||
+                        ($reservation->status === 'confirmed' && $hoursSinceBooking <= 10)
+                    )
+                )
+                    <div class="modal fade" id="cancelModal{{ $reservation->id }}" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content modal-content-custom">
                                 <div class="modal-header modal-header-custom">
-                                    <h5 class="modal-title" id="cancelModalLabel{{ $reservation->id }}">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                        Cancel Reservation
+                                    <h5 class="modal-title">
+                                        <i class="fas fa-exclamation-triangle"></i> Cancel Reservation
                                     </h5>
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                 </div>
+
                                 <div class="modal-body modal-body-custom">
-                                    Are you sure you want to cancel this reservation?<br>
-                                    <strong>Note:</strong> You will need to book a new trip if you cancel.
+                                    Are you sure you want to cancel this reservation?
                                 </div>
+
                                 <div class="modal-footer modal-footer-custom">
-                                    <button type="button" class="btn-modal-keep" data-bs-dismiss="modal">
+                                    <button class="btn-modal-keep" data-bs-dismiss="modal">
                                         No, Keep Booking
                                     </button>
-                                    <form action="{{ route('reservation.cancel', $reservation->id) }}" method="POST" class="d-inline">
+
+                                    <form action="{{ route('reservation.cancel', $reservation->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn-modal-cancel">
                                             Yes, Cancel
@@ -936,6 +992,7 @@
                         </div>
                     </div>
                 @endif
+
             @endforeach
 
             <div class="d-flex justify-content-center">

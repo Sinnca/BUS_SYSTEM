@@ -515,7 +515,7 @@
             min-width: 14px !important;
             min-height: 14px !important;
         }
-        
+
         .pagination .page-link i {
             font-size: 14px !important;
         }
@@ -534,7 +534,7 @@
             pointer-events: none !important;
             min-width: 24px !important;
         }
-        
+
         /* Hide any wrapper spans that might be enlarging content */
         .pagination .page-link span {
             display: inline-flex !important;
@@ -543,7 +543,7 @@
             width: 100% !important;
             height: 100% !important;
         }
-      
+
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -613,7 +613,7 @@
                 width: 100%;
                 justify-content: center;
             }
-          
+
         }
     </style>
 
@@ -641,11 +641,18 @@
         <div class="filter-card">
             <div class="filter-card-body">
                 <form action="{{ route('admin.trips.index') }}" method="GET" class="row g-3 align-items-center">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <input type="text" name="origin" class="form-control filter-input" placeholder="🚩 Origin" value="{{ request('origin') }}">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <input type="text" name="destination" class="form-control filter-input" placeholder="📍 Destination" value="{{ request('destination') }}">
+                    </div>
+                    <div class="col-md-2">
+                        <select name="trip_status" class="form-select filter-input">
+                            <option value="">All Trips</option>
+                            <option value="upcoming" {{ request('trip_status') == 'upcoming' ? 'selected' : '' }}>Upcoming</option>
+                            <option value="past" {{ request('trip_status') == 'past' ? 'selected' : '' }}>Past</option>
+                        </select>
                     </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-filter w-100">
@@ -750,7 +757,7 @@
     {{ $trips->onEachSide(1)->links('pagination-custom') }}
 </div>
 @endif
-           
+
         </div>
     </div>
 
