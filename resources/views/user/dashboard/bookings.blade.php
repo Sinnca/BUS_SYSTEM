@@ -8,6 +8,7 @@
     .bookings-container {
         margin-top: 2rem;
         margin-bottom: 3rem;
+        animation: fadeIn 0.6s ease-out;
     }
 
     /* Page Header */
@@ -23,6 +24,7 @@
         align-items: center;
         flex-wrap: wrap;
         gap: 1.5rem;
+        animation: fadeInDown 0.6s ease-out;
     }
 
     .bookings-header h2 {
@@ -63,6 +65,9 @@
         padding: 1.8rem;
         margin-bottom: 2rem;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 0.6s ease-out;
+        animation-delay: 0.1s;
+        animation-fill-mode: both;
     }
 
     .filter-label {
@@ -119,6 +124,9 @@
         padding: 4rem 2rem;
         text-align: center;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        animation: fadeIn 0.6s ease-out;
+        animation-delay: 0.2s;
+        animation-fill-mode: both;
     }
 
     .empty-state-icon {
@@ -154,6 +162,32 @@
         overflow: hidden;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         transition: all 0.3s ease;
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .booking-card:nth-child(1) {
+        animation-delay: 0.2s;
+    }
+
+    .booking-card:nth-child(2) {
+        animation-delay: 0.3s;
+    }
+
+    .booking-card:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    .booking-card:nth-child(4) {
+        animation-delay: 0.5s;
+    }
+
+    .booking-card:nth-child(5) {
+        animation-delay: 0.6s;
+    }
+
+    .booking-card:nth-child(6) {
+        animation-delay: 0.7s;
     }
 
     .booking-card:hover {
@@ -568,6 +602,38 @@
         background: rgba(30, 41, 59, 0.5);
         border-color: rgba(139, 92, 246, 0.1);
         color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Keyframe Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* Responsive */

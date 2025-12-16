@@ -8,6 +8,7 @@
     .dashboard-container {
         margin-top: 2rem;
         margin-bottom: 3rem;
+        animation: fadeIn 0.6s ease-out;
     }
 
     /* Welcome Header */
@@ -20,6 +21,7 @@
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         position: relative;
         overflow: hidden;
+        animation: fadeInDown 0.6s ease-out;
     }
 
     .dashboard-header::before {
@@ -63,6 +65,20 @@
         overflow: hidden;
         transition: all 0.3s ease;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .stat-card:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .stat-card:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .stat-card:nth-child(3) {
+        animation-delay: 0.3s;
     }
 
     .stat-card::before {
@@ -142,6 +158,16 @@
         margin-bottom: 2.5rem;
         overflow: hidden;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .section-card:nth-of-type(1) {
+        animation-delay: 0.4s;
+    }
+
+    .section-card:nth-of-type(2) {
+        animation-delay: 0.5s;
     }
 
     .section-card-header {
@@ -179,6 +205,28 @@
         padding: 1.8rem;
         margin-bottom: 1.5rem;
         transition: all 0.3s ease;
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .trip-card:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .trip-card:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .trip-card:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    .trip-card:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+
+    .trip-card:nth-child(5) {
+        animation-delay: 0.5s;
     }
 
     .trip-card:hover {
@@ -326,6 +374,28 @@
         padding: 1.2rem 1.5rem;
         margin-bottom: 1rem;
         transition: all 0.3s ease;
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .past-trip-card:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .past-trip-card:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .past-trip-card:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    .past-trip-card:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+
+    .past-trip-card:nth-child(5) {
+        animation-delay: 0.5s;
     }
 
     .past-trip-card:hover {
@@ -384,6 +454,7 @@
         background: rgba(99, 102, 241, 0.05);
         border: 2px dashed rgba(139, 92, 246, 0.2);
         border-radius: 16px;
+        animation: fadeIn 0.6s ease-out;
     }
 
     .empty-state-icon {
@@ -427,6 +498,16 @@
         transition: all 0.3s ease;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         height: 100%;
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .action-card:nth-child(1) {
+        animation-delay: 0.6s;
+    }
+
+    .action-card:nth-child(2) {
+        animation-delay: 0.7s;
     }
 
     .action-card:hover {
@@ -516,6 +597,38 @@
         box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6);
         background: linear-gradient(135deg, #059669 0%, #047857 100%);
         color: white;
+    }
+
+    /* Keyframe Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* Responsive */

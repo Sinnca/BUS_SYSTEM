@@ -16,6 +16,7 @@
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         position: relative;
         overflow: hidden;
+        animation: fadeInDown 0.6s ease-out;
     }
 
     .trips-hero::before {
@@ -144,6 +145,89 @@
     @keyframes slideArrow {
         0%, 100% { transform: translateX(0); }
         50% { transform: translateX(5px); }
+    }
+
+    /* Page Load Animations */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Apply staggered animations to sections */
+    .date-section {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .date-section:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .date-section:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .date-section:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    .trip-card {
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    /* Stagger animation for trip cards in a row */
+    .col-lg-4:nth-child(1) .trip-card {
+        animation-delay: 0.1s;
+    }
+
+    .col-lg-4:nth-child(2) .trip-card {
+        animation-delay: 0.2s;
+    }
+
+    .col-lg-4:nth-child(3) .trip-card {
+        animation-delay: 0.3s;
+    }
+
+    .col-lg-4:nth-child(4) .trip-card {
+        animation-delay: 0.4s;
+    }
+
+    .col-lg-4:nth-child(5) .trip-card {
+        animation-delay: 0.5s;
+    }
+
+    .col-lg-4:nth-child(6) .trip-card {
+        animation-delay: 0.6s;
+    }
+
+    .no-trips-container {
+        animation: fadeIn 0.6s ease-out;
     }
 
     .trip-info {
