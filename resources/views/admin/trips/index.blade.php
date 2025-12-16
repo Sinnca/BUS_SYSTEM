@@ -432,6 +432,118 @@
             font-weight: 500;
         }
 
+        /* Pagination Styling - AGGRESSIVE FIX */
+        .pagination-wrapper {
+            padding: 20px 25px !important;
+            background: white !important;
+            border-top: 1px solid #e2e8f0 !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+
+        .pagination {
+            display: flex !important;
+            gap: 6px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            list-style: none !important;
+            align-items: center !important;
+        }
+
+        .pagination .page-item {
+            margin: 0 !important;
+        }
+
+        .pagination .page-link {
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 600 !important;
+            font-size: 0.813rem !important;
+            color: #64748b !important;
+            background: white !important;
+            border: 1.5px solid #e2e8f0 !important;
+            border-radius: 6px !important;
+            padding: 6px 10px !important;
+            transition: all 0.2s ease !important;
+            text-decoration: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-width: 32px !important;
+            max-width: 32px !important;
+            width: 32px !important;
+            height: 32px !important;
+            line-height: 1 !important;
+            overflow: hidden !important;
+        }
+
+        .pagination .page-link:hover {
+            background: #f8fafc !important;
+            border-color: #cbd5e1 !important;
+            color: #475569 !important;
+            transform: translateY(-1px) !important;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+            border-color: #6366f1 !important;
+            color: white !important;
+            font-weight: 700 !important;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3) !important;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            background: #f8fafc !important;
+            border-color: #e2e8f0 !important;
+            color: #cbd5e1 !important;
+            cursor: not-allowed !important;
+            opacity: 0.6 !important;
+        }
+
+        .pagination .page-item.disabled .page-link:hover {
+            background: #f8fafc !important;
+            border-color: #e2e8f0 !important;
+            transform: none !important;
+        }
+
+        /* Aggressive SVG and Icon sizing */
+        .pagination .page-link svg {
+            width: 14px !important;
+            height: 14px !important;
+            max-width: 14px !important;
+            max-height: 14px !important;
+            min-width: 14px !important;
+            min-height: 14px !important;
+        }
+        
+        .pagination .page-link i {
+            font-size: 14px !important;
+        }
+
+        /* Target all possible SVG paths and elements */
+        .pagination .page-link svg path,
+        .pagination .page-link svg * {
+            width: inherit !important;
+            height: inherit !important;
+        }
+
+        /* Dots spacing */
+        .pagination .page-item .page-link[aria-label*="..."] {
+            border: none !important;
+            background: transparent !important;
+            pointer-events: none !important;
+            min-width: 24px !important;
+        }
+        
+        /* Hide any wrapper spans that might be enlarging content */
+        .pagination .page-link span {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important;
+            height: 100% !important;
+        }
+      
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -501,6 +613,7 @@
                 width: 100%;
                 justify-content: center;
             }
+          
         }
     </style>
 
@@ -632,12 +745,12 @@
                     </tbody>
                 </table>
             </div>
-
-            @if($trips->hasPages())
-            <div style="padding: 25px 30px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.02) 0%, rgba(139, 92, 246, 0.02) 100%); border-top: 2px solid rgba(99, 102, 241, 0.1);">
-                {{ $trips->links() }}
-            </div>
-            @endif
+@if($trips->hasPages())
+<div class="pagination-wrapper">
+    {{ $trips->onEachSide(1)->links('pagination-custom') }}
+</div>
+@endif
+           
         </div>
     </div>
 
