@@ -1,384 +1,6 @@
-{{--@extends('layouts.app')--}}
-
-{{--@section('title', 'Select Seats')--}}
-
-{{--@push('styles')--}}
-{{--    <style>--}}
-{{--        .seat-map {--}}
-{{--            display: flex;--}}
-{{--            flex-direction: column;--}}
-{{--            gap: 10px;--}}
-{{--            max-width: 400px;--}}
-{{--            margin: 0 auto;--}}
-{{--        }--}}
-
-{{--        .seat-row {--}}
-{{--            display: flex;--}}
-{{--            justify-content: center;--}}
-{{--            gap: 10px;--}}
-{{--        }--}}
-
-{{--        .seat {--}}
-{{--            width: 50px;--}}
-{{--            height: 50px;--}}
-{{--            border: 2px solid #ddd;--}}
-{{--            background: #fff;--}}
-{{--            border-radius: 5px;--}}
-{{--            cursor: pointer;--}}
-{{--            font-size: 14px;--}}
-{{--            font-weight: bold;--}}
-{{--            transition: all 0.3s ease;--}}
-{{--            display: flex;--}}
-{{--            align-items: center;--}}
-{{--            justify-content: center;--}}
-{{--        }--}}
-
-{{--        .seat.available:hover {--}}
-{{--            background: #e3f2fd;--}}
-{{--            border-color: #2196F3;--}}
-{{--            transform: scale(1.05);--}}
-{{--        }--}}
-
-{{--        .seat.selected {--}}
-{{--            background: #2196F3;--}}
-{{--            color: white;--}}
-{{--            border-color: #1976D2;--}}
-{{--        }--}}
-
-{{--        .seat.reserved {--}}
-{{--            background: #ccc;--}}
-{{--            cursor: not-allowed;--}}
-{{--            color: #666;--}}
-{{--        }--}}
-
-{{--        .seat.driver {--}}
-{{--            background: #333;--}}
-{{--            color: white;--}}
-{{--            cursor: default;--}}
-{{--        }--}}
-
-{{--        .legend {--}}
-{{--            display: flex;--}}
-{{--            justify-content: center;--}}
-{{--            gap: 20px;--}}
-{{--            margin-top: 20px;--}}
-{{--        }--}}
-
-{{--        .legend-item {--}}
-{{--            display: flex;--}}
-{{--            align-items: center;--}}
-{{--            gap: 8px;--}}
-{{--        }--}}
-
-{{--        .legend-box {--}}
-{{--            width: 30px;--}}
-{{--            height: 30px;--}}
-{{--            border: 2px solid #ddd;--}}
-{{--            border-radius: 5px;--}}
-{{--        }--}}
-
-{{--        .booking-summary {--}}
-{{--            position: sticky;--}}
-{{--            top: 20px;--}}
-{{--        }--}}
-{{--    </style>--}}
-{{--@endpush--}}
-
-{{--@section('content')--}}
-{{--    <div class="container py-4">--}}
-{{--        <div class="row">--}}
-{{--            <!-- Seat Map -->--}}
-{{--            <div class="col-lg-8">--}}
-{{--                <div class="card">--}}
-{{--                    <div class="card-header bg-primary text-white">--}}
-{{--                        <h4 class="mb-0">--}}
-{{--                            <i class="fas fa-chair"></i> Select Your Seats--}}
-{{--                        </h4>--}}
-{{--                    </div>--}}
-{{--                    <div class="card-body">--}}
-{{--                        <!-- Trip Info -->--}}
-{{--                        <div class="alert alert-info">--}}
-{{--                            <h5>{{ $trip->origin }} → {{ $trip->destination }}</h5>--}}
-{{--                            <p class="mb-0">--}}
-{{--                                <i class="fas fa-calendar"></i> {{ $trip->formatted_date }} |--}}
-{{--                                <i class="fas fa-clock"></i> {{ $trip->formatted_time }} |--}}
-{{--                                <i class="fas fa-bus"></i> {{ $trip->bus->formatted_bus_type }} ({{ $trip->bus->bus_number }})--}}
-{{--                            </p>--}}
-{{--                        </div>--}}
-
-{{--                        <!-- Instructions -->--}}
-{{--                        <div class="alert alert-warning">--}}
-{{--                            <i class="fas fa-info-circle"></i>--}}
-{{--                            Please select <strong>{{ $search['adults'] + $search['children'] }}</strong> seat(s)--}}
-{{--                            ({{ $search['adults'] }} adult{{ $search['adults'] > 1 ? 's' : '' }}--}}
-{{--                            @if($search['children'] > 0), {{ $search['children'] }} child(ren)@endif)--}}
-{{--                        </div>--}}
-
-{{--                        <!-- Bus Front Indicator -->--}}
-{{--                        <div class="text-center mb-3">--}}
-{{--                            <div class="badge bg-dark" style="padding: 10px 50px;">--}}
-{{--                                <i class="fas fa-steering-wheel"></i> FRONT--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-
-{{--                        <!-- Seat Map -->--}}
-{{--                        <div class="seat-map">--}}
-{{--                            @php--}}
-{{--                                $capacity = $trip->bus->capacity;--}}
-{{--                                $cols = 4; // 4 seats per row--}}
-{{--                                $rows = ceil($capacity / $cols);--}}
-{{--                            @endphp--}}
-
-{{--                            @for($row = 1; $row <= $rows; $row++)--}}
-{{--                                <div class="seat-row">--}}
-{{--                                    @for($col = 1; $col <= $cols; $col++)--}}
-{{--                                        @php--}}
-{{--                                            $seatNum = ($row - 1) * $cols + $col;--}}
-{{--                                        @endphp--}}
-
-{{--                                        @if($seatNum <= $capacity)--}}
-{{--                                            @php--}}
-{{--                                                $isReserved = in_array($seatNum, $reservedSeats);--}}
-{{--                                            @endphp--}}
-
-{{--                                            <button--}}
-{{--                                                type="button"--}}
-{{--                                                class="seat {{ $isReserved ? 'reserved' : 'available' }}"--}}
-{{--                                                data-seat="{{ $seatNum }}"--}}
-{{--                                                {{ $isReserved ? 'disabled' : '' }}>--}}
-{{--                                                {{ $seatNum }}--}}
-{{--                                            </button>--}}
-{{--                                        @else--}}
-{{--                                            <div style="width: 50px;"></div>--}}
-{{--                                        @endif--}}
-
-{{--                                        --}}{{-- Add aisle after 2nd seat --}}
-{{--                                        @if($col == 2)--}}
-{{--                                            <div style="width: 30px;"></div>--}}
-{{--                                        @endif--}}
-{{--                                    @endfor--}}
-{{--                                </div>--}}
-{{--                            @endfor--}}
-{{--                        </div>--}}
-
-{{--                        <!-- Legend -->--}}
-{{--                        <div class="legend mt-4">--}}
-{{--                            <div class="legend-item">--}}
-{{--                                <div class="legend-box" style="background: #fff; border-color: #ddd;"></div>--}}
-{{--                                <span>Available</span>--}}
-{{--                            </div>--}}
-{{--                            <div class="legend-item">--}}
-{{--                                <div class="legend-box" style="background: #2196F3; border-color: #1976D2;"></div>--}}
-{{--                                <span>Selected</span>--}}
-{{--                            </div>--}}
-{{--                            <div class="legend-item">--}}
-{{--                                <div class="legend-box" style="background: #ccc; border-color: #999;"></div>--}}
-{{--                                <span>Reserved</span>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--            <!-- Booking Summary & Form -->--}}
-{{--            <div class="col-lg-4">--}}
-{{--                <div class="booking-summary">--}}
-{{--                    <div class="card">--}}
-{{--                        <div class="card-header bg-success text-white">--}}
-{{--                            <h5 class="mb-0">Booking Summary</h5>--}}
-{{--                        </div>--}}
-{{--                        <div class="card-body">--}}
-{{--                            <!-- Selected Seats Display -->--}}
-{{--                            <div class="mb-3">--}}
-{{--                                <strong>Selected Seats:</strong>--}}
-{{--                                <div id="selected-seats-display" class="mt-2">--}}
-{{--                                    <span class="text-muted">No seats selected</span>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
-{{--                            <hr>--}}
-
-{{--                            <!-- Price Breakdown -->--}}
-{{--                            <div class="mb-3">--}}
-{{--                                <div class="d-flex justify-content-between">--}}
-{{--                                    <span>Adults ({{ $search['adults'] }}):</span>--}}
-{{--                                    <span>{{ $trip->formatted_price }}</span>--}}
-{{--                                </div>--}}
-{{--                                @if($search['children'] > 0)--}}
-{{--                                    <div class="d-flex justify-content-between">--}}
-{{--                                        <span>Children ({{ $search['children'] }}):</span>--}}
-{{--                                        <span>{{ $trip->formatted_price }}</span>--}}
-{{--                                    </div>--}}
-{{--                                @endif--}}
-{{--                                <hr>--}}
-{{--                                <div class="d-flex justify-content-between">--}}
-{{--                                    <strong>Total:</strong>--}}
-{{--                                    <strong class="text-success" id="total-price">--}}
-{{--                                        ₱{{ number_format($trip->price * ($search['adults'] + $search['children']), 2) }}--}}
-{{--                                    </strong>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
-{{--                            <hr>--}}
-
-{{--                            <!-- Booking Form -->--}}
-{{--                            <form action="{{ route('booking.store') }}" method="POST" id="booking-form">--}}
-{{--                                @csrf--}}
-
-{{--                                <input type="hidden" name="trip_id" value="{{ $trip->id }}">--}}
-
-{{--                                <!-- Hidden inputs for selected seats -->--}}
-{{--                                <div id="seat-inputs"></div>--}}
-
-{{--                                <!-- Passenger Names -->--}}
-{{--                                <div id="passenger-names" class="mb-3"></div>--}}
-
-{{--                                <!-- Submit Button -->--}}
-{{--                                <button type="submit" class="btn btn-success btn-lg w-100" id="confirm-btn" disabled>--}}
-{{--                                    <i class="fas fa-check"></i> Confirm Booking--}}
-{{--                                </button>--}}
-{{--                            </form>--}}
-
-{{--                            <a href="{{ route('trips.search') }}" class="btn btn-outline-secondary w-100 mt-2">--}}
-{{--                                <i class="fas fa-arrow-left"></i> Back to Search--}}
-{{--                            </a>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-
-{{--    @push('scripts')--}}
-{{--        <script>--}}
-{{--            document.addEventListener('DOMContentLoaded', function() {--}}
-{{--                const maxSeats = {{ $search['adults'] + $search['children'] }};--}}
-{{--                let selectedSeats = [];--}}
-
-{{--                const confirmBtn = document.getElementById('confirm-btn');--}}
-{{--                const seatInputsContainer = document.getElementById('seat-inputs');--}}
-{{--                const passengerNamesContainer = document.getElementById('passenger-names');--}}
-{{--                const selectedSeatsDisplay = document.getElementById('selected-seats-display');--}}
-
-{{--                // Handle seat clicks--}}
-{{--                document.querySelectorAll('.seat.available').forEach(seat => {--}}
-{{--                    seat.addEventListener('click', function() {--}}
-{{--                        const seatNum = parseInt(this.dataset.seat);--}}
-
-{{--                        if (this.classList.contains('selected')) {--}}
-{{--                            // Deselect seat--}}
-{{--                            this.classList.remove('selected');--}}
-{{--                            selectedSeats = selectedSeats.filter(s => s !== seatNum);--}}
-{{--                        } else {--}}
-{{--                            // Check if max seats reached--}}
-{{--                            if (selectedSeats.length >= maxSeats) {--}}
-{{--                                alert(`You can only select ${maxSeats} seat(s)`);--}}
-{{--                                return;--}}
-{{--                            }--}}
-
-{{--                            // Select seat--}}
-{{--                            this.classList.add('selected');--}}
-{{--                            selectedSeats.push(seatNum);--}}
-{{--                        }--}}
-
-{{--                        // Sort seats numerically--}}
-{{--                        selectedSeats.sort((a, b) => a - b);--}}
-
-{{--                        updateForm();--}}
-{{--                    });--}}
-{{--                });--}}
-
-{{--                function updateForm() {--}}
-{{--                    // Update selected seats display--}}
-{{--                    if (selectedSeats.length === 0) {--}}
-{{--                        selectedSeatsDisplay.innerHTML = '<span class="text-muted">No seats selected</span>';--}}
-{{--                    } else {--}}
-{{--                        selectedSeatsDisplay.innerHTML = selectedSeats--}}
-{{--                            .map(seat => `<span class="badge bg-primary me-1">${seat}</span>`)--}}
-{{--                            .join('');--}}
-{{--                    }--}}
-
-{{--                    // Clear previous inputs--}}
-{{--                    seatInputsContainer.innerHTML = '';--}}
-{{--                    passengerNamesContainer.innerHTML = '';--}}
-
-{{--                    // Add hidden inputs for seats--}}
-{{--                    selectedSeats.forEach(seat => {--}}
-{{--                        const input = document.createElement('input');--}}
-{{--                        input.type = 'hidden';--}}
-{{--                        input.name = 'seat_numbers[]';--}}
-{{--                        input.value = seat;--}}
-{{--                        seatInputsContainer.appendChild(input);--}}
-{{--                    });--}}
-
-{{--                    // Add passenger name inputs--}}
-{{--                    if (selectedSeats.length > 0) {--}}
-{{--                        passengerNamesContainer.innerHTML = '<strong class="d-block mb-2">Passenger Names:</strong>';--}}
-
-{{--                        selectedSeats.forEach((seat, index) => {--}}
-{{--                            const formGroup = document.createElement('div');--}}
-{{--                            formGroup.className = 'mb-2';--}}
-
-{{--                            const label = document.createElement('label');--}}
-{{--                            label.className = 'form-label small mb-1';--}}
-{{--                            label.textContent = `Seat ${seat}:`;--}}
-
-{{--                            const input = document.createElement('input');--}}
-{{--                            input.type = 'text';--}}
-{{--                            input.className = 'form-control form-control-sm';--}}
-{{--                            input.name = 'passenger_names[]';--}}
-{{--                            input.placeholder = 'Full Name';--}}
-{{--                            input.required = true;--}}
-{{--                            input.pattern = '[a-zA-Z\\s]+';--}}
-{{--                            input.title = 'Letters and spaces only';--}}
-
-{{--                            formGroup.appendChild(label);--}}
-{{--                            formGroup.appendChild(input);--}}
-{{--                            passengerNamesContainer.appendChild(formGroup);--}}
-{{--                        });--}}
-{{--                    }--}}
-
-{{--                    // Enable/disable confirm button--}}
-{{--                    confirmBtn.disabled = selectedSeats.length !== maxSeats;--}}
-{{--                }--}}
-
-{{--                // Form validation before submit--}}
-{{--                document.getElementById('booking-form').addEventListener('submit', function(e) {--}}
-{{--                    if (selectedSeats.length !== maxSeats) {--}}
-{{--                        e.preventDefault();--}}
-{{--                        alert(`Please select exactly ${maxSeats} seat(s)`);--}}
-{{--                        return false;--}}
-{{--                    }--}}
-
-{{--                    // Check if all passenger names are filled--}}
-{{--                    const nameInputs = document.querySelectorAll('input[name="passenger_names[]"]');--}}
-{{--                    let allFilled = true;--}}
-{{--                    nameInputs.forEach(input => {--}}
-{{--                        if (!input.value.trim()) {--}}
-{{--                            allFilled = false;--}}
-{{--                            input.classList.add('is-invalid');--}}
-{{--                        } else {--}}
-{{--                            input.classList.remove('is-invalid');--}}
-{{--                        }--}}
-{{--                    });--}}
-
-{{--                    if (!allFilled) {--}}
-{{--                        e.preventDefault();--}}
-{{--                        alert('Please enter all passenger names');--}}
-{{--                        return false;--}}
-{{--                    }--}}
-
-{{--                    // Show loading state--}}
-{{--                    confirmBtn.disabled = true;--}}
-{{--                    confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';--}}
-{{--                });--}}
-{{--            });--}}
-{{--        </script>--}}
-{{--    @endpush--}}
-{{--@endsection--}}
 {{-- ============================================================ --}}
 {{-- FILE: resources/views/user/booking/seat-selection.blade.php --}}
-{{-- SEAT SELECTION WITH ROUND TRIP SUPPORT --}}
+{{-- SEAT SELECTION MATCHING HOME PAGE DESIGN --}}
 {{-- ============================================================ --}}
 @extends('layouts.app')
 
@@ -386,32 +8,458 @@
 
 @push('styles')
     <style>
-        .seat-map { display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin: 0 auto; }
-        .seat-row { display: flex; justify-content: center; gap: 10px; }
-        .seat { width: 50px; height: 50px; border: 2px solid #ddd; background: #fff; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
-        .seat.available:hover { background: #e3f2fd; border-color: #2196F3; transform: scale(1.05); }
-        .seat.selected { background: #2196F3; color: white; border-color: #1976D2; }
-        .seat.reserved { background: #ccc; cursor: not-allowed; color: #666; }
-        .legend { display: flex; justify-content: center; gap: 20px; margin-top: 20px; }
-        .legend-item { display: flex; align-items: center; gap: 8px; }
-        .legend-box { width: 30px; height: 30px; border: 2px solid #ddd; border-radius: 5px; }
-        .booking-summary { position: sticky; top: 20px; }
-        .trip-section { margin-bottom: 40px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 10px; }
-        .trip-section.active { border-color: #2196F3; background: #f0f7ff; }
+        body {
+            min-height: 100vh;
+        }
+        
+        .page-header {
+            background: #1e293b;
+            border-radius: 24px;
+            padding: 2rem 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+        
+        .page-header h2 {
+            color: #ffffff;
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .page-header .subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .seat-map { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            max-width: 400px; 
+            margin: 0 auto; 
+        }
+        
+        .seat-row { 
+            display: flex; 
+            justify-content: center; 
+            gap: 10px; 
+        }
+        
+        .seat { 
+            width: 50px; 
+            height: 50px; 
+            border: 2px solid rgba(139, 92, 246, 0.3); 
+            background: #0f172a; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            font-weight: 700; 
+            transition: all 0.3s ease; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .seat.available:hover { 
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-color: #8b5cf6; 
+            transform: scale(1.1); 
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.5);
+        }
+        
+        .seat.selected { 
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white; 
+            border-color: #8b5cf6;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.6);
+            font-weight: 900;
+        }
+        
+        .seat.reserved { 
+            background: rgba(15, 23, 42, 0.5);
+            cursor: not-allowed; 
+            color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(139, 92, 246, 0.1);
+        }
+        
+        .legend { 
+            display: flex; 
+            justify-content: center; 
+            gap: 25px; 
+            margin-top: 25px; 
+        }
+        
+        .legend-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .legend-box { 
+            width: 32px; 
+            height: 32px; 
+            border: 2px solid rgba(139, 92, 246, 0.3); 
+            border-radius: 8px; 
+        }
+        
+        .booking-summary { 
+            position: sticky; 
+            top: 20px; 
+        }
+        
+        .trip-section { 
+            margin-bottom: 40px; 
+            padding: 30px; 
+            border: 2px solid rgba(139, 92, 246, 0.2); 
+            border-radius: 24px; 
+            background: #1e293b;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+        }
+        
+        .trip-section.active { 
+            border-color: rgba(139, 92, 246, 0.5); 
+            background: #1e293b;
+            box-shadow: 0 25px 80px rgba(139, 92, 246, 0.4);
+        }
+        
+        .trip-section h4 {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+        
+        .trip-section h4 i {
+            color: #8b5cf6;
+        }
+        
+        .alert-info { 
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid rgba(139, 92, 246, 0.3); 
+            color: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 1.25rem;
+        }
+        
+        .alert-info h5 { 
+            color: #ffffff; 
+            margin-bottom: 12px;
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+        
+        .alert-info p { 
+            color: rgba(255, 255, 255, 0.7); 
+            margin: 0;
+            font-size: 0.95rem;
+        }
+        
+        .alert-info i {
+            color: #8b5cf6;
+        }
+        
+        .alert-warning { 
+            background: rgba(245, 158, 11, 0.1);
+            border: 2px solid rgba(245, 158, 11, 0.4); 
+            color: #fbbf24;
+            border-radius: 16px;
+            padding: 1rem 1.25rem;
+        }
+        
+        .alert-warning strong {
+            color: #fbbf24;
+            font-weight: 700;
+        }
+        
+        .alert-warning i {
+            color: #f59e0b;
+        }
+        
+        .text-primary { 
+            color: #8b5cf6 !important; 
+        }
+        
+        .text-success { 
+            color: #10b981 !important; 
+        }
+        
+        .text-muted { 
+            color: rgba(255, 255, 255, 0.4) !important; 
+        }
+        
+        .card {
+            background: #1e293b;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        
+        .card-header.bg-success { 
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            border: none;
+            border-radius: 0 !important;
+            padding: 1.5rem 1.75rem;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+        }
+        
+        .card-header h5 {
+            color: #ffffff;
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+        
+        .card-header h5 i {
+            color: rgba(255, 255, 255, 0.9);
+            margin-right: 8px;
+        }
+        
+        .card-body {
+            background: #1e293b;
+            color: rgba(255, 255, 255, 0.9);
+            padding: 1.75rem;
+        }
+        
+        .card-body strong {
+            color: #ffffff;
+            font-weight: 700;
+        }
+        
+        .card-body hr {
+            border-color: rgba(139, 92, 246, 0.2);
+            opacity: 1;
+            margin: 1.25rem 0;
+        }
+        
+        .badge.bg-info { 
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+            padding: 0.5rem 1rem;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 12px;
+        }
+        
+        .badge.bg-primary { 
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+            padding: 0.4rem 0.8rem;
+            font-weight: 700;
+            border-radius: 8px;
+        }
+        
+        .front-indicator {
+            background: #0f172a;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 55px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        
+        .front-indicator i {
+            color: #8b5cf6;
+            margin-right: 8px;
+        }
+        
+        .form-label { 
+            color: rgba(255, 255, 255, 0.9); 
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .form-control, .form-control-sm {
+            background: #0f172a;
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 0.65rem 0.85rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-control-sm:focus {
+            background: #0f172a;
+            border-color: #8b5cf6;
+            color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
+            outline: none;
+        }
+        
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-success { 
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            font-weight: 700;
+            padding: 0.85rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-success:hover { 
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.5);
+        }
+        
+        .btn-success:disabled {
+            background: rgba(15, 23, 42, 0.8);
+            color: rgba(255, 255, 255, 0.3);
+            box-shadow: none;
+            transform: none;
+            cursor: not-allowed;
+        }
+        
+        .btn-primary { 
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border: none;
+            font-weight: 700;
+            padding: 0.85rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .btn-primary:hover { 
+            background: linear-gradient(135deg, #5a67d8 0%, #7c3aed 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
+        }
+        
+        .btn-primary:disabled {
+            background: rgba(15, 23, 42, 0.8);
+            color: rgba(255, 255, 255, 0.3);
+            box-shadow: none;
+            transform: none;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary { 
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            font-weight: 700;
+            padding: 0.85rem 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+        
+        .btn-secondary:hover { 
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #8b5cf6;
+            transform: translateY(-2px);
+            color: #ffffff;
+        }
+        
+        .btn-outline-secondary { 
+            color: #ffffff; 
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            background: transparent;
+            font-weight: 700;
+            padding: 0.85rem 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .btn-outline-secondary:hover { 
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #8b5cf6;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+        
+        .price-row {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+        
+        .price-row span:last-child {
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        .total-price {
+            font-size: 1.75rem;
+            font-weight: 900;
+            color: #10b981 !important;
+            text-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.5);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8b5cf6;
+        }
+        
+        /* Loading spinner */
+        .spinner-border-sm {
+            color: #ffffff;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 1.5rem;
+            }
+            
+            .trip-section {
+                padding: 1.5rem;
+            }
+            
+            .card-body {
+                padding: 1.25rem;
+            }
+            
+            .hero-features {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
     </style>
 @endpush
 
 @section('content')
     <div class="container py-4">
-        <div class="row">
-            <div class="col-12 mb-3">
-                <h2>
-                    <i class="fas fa-chair"></i> Select Your Seats
-                    @if($returnTrip)
-                        <span class="badge bg-info">Round Trip</span>
-                    @endif
-                </h2>
-            </div>
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2>
+                <i class="fas fa-chair" style="color: #8b5cf6; margin-right: 10px;"></i>
+                Select Your Seats
+                @if($returnTrip)
+                    <span class="badge bg-info ms-2">Round Trip</span>
+                @endif
+            </h2>
+            <p class="subtitle mb-0">Choose your preferred seats for your journey</p>
         </div>
 
         <div class="row">
@@ -419,12 +467,12 @@
             <div class="col-lg-8">
                 <!-- OUTBOUND TRIP -->
                 <div class="trip-section active" id="outbound-section">
-                    <h4 class="text-primary mb-3">
+                    <h4 class="mb-3">
                         <i class="fas fa-arrow-right"></i> Outbound Trip
                     </h4>
 
                     <div class="alert alert-info">
-                        <h5>{{ $trip->origin }} → {{ $trip->destination }}</h5>
+                        <h5><i class="fas fa-route"></i> {{ $trip->origin }} → {{ $trip->destination }}</h5>
                         <p class="mb-0">
                             <i class="fas fa-calendar"></i> {{ $trip->formatted_date }} |
                             <i class="fas fa-clock"></i> {{ $trip->formatted_time }} |
@@ -438,8 +486,8 @@
                     </div>
 
                     <!-- Outbound Seat Map -->
-                    <div class="text-center mb-3">
-                        <div class="badge bg-dark" style="padding: 10px 50px;">
+                    <div class="text-center mb-4">
+                        <div class="front-indicator">
                             <i class="fas fa-steering-wheel"></i> FRONT
                         </div>
                     </div>
@@ -481,15 +529,15 @@
                     <!-- Legend -->
                     <div class="legend mt-4">
                         <div class="legend-item">
-                            <div class="legend-box" style="background: #fff;"></div>
+                            <div class="legend-box" style="background: #0f172a;"></div>
                             <span>Available</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-box" style="background: #2196F3;"></div>
+                            <div class="legend-box" style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);"></div>
                             <span>Selected</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-box" style="background: #ccc;"></div>
+                            <div class="legend-box" style="background: rgba(15, 23, 42, 0.5); border-color: rgba(139, 92, 246, 0.1);"></div>
                             <span>Reserved</span>
                         </div>
                     </div>
@@ -498,12 +546,12 @@
                 <!-- RETURN TRIP -->
                 @if($returnTrip)
                     <div class="trip-section" id="return-section" style="display: none;">
-                        <h4 class="text-success mb-3">
+                        <h4 class="mb-3">
                             <i class="fas fa-arrow-left"></i> Return Trip
                         </h4>
 
                         <div class="alert alert-info">
-                            <h5>{{ $returnTrip->origin }} → {{ $returnTrip->destination }}</h5>
+                            <h5><i class="fas fa-route"></i> {{ $returnTrip->origin }} → {{ $returnTrip->destination }}</h5>
                             <p class="mb-0">
                                 <i class="fas fa-calendar"></i> {{ $returnTrip->formatted_date }} |
                                 <i class="fas fa-clock"></i> {{ $returnTrip->formatted_time }} |
@@ -517,8 +565,8 @@
                         </div>
 
                         <!-- Return Seat Map -->
-                        <div class="text-center mb-3">
-                            <div class="badge bg-dark" style="padding: 10px 50px;">
+                        <div class="text-center mb-4">
+                            <div class="front-indicator">
                                 <i class="fas fa-steering-wheel"></i> FRONT
                             </div>
                         </div>
@@ -558,15 +606,15 @@
 
                         <div class="legend mt-4">
                             <div class="legend-item">
-                                <div class="legend-box" style="background: #fff;"></div>
+                                <div class="legend-box" style="background: #0f172a;"></div>
                                 <span>Available</span>
                             </div>
                             <div class="legend-item">
-                                <div class="legend-box" style="background: #2196F3;"></div>
+                                <div class="legend-box" style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);"></div>
                                 <span>Selected</span>
                             </div>
                             <div class="legend-item">
-                                <div class="legend-box" style="background: #ccc;"></div>
+                                <div class="legend-box" style="background: rgba(15, 23, 42, 0.5); border-color: rgba(139, 92, 246, 0.1);"></div>
                                 <span>Reserved</span>
                             </div>
                         </div>
@@ -578,8 +626,10 @@
             <div class="col-lg-4">
                 <div class="booking-summary">
                     <div class="card">
-                        <div class="card-header bg-success text-white">
-                            <h5 class="mb-0">Booking Summary</h5>
+                        <div class="card-header bg-success">
+                            <h5 class="mb-0">
+                                <i class="fas fa-clipboard-check"></i> Booking Summary
+                            </h5>
                         </div>
                         <div class="card-body">
                             <!-- Outbound Seats -->
@@ -603,20 +653,20 @@
 
                             <!-- Price Breakdown -->
                             <div class="mb-3">
-                                <div class="d-flex justify-content-between">
+                                <div class="d-flex justify-content-between price-row mb-2">
                                     <span>Outbound ({{$search['adults'] + $search['children']}} seats):</span>
                                     <span>{{ $trip->formatted_price }}</span>
                                 </div>
                                 @if($returnTrip)
-                                    <div class="d-flex justify-content-between">
+                                    <div class="d-flex justify-content-between price-row mb-2">
                                         <span>Return ({{$search['adults'] + $search['children']}} seats):</span>
                                         <span>{{ $returnTrip->formatted_price }}</span>
                                     </div>
                                 @endif
                                 <hr>
-                                <div class="d-flex justify-content-between">
-                                    <strong>Total:</strong>
-                                    <strong class="text-success" id="total-price">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <strong style="color: #ffffff; font-size: 1.1rem;">Total:</strong>
+                                    <strong class="total-price" id="total-price">
                                         ₱{{ number_format(($trip->price + ($returnTrip ? $returnTrip->price : 0)) * ($search['adults'] + $search['children']), 2) }}
                                     </strong>
                                 </div>
@@ -644,7 +694,6 @@
                                 <input type="hidden" name="adults" value="{{ session('search_params')['adults'] }}">
                                 <input type="hidden" name="children" value="{{ session('search_params')['children'] }}">
 
-
                                 <!-- Passenger Names -->
                                 <div id="passenger-names" class="mb-3"></div>
 
@@ -662,7 +711,6 @@
                                     <i class="fas fa-check"></i> Confirm Booking
                                 </button>
                             </form>
-
 
                             <a href="{{ route('trips.search') }}" class="btn btn-outline-secondary w-100 mt-2">
                                 <i class="fas fa-arrow-left"></i> Back to Search
@@ -720,29 +768,6 @@
                     seatsArray.sort((a, b) => a - b);
                 }
 
-                // function updateForm() {
-                //     // Update outbound display
-                //     updateSeatDisplay('outbound', outboundSeats);
-                //
-                //     // Update return display if applicable
-                //     if (hasReturnTrip) {
-                //         updateSeatDisplay('return', returnSeats);
-                //     }
-                //
-                //     // Update buttons
-                //     if (hasReturnTrip) {
-                //         nextBtn.disabled = outboundSeats.length !== maxSeats;
-                //         confirmBtn.style.display = (outboundSeats.length === maxSeats && returnSeats.length === maxSeats) ? 'block' : 'none';
-                //     } else {
-                //         confirmBtn.disabled = outboundSeats.length !== maxSeats;
-                //     }
-                //
-                //     // Update hidden inputs and passenger names
-                //     if (outboundSeats.length === maxSeats && (!hasReturnTrip || returnSeats.length === maxSeats)) {
-                //         updateHiddenInputs();
-                //         updatePassengerNames();
-                //     }
-                // }
                 function updateForm() {
                     // Update seat displays
                     updateSeatDisplay('outbound', outboundSeats);
@@ -766,7 +791,6 @@
                         confirmBtn.style.display = 'block';
                     }
                 }
-
 
                 function updateSeatDisplay(tripType, seats) {
                     const displayId = tripType + '-seats-display';
@@ -804,32 +828,7 @@
                         });
                     }
                 }
-                //
-                // function updatePassengerNames() {
-                //     const container = document.getElementById('passenger-names');
-                //     container.innerHTML = '<strong class="d-block mb-2">Passenger Names:</strong>';
-                //
-                //     outboundSeats.forEach((seat, index) => {
-                //         const div = document.createElement('div');
-                //         div.className = 'mb-2';
-                //
-                //         const label = document.createElement('label');
-                //         label.className = 'form-label small mb-1';
-                //         label.textContent = `Passenger ${index + 1}:`;
-                //
-                //         const input = document.createElement('input');
-                //         input.type = 'text';
-                //         input.className = 'form-control form-control-sm';
-                //         input.name = 'passenger_names[]';
-                //         input.placeholder = 'Full Name';
-                //         input.required = true;
-                //         input.pattern = '[a-zA-Z\\s]+';
-                //
-                //         div.appendChild(label);
-                //         div.appendChild(input);
-                //         container.appendChild(div);
-                //     });
-                // }
+
                 function updatePassengerNames() {
                     const container = document.getElementById('passenger-names');
                     container.innerHTML = '<strong class="d-block mb-2">Passenger Names:</strong>';
