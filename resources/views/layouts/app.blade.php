@@ -32,24 +32,9 @@
             overflow-x: hidden;
             
         }
-        body::before {
-        content: '';
-        position: absolute;
-        top: 40%;
-       right: 0%;
-        width: 125%;
-        height: 100%;
-        background: radial-gradient(circle, rgba(104, 49, 233, 0.15) );
-        animation: rotate 20s linear infinite;
-        overflow: hidden;
-        z-index: -1;
-        }
-
+    
         
-   @keyframes rotate {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
+  
 
         /* Premium Dark Navbar */
         .navbar-premium {
