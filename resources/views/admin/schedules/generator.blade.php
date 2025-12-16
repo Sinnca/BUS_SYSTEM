@@ -251,6 +251,40 @@
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 
+    <!-- Modal HTML -->
+    <div class="modal fade" id="alertModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 20px; border: 2px solid rgba(99, 102, 241, 0.2);">
+                <div class="modal-header" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%); border-bottom: 2px solid rgba(99, 102, 241, 0.1); border-radius: 20px 20px 0 0;">
+                    <h5 class="modal-title" style="font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: #6366f1;" id="alertModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px; color: #64748b; font-family: 'Inter', sans-serif;" id="alertModalBody"></div>
+                <div class="modal-footer" style="border-top: 2px solid rgba(99, 102, 241, 0.1); padding: 20px;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 12px; padding: 10px 24px; font-family: 'Space Grotesk', sans-serif; font-weight: 700;">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 20px; border: 2px solid rgba(99, 102, 241, 0.2);">
+                <div class="modal-header" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%); border-bottom: 2px solid rgba(99, 102, 241, 0.1); border-radius: 20px 20px 0 0;">
+                    <h5 class="modal-title" style="font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: #6366f1;">Confirm Generation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px; color: #64748b; font-family: 'Inter', sans-serif;">
+                    <p style="font-size: 1.05rem; margin: 0;">Are you sure you want to generate these trips? This action will create multiple trip entries.</p>
+                </div>
+                <div class="modal-footer" style="border-top: 2px solid rgba(99, 102, 241, 0.1); padding: 20px;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 12px; padding: 10px 24px; font-family: 'Space Grotesk', sans-serif; font-weight: 700;">Cancel</button>
+                    <button type="button" class="btn btn-success" id="confirmGenerateBtn" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; border-radius: 12px; padding: 10px 24px; font-family: 'Space Grotesk', sans-serif; font-weight: 700;">Yes, Generate</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="schedule-container">
         <div class="schedule-header">
             <div class="header-content-schedule">
@@ -264,20 +298,6 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-4">
-                <div class="how-it-works-card">
-                    <h5 class="how-it-works-title"><i class="fas fa-info-circle"></i> How It Works</h5>
-                    <ul class="how-it-works-list">
-                        <li>Select one or more buses</li>
-                        <li>Choose route (origin and destination)</li>
-                        <li>Set date range</li>
-                        <li>Select which days of the week to run buses</li>
-                        <li>System will automatically generate trips at <strong>8:00 AM, 12:00 PM, and 4:00 PM</strong></li>
-                        <li>Existing trips will be skipped (no duplicates)</li>
-                    </ul>
-                </div>
-            </div>
-
             <div class="col-lg-8">
                 @if(session('results'))
                 <div class="results-card" style="position: relative;">
@@ -405,10 +425,24 @@
 
                             <div class="d-flex justify-content-between">
                                 <a href="{{ route('admin.trips.index') }}" class="btn btn-secondary"><i class="fas fa-times"></i> Cancel</a>
-                                <button type="submit" class="btn-generate" id="generate-btn"><i class="fas fa-wand-magic-sparkles"></i> Generate Trips</button>
+                                <button type="button" class="btn-generate" id="generate-btn"><i class="fas fa-wand-magic-sparkles"></i> Generate Trips</button>
                             </div>
                         </form>
                     </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="how-it-works-card">
+                    <h5 class="how-it-works-title"><i class="fas fa-info-circle"></i> How It Works</h5>
+                    <ul class="how-it-works-list">
+                        <li>Select one or more buses</li>
+                        <li>Choose route (origin and destination)</li>
+                        <li>Set date range</li>
+                        <li>Select which days of the week to run buses</li>
+                        <li>System will automatically generate trips at <strong>8:00 AM, 12:00 PM, and 4:00 PM</strong></li>
+                        <li>Existing trips will be skipped (no duplicates)</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -417,11 +451,51 @@
 
 @push('scripts')
 <script>
-function selectAllBuses() { document.querySelectorAll('input[name="bus_ids[]"]').forEach(cb => cb.checked = true); updateEstimate(); }
-function deselectAllBuses() { document.querySelectorAll('input[name="bus_ids[]"]').forEach(cb => cb.checked = false); updateEstimate(); }
-function selectWeekdays() { const weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']; document.querySelectorAll('input[name="days_of_week[]"]').forEach(cb => { cb.checked = weekdays.includes(cb.value); }); updateEstimate(); }
-function selectWeekends() { const weekends = ['saturday', 'sunday']; document.querySelectorAll('input[name="days_of_week[]"]').forEach(cb => { cb.checked = weekends.includes(cb.value); }); updateEstimate(); }
-function selectAllDays() { document.querySelectorAll('input[name="days_of_week[]"]').forEach(cb => cb.checked = true); updateEstimate(); }
+let formToSubmit = null;
+
+function showAlertModal(title, message) {
+    document.getElementById('alertModalLabel').textContent = title;
+    document.getElementById('alertModalBody').textContent = message;
+    const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+    alertModal.show();
+}
+
+function showConfirmModal() {
+    const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    confirmModal.show();
+}
+
+function selectAllBuses() { 
+    document.querySelectorAll('input[name="bus_ids[]"]').forEach(cb => cb.checked = true); 
+    updateEstimate(); 
+}
+
+function deselectAllBuses() { 
+    document.querySelectorAll('input[name="bus_ids[]"]').forEach(cb => cb.checked = false); 
+    updateEstimate(); 
+}
+
+function selectWeekdays() { 
+    const weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']; 
+    document.querySelectorAll('input[name="days_of_week[]"]').forEach(cb => { 
+        cb.checked = weekdays.includes(cb.value); 
+    }); 
+    updateEstimate(); 
+}
+
+function selectWeekends() { 
+    const weekends = ['saturday', 'sunday']; 
+    document.querySelectorAll('input[name="days_of_week[]"]').forEach(cb => { 
+        cb.checked = weekends.includes(cb.value); 
+    }); 
+    updateEstimate(); 
+}
+
+function selectAllDays() { 
+    document.querySelectorAll('input[name="days_of_week[]"]').forEach(cb => cb.checked = true); 
+    updateEstimate(); 
+}
+
 function updateEstimate() {
     const busCount = document.querySelectorAll('input[name="bus_ids[]"]:checked').length;
     const startDate = document.getElementById('start_date').value;
@@ -436,13 +510,32 @@ function updateEstimate() {
         document.getElementById('estimate-text').innerHTML = `<strong>${busCount}</strong> bus(es) × <strong>${avgActiveDays}</strong> active days × <strong>3</strong> times/day = Approximately <strong style="color: #10b981;">${estimatedTrips} trips</strong>`;
     }
 }
+
 document.getElementById('generator-form').addEventListener('change', updateEstimate);
-document.getElementById('start_date').addEventListener('change', function() { document.getElementById('end_date').min = this.value; updateEstimate(); });
-document.getElementById('generate-btn').addEventListener('click', function(e) {
-    const busCount = document.querySelectorAll('input[name="bus_ids[]"]:checked').length;
-    if (busCount === 0) { e.preventDefault(); alert('Please select at least one bus'); return; }
-    if (!confirm('Generate these trips?')) { e.preventDefault(); }
+document.getElementById('start_date').addEventListener('change', function() { 
+    document.getElementById('end_date').min = this.value; 
+    updateEstimate(); 
 });
+
+document.getElementById('generate-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    const busCount = document.querySelectorAll('input[name="bus_ids[]"]:checked').length;
+    if (busCount === 0) {
+        showAlertModal('Selection Required', 'Please select at least one bus before generating trips.');
+        return;
+    }
+    formToSubmit = document.getElementById('generator-form');
+    showConfirmModal();
+});
+
+document.getElementById('confirmGenerateBtn').addEventListener('click', function() {
+    if (formToSubmit) {
+        const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
+        confirmModal.hide();
+        formToSubmit.submit();
+    }
+});
+
 updateEstimate();
 </script>
 @endpush
