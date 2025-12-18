@@ -762,6 +762,8 @@
 
                     $isPastTrip = $tripDateTime->isPast();
                     $hoursSinceBooking = $reservation->created_at->diffInHours(now());
+
+                    $hoursUntilDeparture = now()->diffInHours($tripDateTime, false);
                 @endphp
 
                 <div class="booking-card">
@@ -943,26 +945,47 @@
                                     <i class="fas fa-print"></i> Print
                                 </button>
 
-                                @if($hoursSinceBooking <= 10)
+{{--                                @if($hoursSinceBooking <= 10)--}}
+{{--                                    <button class="btn-cancel" data-bs-toggle="modal"--}}
+{{--                                            data-bs-target="#cancelModal{{ $reservation->id }}">--}}
+{{--                                        <i class="fas fa-times"></i> Cancel--}}
+{{--                                    </button>--}}
+{{--                                @endif--}}
+                                @if($hoursSinceBooking <= 10 && $hoursUntilDeparture > 10)
                                     <button class="btn-cancel" data-bs-toggle="modal"
                                             data-bs-target="#cancelModal{{ $reservation->id }}">
                                         <i class="fas fa-times"></i> Cancel
                                     </button>
                                 @endif
+
                             @endif
                         </div>
                     </div>
                 </div>
 
                 <!-- CANCEL MODAL -->
+{{--                @if(--}}
+{{--                    !$isPastTrip &&--}}
+{{--                    (--}}
+{{--                        $reservation->status === 'pending' ||--}}
+{{--                        ($reservation->status === 'confirmed' && $hoursSinceBooking <= 10)--}}
+{{--                    )--}}
+{{--                )--}}
+{{--                @if(--}}
+{{--                    !$isPastTrip &&--}}
+{{--                    $hoursUntilDeparture > 10 &&--}}
+{{--                    (--}}
+{{--                        $reservation->status === 'pending' ||--}}
+{{--                        ($reservation->status === 'confirmed' && $hoursSinceBooking <= 10)--}}
+{{--                    )--}}
                 @if(
-                    !$isPastTrip &&
-                    (
-                        $reservation->status === 'pending' ||
-                        ($reservation->status === 'confirmed' && $hoursSinceBooking <= 10)
+                        !$isPastTrip &&
+                        $hoursUntilDeparture > 10 &&
+                        ($reservation->status === 'pending' || ($reservation->status === 'confirmed' && $hoursSinceBooking <= 10))
                     )
                 )
-                    <div class="modal fade" id="cancelModal{{ $reservation->id }}" tabindex="-1">
+
+                <div class="modal fade" id="cancelModal{{ $reservation->id }}" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content modal-content-custom">
                                 <div class="modal-header modal-header-custom">

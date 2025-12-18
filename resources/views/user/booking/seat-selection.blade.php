@@ -11,7 +11,7 @@
         body {
             min-height: 100vh;
         }
-        
+
         .page-header {
             background: #1e293b;
             border-radius: 24px;
@@ -19,240 +19,240 @@
             margin-bottom: 2rem;
             border: 1px solid rgba(139, 92, 246, 0.2);
         }
-        
+
         .page-header h2 {
             color: #ffffff;
             margin: 0;
             font-weight: 700;
             font-size: 1.5rem;
         }
-        
+
         .page-header .subtitle {
             color: rgba(255, 255, 255, 0.6);
             margin-top: 0.5rem;
             font-size: 0.95rem;
         }
-        
-        .seat-map { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            max-width: 400px; 
-            margin: 0 auto; 
+
+        .seat-map {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+            margin: 0 auto;
         }
-        
-        .seat-row { 
-            display: flex; 
-            justify-content: center; 
-            gap: 10px; 
+
+        .seat-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
         }
-        
-        .seat { 
-            width: 50px; 
-            height: 50px; 
-            border: 2px solid rgba(139, 92, 246, 0.3); 
-            background: #0f172a; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            font-size: 14px; 
-            font-weight: 700; 
-            transition: all 0.3s ease; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+
+        .seat {
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            background: #0f172a;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: rgba(255, 255, 255, 0.5);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
-        
-        .seat.available:hover { 
+
+        .seat.available:hover {
             background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            border-color: #8b5cf6; 
-            transform: scale(1.1); 
+            border-color: #8b5cf6;
+            transform: scale(1.1);
             color: #ffffff;
             box-shadow: 0 8px 20px rgba(139, 92, 246, 0.5);
         }
-        
-        .seat.selected { 
+
+        .seat.selected {
             background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            color: white; 
+            color: white;
             border-color: #8b5cf6;
             box-shadow: 0 8px 20px rgba(139, 92, 246, 0.6);
             font-weight: 900;
         }
-        
-        .seat.reserved { 
+
+        .seat.reserved {
             background: rgba(15, 23, 42, 0.5);
-            cursor: not-allowed; 
+            cursor: not-allowed;
             color: rgba(255, 255, 255, 0.2);
             border-color: rgba(139, 92, 246, 0.1);
         }
-        
-        .legend { 
-            display: flex; 
-            justify-content: center; 
-            gap: 25px; 
-            margin-top: 25px; 
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 25px;
         }
-        
-        .legend-item { 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             color: rgba(255, 255, 255, 0.9);
             font-size: 14px;
             font-weight: 600;
         }
-        
-        .legend-box { 
-            width: 32px; 
-            height: 32px; 
-            border: 2px solid rgba(139, 92, 246, 0.3); 
-            border-radius: 8px; 
+
+        .legend-box {
+            width: 32px;
+            height: 32px;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
         }
-        
-        .booking-summary { 
-            position: sticky; 
-            top: 20px; 
+
+        .booking-summary {
+            position: sticky;
+            top: 20px;
         }
-        
-        .trip-section { 
-            margin-bottom: 40px; 
-            padding: 30px; 
-            border: 2px solid rgba(139, 92, 246, 0.2); 
-            border-radius: 24px; 
+
+        .trip-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            border-radius: 24px;
             background: #1e293b;
             box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
         }
-        
-        .trip-section.active { 
-            border-color: rgba(139, 92, 246, 0.5); 
+
+        .trip-section.active {
+            border-color: rgba(139, 92, 246, 0.5);
             background: #1e293b;
             box-shadow: 0 25px 80px rgba(139, 92, 246, 0.4);
         }
-        
+
         .trip-section h4 {
             color: #ffffff;
             font-weight: 700;
             font-size: 1.3rem;
         }
-        
+
         .trip-section h4 i {
             color: #8b5cf6;
         }
-        
-        .alert-info { 
+
+        .alert-info {
             background: rgba(15, 23, 42, 0.8);
-            border: 2px solid rgba(139, 92, 246, 0.3); 
+            border: 2px solid rgba(139, 92, 246, 0.3);
             color: rgba(255, 255, 255, 0.9);
             border-radius: 16px;
             padding: 1.25rem;
         }
-        
-        .alert-info h5 { 
-            color: #ffffff; 
+
+        .alert-info h5 {
+            color: #ffffff;
             margin-bottom: 12px;
             font-weight: 700;
             font-size: 1.15rem;
         }
-        
-        .alert-info p { 
-            color: rgba(255, 255, 255, 0.7); 
+
+        .alert-info p {
+            color: rgba(255, 255, 255, 0.7);
             margin: 0;
             font-size: 0.95rem;
         }
-        
+
         .alert-info i {
             color: #8b5cf6;
         }
-        
-        .alert-warning { 
+
+        .alert-warning {
             background: rgba(245, 158, 11, 0.1);
-            border: 2px solid rgba(245, 158, 11, 0.4); 
+            border: 2px solid rgba(245, 158, 11, 0.4);
             color: #fbbf24;
             border-radius: 16px;
             padding: 1rem 1.25rem;
         }
-        
+
         .alert-warning strong {
             color: #fbbf24;
             font-weight: 700;
         }
-        
+
         .alert-warning i {
             color: #f59e0b;
         }
-        
-        .text-primary { 
-            color: #8b5cf6 !important; 
+
+        .text-primary {
+            color: #8b5cf6 !important;
         }
-        
-        .text-success { 
-            color: #10b981 !important; 
+
+        .text-success {
+            color: #10b981 !important;
         }
-        
-        .text-muted { 
-            color: rgba(255, 255, 255, 0.4) !important; 
+
+        .text-muted {
+            color: rgba(255, 255, 255, 0.4) !important;
         }
-        
+
         .card {
             background: #1e293b;
             border: 1px solid rgba(139, 92, 246, 0.2);
             border-radius: 24px;
             overflow: hidden;
         }
-        
-        .card-header.bg-success { 
+
+        .card-header.bg-success {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
             border: none;
             border-radius: 0 !important;
             padding: 1.5rem 1.75rem;
             border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         }
-        
+
         .card-header h5 {
             color: #ffffff;
             margin: 0;
             font-weight: 700;
             font-size: 1.15rem;
         }
-        
+
         .card-header h5 i {
             color: rgba(255, 255, 255, 0.9);
             margin-right: 8px;
         }
-        
+
         .card-body {
             background: #1e293b;
             color: rgba(255, 255, 255, 0.9);
             padding: 1.75rem;
         }
-        
+
         .card-body strong {
             color: #ffffff;
             font-weight: 700;
         }
-        
+
         .card-body hr {
             border-color: rgba(139, 92, 246, 0.2);
             opacity: 1;
             margin: 1.25rem 0;
         }
-        
-        .badge.bg-info { 
+
+        .badge.bg-info {
             background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
             padding: 0.5rem 1rem;
             font-size: 14px;
             font-weight: 700;
             border-radius: 12px;
         }
-        
-        .badge.bg-primary { 
+
+        .badge.bg-primary {
             background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
             padding: 0.4rem 0.8rem;
             font-weight: 700;
             border-radius: 8px;
         }
-        
+
         .front-indicator {
             background: #0f172a;
             color: rgba(255, 255, 255, 0.8);
@@ -264,19 +264,19 @@
             font-weight: 700;
             font-size: 0.95rem;
         }
-        
+
         .front-indicator i {
             color: #8b5cf6;
             margin-right: 8px;
         }
-        
-        .form-label { 
-            color: rgba(255, 255, 255, 0.9); 
+
+        .form-label {
+            color: rgba(255, 255, 255, 0.9);
             font-weight: 600;
             margin-bottom: 0.5rem;
             font-size: 0.9rem;
         }
-        
+
         .form-control, .form-control-sm {
             background: #0f172a;
             border: 2px solid rgba(139, 92, 246, 0.2);
@@ -286,7 +286,7 @@
             font-size: 0.95rem;
             transition: all 0.3s ease;
         }
-        
+
         .form-control:focus, .form-control-sm:focus {
             background: #0f172a;
             border-color: #8b5cf6;
@@ -294,12 +294,12 @@
             box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
             outline: none;
         }
-        
+
         .form-control::placeholder {
             color: rgba(255, 255, 255, 0.3);
         }
-        
-        .btn-success { 
+
+        .btn-success {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             border: none;
             font-weight: 700;
@@ -311,13 +311,13 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        
-        .btn-success:hover { 
+
+        .btn-success:hover {
             background: linear-gradient(135deg, #059669 0%, #047857 100%);
             transform: translateY(-2px);
             box-shadow: 0 15px 40px rgba(16, 185, 129, 0.5);
         }
-        
+
         .btn-success:disabled {
             background: rgba(15, 23, 42, 0.8);
             color: rgba(255, 255, 255, 0.3);
@@ -325,8 +325,8 @@
             transform: none;
             cursor: not-allowed;
         }
-        
-        .btn-primary { 
+
+        .btn-primary {
             background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
             border: none;
             font-weight: 700;
@@ -336,13 +336,13 @@
             transition: all 0.3s ease;
             font-size: 1rem;
         }
-        
-        .btn-primary:hover { 
+
+        .btn-primary:hover {
             background: linear-gradient(135deg, #5a67d8 0%, #7c3aed 100%);
             transform: translateY(-2px);
             box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
         }
-        
+
         .btn-primary:disabled {
             background: rgba(15, 23, 42, 0.8);
             color: rgba(255, 255, 255, 0.3);
@@ -350,8 +350,8 @@
             transform: none;
             cursor: not-allowed;
         }
-        
-        .btn-secondary { 
+
+        .btn-secondary {
             background: rgba(15, 23, 42, 0.8);
             border: 2px solid rgba(139, 92, 246, 0.3);
             font-weight: 700;
@@ -361,16 +361,16 @@
             color: #ffffff;
             font-size: 1rem;
         }
-        
-        .btn-secondary:hover { 
+
+        .btn-secondary:hover {
             background: rgba(139, 92, 246, 0.2);
             border-color: #8b5cf6;
             transform: translateY(-2px);
             color: #ffffff;
         }
-        
-        .btn-outline-secondary { 
-            color: #ffffff; 
+
+        .btn-outline-secondary {
+            color: #ffffff;
             border: 2px solid rgba(139, 92, 246, 0.3);
             background: transparent;
             font-weight: 700;
@@ -379,67 +379,67 @@
             transition: all 0.3s ease;
             font-size: 1rem;
         }
-        
-        .btn-outline-secondary:hover { 
+
+        .btn-outline-secondary:hover {
             background: rgba(139, 92, 246, 0.2);
             border-color: #8b5cf6;
             color: #ffffff;
             transform: translateY(-2px);
         }
-        
+
         .price-row {
             color: rgba(255, 255, 255, 0.8);
             font-size: 0.95rem;
         }
-        
+
         .price-row span:last-child {
             font-weight: 700;
             color: #ffffff;
         }
-        
+
         .total-price {
             font-size: 1.75rem;
             font-weight: 900;
             color: #10b981 !important;
             text-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
         }
-        
+
         /* Scrollbar styling */
         ::-webkit-scrollbar {
             width: 10px;
         }
-        
+
         ::-webkit-scrollbar-track {
             background: #0f172a;
         }
-        
+
         ::-webkit-scrollbar-thumb {
             background: rgba(139, 92, 246, 0.5);
             border-radius: 5px;
         }
-        
+
         ::-webkit-scrollbar-thumb:hover {
             background: #8b5cf6;
         }
-        
+
         /* Loading spinner */
         .spinner-border-sm {
             color: #ffffff;
         }
-        
+
         @media (max-width: 768px) {
             .page-header {
                 padding: 1.5rem;
             }
-            
+
             .trip-section {
                 padding: 1.5rem;
             }
-            
+
             .card-body {
                 padding: 1.25rem;
             }
-            
+
             .hero-features {
                 flex-direction: column;
                 gap: 10px;
@@ -715,6 +715,205 @@
                             <a href="{{ route('trips.search') }}" class="btn btn-outline-secondary w-100 mt-2">
                                 <i class="fas fa-arrow-left"></i> Back to Search
                             </a>
+                        </div>
+                    </div>
+                    <hr>
+                    <style>
+                        .cancellation-card {
+                            max-width: 700px;
+                            margin: 0 auto;
+                            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                            border-radius: 16px;
+                            overflow: hidden;
+                            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);
+                            border: 2px solid #fbbf24;
+                        }
+
+                        .card-header-modern {
+                            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                            padding: 24px 28px;
+                            display: flex;
+                            align-items: center;
+                            gap: 12px;
+                        }
+
+                        .icon-wrapper {
+                            background: rgba(255, 255, 255, 0.2);
+                            width: 48px;
+                            height: 48px;
+                            border-radius: 12px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            backdrop-filter: blur(10px);
+                        }
+
+                        .icon-wrapper i {
+                            font-size: 24px;
+                            color: #ffffff;
+                            animation: pulse 2s ease-in-out infinite;
+                        }
+
+                        @keyframes pulse {
+                            0%, 100% {
+                                transform: scale(1);
+                            }
+                            50% {
+                                transform: scale(1.1);
+                            }
+                        }
+
+                        .card-header-modern h5 {
+                            margin: 0;
+                            color: #ffffff;
+                            font-size: 1.5rem;
+                            font-weight: 700;
+                            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                        }
+
+                        .card-body-modern {
+                            padding: 28px;
+                            background: #ffffff;
+                        }
+
+                        .rules-list {
+                            list-style: none;
+                            padding: 0;
+                            margin: 0;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 16px;
+                        }
+
+                        .rule-item {
+                            display: flex;
+                            align-items: start;
+                            gap: 16px;
+                            padding: 20px;
+                            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+                            border-radius: 12px;
+                            border-left: 4px solid #f59e0b;
+                            transition: all 0.3s ease;
+                        }
+
+                        .rule-item:hover {
+                            transform: translateX(4px);
+                            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+                        }
+
+                        .rule-icon {
+                            flex-shrink: 0;
+                            width: 36px;
+                            height: 36px;
+                            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                            border-radius: 8px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: #ffffff;
+                            font-weight: 700;
+                            font-size: 1.1rem;
+                            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+                        }
+
+                        .rule-content {
+                            flex: 1;
+                            color: #78350f;
+                            font-size: 1rem;
+                            line-height: 1.6;
+                        }
+
+                        .rule-content strong {
+                            color: #92400e;
+                            font-weight: 700;
+                        }
+
+                        .rule-badge {
+                            display: inline-block;
+                            background: #f59e0b;
+                            color: #ffffff;
+                            padding: 2px 8px;
+                            border-radius: 4px;
+                            font-size: 0.75rem;
+                            font-weight: 600;
+                            margin-left: 4px;
+                        }
+
+                        .info-footer {
+                            margin-top: 20px;
+                            padding: 16px 20px;
+                            background: #eff6ff;
+                            border-radius: 10px;
+                            border-left: 4px solid #3b82f6;
+                            display: flex;
+                            align-items: start;
+                            gap: 12px;
+                        }
+
+                        .info-footer i {
+                            color: #3b82f6;
+                            font-size: 1.2rem;
+                            margin-top: 2px;
+                        }
+
+                        .info-footer p {
+                            margin: 0;
+                            color: #1e40af;
+                            font-size: 0.9rem;
+                            line-height: 1.6;
+                        }
+
+                        @media (max-width: 640px) {
+                            .card-header-modern {
+                                padding: 20px;
+                            }
+
+                            .card-header-modern h5 {
+                                font-size: 1.25rem;
+                            }
+
+                            .card-body-modern {
+                                padding: 20px;
+                            }
+
+                            .rule-item {
+                                padding: 16px;
+                                gap: 12px;
+                            }
+
+                            .rule-content {
+                                font-size: 0.9rem;
+                            }
+                        }
+                    </style>
+                    <div class="cancellation-card">
+                        <!-- Header -->
+                        <div class="card-header-modern">
+                            <div class="icon-wrapper">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h5>Cancellation Policy</h5>
+                        </div>
+
+                        <!-- Body -->
+                        <div class="card-body-modern">
+                            <ul class="rules-list">
+                                <li class="rule-item">
+                                    <div class="rule-icon">1</div>
+                                    <div class="rule-content">
+                                        You <strong>cannot cancel</strong> this reservation if it was booked more than <strong>10 hours ago</strong>
+                                        <span class="rule-badge">Rule 1</span>
+                                    </div>
+                                </li>
+
+                                <li class="rule-item">
+                                    <div class="rule-icon">2</div>
+                                    <div class="rule-content">
+                                        You <strong>cannot cancel</strong> this reservation if the trip departs in <strong>10 hours or less</strong>
+                                        <span class="rule-badge">Rule 2</span>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>

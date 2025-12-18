@@ -9,6 +9,7 @@ use App\Models\Reservation;
 use App\Models\Trip;
 use App\Models\ReservedSeat;
 use App\Services\BookingService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Mail;
 
@@ -127,6 +128,46 @@ class BookingController extends Controller
      * Cancel reservation
      * SUPPORTS ROUND TRIP - Cancels both trips if round trip
      */
+//    public function cancel(Request $request, $id)
+//    {
+//        // Find reservation for the logged-in user
+//        $reservation = Reservation::where('id', $id)
+//            ->where('user_id', auth()->id())
+//            ->firstOrFail();
+//
+//        // Prevent cancellation if trip already departed
+//        if ($reservation->trip->departure_date <= now()->toDateString()) {
+//            return back()->with('error', 'You can no longer cancel this reservation.');
+//        }
+//
+//        // Prevent double cancellation
+//        if ($reservation->status === 'cancelled') {
+//            return back()->with('error', 'Reservation is already cancelled.');
+//        }
+//
+//        // Restore seats for OUTBOUND trip
+//        $this->restoreSeatsForTrip($reservation->trip_id, $reservation->id);
+//
+//        // Restore seats for RETURN trip (if round trip)
+//        if ($reservation->return_trip_id) {
+//            $this->restoreSeatsForTrip($reservation->return_trip_id, $reservation->id);
+//        }
+//
+//        // Update reservation status
+//        $reservation->status = 'cancelled';
+//        $reservation->save();
+//
+//        // Send cancellation email
+//        try {
+//            Mail::to($reservation->user->email)
+//                ->send(new ReservationCancelled($reservation));
+//        } catch (\Exception $e) {
+//            // Log email error but don't fail the cancellation
+//            \Log::error('Failed to send cancellation email: ' . $e->getMessage());
+//        }
+//
+//        return back()->with('success', 'Your reservation has been cancelled successfully.');
+//    }
     public function cancel(Request $request, $id)
     {
         // Find reservation for the logged-in user
@@ -134,9 +175,31 @@ class BookingController extends Controller
             ->where('user_id', auth()->id())
             ->firstOrFail();
 
+        // Compute trip datetime and hours
+//        $tripDateTime = \Carbon\Carbon::parse(
+//            $reservation->trip->departure_date . ' ' . $reservation->trip->departure_time
+//        );
+        $tripDateTime = Carbon::parse(
+            $reservation->trip->departure_date->format('Y-m-d') . ' ' .
+            $reservation->trip->departure_time->format('H:i:s')
+        );
+
+        $hoursUntilDeparture = now()->diffInHours($tripDateTime, false);
+        $hoursSinceBooking = $reservation->created_at->diffInHours(now());
+
         // Prevent cancellation if trip already departed
-        if ($reservation->trip->departure_date <= now()->toDateString()) {
+        if ($tripDateTime->isPast()) {
             return back()->with('error', 'You can no longer cancel this reservation.');
+        }
+
+        // Prevent cancellation if trip departs within 10 hours (NEW RULE)
+        if ($hoursUntilDeparture <= 10) {
+            return back()->with('error', 'Cancellation is not allowed for trips departing within 10 hours.');
+        }
+
+        // Prevent cancellation if booking is older than 10 hours (EXISTING RULE)
+        if ($hoursSinceBooking > 10) {
+            return back()->with('error', 'Cancellation period has expired.');
         }
 
         // Prevent double cancellation
@@ -161,7 +224,6 @@ class BookingController extends Controller
             Mail::to($reservation->user->email)
                 ->send(new ReservationCancelled($reservation));
         } catch (\Exception $e) {
-            // Log email error but don't fail the cancellation
             \Log::error('Failed to send cancellation email: ' . $e->getMessage());
         }
 
