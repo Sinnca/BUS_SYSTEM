@@ -404,6 +404,55 @@
             text-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
         }
 
+        /* Modal Styling */
+        .modal-content {
+            background: #1e293b;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+            padding: 1.5rem 1.75rem;
+        }
+
+        .modal-title {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .modal-title i {
+            color: #f59e0b;
+            margin-right: 8px;
+        }
+
+        .modal-body {
+            color: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem 1.75rem;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .modal-footer {
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+            padding: 1.25rem 1.75rem;
+        }
+
+        .btn-close {
+            filter: brightness(0) invert(1);
+            opacity: 0.6;
+        }
+
+        .btn-close:hover {
+            opacity: 1;
+        }
+
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
         /* Scrollbar styling */
         ::-webkit-scrollbar {
             width: 10px;
@@ -427,6 +476,126 @@
             color: #ffffff;
         }
 
+        .cancellation-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);
+            border: 2px solid #fbbf24;
+        }
+
+        .card-header-modern {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            padding: 24px 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icon-wrapper {
+            background: rgba(255, 255, 255, 0.2);
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .icon-wrapper i {
+            font-size: 24px;
+            color: #ffffff;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .card-header-modern h5 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body-modern {
+            padding: 28px;
+            background: #ffffff;
+        }
+
+        .rules-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .rule-item {
+            display: flex;
+            align-items: start;
+            gap: 16px;
+            padding: 20px;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-radius: 12px;
+            border-left: 4px solid #f59e0b;
+            transition: all 0.3s ease;
+        }
+
+        .rule-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .rule-icon {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+        }
+
+        .rule-content {
+            flex: 1;
+            color: #78350f;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .rule-content strong {
+            color: #92400e;
+            font-weight: 700;
+        }
+
+        .rule-badge {
+            display: inline-block;
+            background: #f59e0b;
+            color: #ffffff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
         @media (max-width: 768px) {
             .page-header {
                 padding: 1.5rem;
@@ -443,6 +612,27 @@
             .hero-features {
                 flex-direction: column;
                 gap: 10px;
+            }
+
+            .card-header-modern {
+                padding: 20px;
+            }
+
+            .card-header-modern h5 {
+                font-size: 1.25rem;
+            }
+
+            .card-body-modern {
+                padding: 20px;
+            }
+
+            .rule-item {
+                padding: 16px;
+                gap: 12px;
+            }
+
+            .rule-content {
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -718,174 +908,6 @@
                         </div>
                     </div>
                     <hr>
-                    <style>
-                        .cancellation-card {
-                            max-width: 700px;
-                            margin: 0 auto;
-                            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-                            border-radius: 16px;
-                            overflow: hidden;
-                            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);
-                            border: 2px solid #fbbf24;
-                        }
-
-                        .card-header-modern {
-                            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-                            padding: 24px 28px;
-                            display: flex;
-                            align-items: center;
-                            gap: 12px;
-                        }
-
-                        .icon-wrapper {
-                            background: rgba(255, 255, 255, 0.2);
-                            width: 48px;
-                            height: 48px;
-                            border-radius: 12px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            backdrop-filter: blur(10px);
-                        }
-
-                        .icon-wrapper i {
-                            font-size: 24px;
-                            color: #ffffff;
-                            animation: pulse 2s ease-in-out infinite;
-                        }
-
-                        @keyframes pulse {
-                            0%, 100% {
-                                transform: scale(1);
-                            }
-                            50% {
-                                transform: scale(1.1);
-                            }
-                        }
-
-                        .card-header-modern h5 {
-                            margin: 0;
-                            color: #ffffff;
-                            font-size: 1.5rem;
-                            font-weight: 700;
-                            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                        }
-
-                        .card-body-modern {
-                            padding: 28px;
-                            background: #ffffff;
-                        }
-
-                        .rules-list {
-                            list-style: none;
-                            padding: 0;
-                            margin: 0;
-                            display: flex;
-                            flex-direction: column;
-                            gap: 16px;
-                        }
-
-                        .rule-item {
-                            display: flex;
-                            align-items: start;
-                            gap: 16px;
-                            padding: 20px;
-                            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-                            border-radius: 12px;
-                            border-left: 4px solid #f59e0b;
-                            transition: all 0.3s ease;
-                        }
-
-                        .rule-item:hover {
-                            transform: translateX(4px);
-                            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
-                        }
-
-                        .rule-icon {
-                            flex-shrink: 0;
-                            width: 36px;
-                            height: 36px;
-                            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-                            border-radius: 8px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            color: #ffffff;
-                            font-weight: 700;
-                            font-size: 1.1rem;
-                            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
-                        }
-
-                        .rule-content {
-                            flex: 1;
-                            color: #78350f;
-                            font-size: 1rem;
-                            line-height: 1.6;
-                        }
-
-                        .rule-content strong {
-                            color: #92400e;
-                            font-weight: 700;
-                        }
-
-                        .rule-badge {
-                            display: inline-block;
-                            background: #f59e0b;
-                            color: #ffffff;
-                            padding: 2px 8px;
-                            border-radius: 4px;
-                            font-size: 0.75rem;
-                            font-weight: 600;
-                            margin-left: 4px;
-                        }
-
-                        .info-footer {
-                            margin-top: 20px;
-                            padding: 16px 20px;
-                            background: #eff6ff;
-                            border-radius: 10px;
-                            border-left: 4px solid #3b82f6;
-                            display: flex;
-                            align-items: start;
-                            gap: 12px;
-                        }
-
-                        .info-footer i {
-                            color: #3b82f6;
-                            font-size: 1.2rem;
-                            margin-top: 2px;
-                        }
-
-                        .info-footer p {
-                            margin: 0;
-                            color: #1e40af;
-                            font-size: 0.9rem;
-                            line-height: 1.6;
-                        }
-
-                        @media (max-width: 640px) {
-                            .card-header-modern {
-                                padding: 20px;
-                            }
-
-                            .card-header-modern h5 {
-                                font-size: 1.25rem;
-                            }
-
-                            .card-body-modern {
-                                padding: 20px;
-                            }
-
-                            .rule-item {
-                                padding: 16px;
-                                gap: 12px;
-                            }
-
-                            .rule-content {
-                                font-size: 0.9rem;
-                            }
-                        }
-                    </style>
                     <div class="cancellation-card">
                         <!-- Header -->
                         <div class="card-header-modern">
@@ -921,6 +943,29 @@
         </div>
     </div>
 
+    <!-- Alert Modal -->
+    <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="alertModalLabel">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span id="modalTitle">Alert</span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalMessage" style="margin: 0;"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <i class="fas fa-check"></i> Okay
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -934,6 +979,71 @@
                 const confirmBtn = document.getElementById('confirm-btn');
                 const nextBtn = document.getElementById('next-btn');
                 const prevBtn = document.getElementById('prev-btn');
+
+                // Modal function
+                function showModal(title, message) {
+                    document.getElementById('modalTitle').textContent = title;
+                    document.getElementById('modalMessage').textContent = message;
+                    
+                    const modalElement = document.getElementById('alertModal');
+                    
+                    // Try Bootstrap 5 Modal
+                    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                        const modal = new bootstrap.Modal(modalElement);
+                        modal.show();
+                    }
+                    // Fallback to jQuery Modal (Bootstrap 4)
+                    else if (typeof $ !== 'undefined' && $.fn.modal) {
+                        $(modalElement).modal('show');
+                    }
+                    // Pure JavaScript fallback
+                    else {
+                        modalElement.style.display = 'block';
+                        modalElement.classList.add('show');
+                        modalElement.setAttribute('aria-modal', 'true');
+                        modalElement.removeAttribute('aria-hidden');
+                        document.body.classList.add('modal-open');
+                        
+                        // Create backdrop
+                        let backdrop = document.querySelector('.modal-backdrop');
+                        if (!backdrop) {
+                            backdrop = document.createElement('div');
+                            backdrop.className = 'modal-backdrop fade show';
+                            document.body.appendChild(backdrop);
+                        }
+                        
+                        // Close handlers
+                        const closeModal = function() {
+                            modalElement.style.display = 'none';
+                            modalElement.classList.remove('show');
+                            modalElement.setAttribute('aria-hidden', 'true');
+                            modalElement.removeAttribute('aria-modal');
+                            document.body.classList.remove('modal-open');
+                            if (backdrop) {
+                                backdrop.remove();
+                            }
+                        };
+                        
+                        // Close button
+                        const closeBtn = modalElement.querySelector('.btn-close');
+                        if (closeBtn) {
+                            closeBtn.onclick = closeModal;
+                        }
+                        
+                        // Okay button
+                        const okayBtn = modalElement.querySelector('[data-bs-dismiss="modal"]');
+                        if (okayBtn) {
+                            okayBtn.onclick = closeModal;
+                        }
+                        
+                        // Click outside to close
+                        modalElement.onclick = function(e) {
+                            if (e.target === modalElement) {
+                                closeModal();
+                            }
+                        };
+                    }
+                }
 
                 // Handle seat selection
                 document.querySelectorAll('.seat.available').forEach(seat => {
@@ -958,7 +1068,7 @@
                         if (index > -1) seatsArray.splice(index, 1);
                     } else {
                         if (seatsArray.length >= maxSeats) {
-                            alert(`You can only select ${maxSeats} seat(s)`);
+                            showModal('Seat Limit Reached', `You can only select ${maxSeats} seat(s)`);
                             return;
                         }
                         element.classList.add('selected');
@@ -1105,7 +1215,7 @@
 
                     if (selectedSeats < requiredSeats) {
                         e.preventDefault();
-                        alert('Please select all required seats');
+                        showModal('Incomplete Selection', 'Please select all required seats');
                         return false;
                     }
 
