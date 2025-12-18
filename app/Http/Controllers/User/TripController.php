@@ -71,7 +71,7 @@ class TripController extends Controller
             ->whereRaw(
                 "STR_TO_DATE(CONCAT(departure_date, ' ', departure_time), '%Y-%m-%d %H:%i:%s') >= ?",
                 [
-                    now()->setDateFrom($request->departure_date)
+                    $request->departure_date . ' 00:00:00'  // start of requested day
                 ]
             )
             ->where('available_seats', '>=', $totalPassengers)
